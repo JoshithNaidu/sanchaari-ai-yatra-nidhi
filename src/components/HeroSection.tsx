@@ -3,6 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Search, Zap } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const HeroSection = () => {
   return (
@@ -27,29 +28,35 @@ const HeroSection = () => {
               className="h-16 pl-14 pr-20 text-lg border-2 border-blue-200 focus:border-blue-500 rounded-full bg-white/90 backdrop-blur-sm shadow-lg"
             />
             <Search className="absolute left-5 top-1/2 transform -translate-y-1/2 h-6 w-6 text-blue-500" />
-            <Button className="absolute right-2 top-2 h-12 px-8 bg-blue-600 hover:bg-blue-700 rounded-full">
-              <Zap className="h-4 w-4 mr-2" />
-              AI Search
-            </Button>
+            <Link to="/chat">
+              <Button className="absolute right-2 top-2 h-12 px-8 bg-blue-600 hover:bg-blue-700 rounded-full">
+                <Zap className="h-4 w-4 mr-2" />
+                AI Search
+              </Button>
+            </Link>
           </div>
         </div>
 
         {/* Primary CTAs */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-          <Button 
-            size="lg" 
-            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg rounded-full shadow-lg"
-          >
-            <Zap className="h-5 w-5 mr-2" />
-            Start Planning with AI
-          </Button>
-          <Button 
-            size="lg" 
-            variant="outline" 
-            className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-4 text-lg rounded-full"
-          >
-            Browse Travel Ideas
-          </Button>
+          <Link to="/chat">
+            <Button 
+              size="lg" 
+              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg rounded-full shadow-lg"
+            >
+              <Zap className="h-5 w-5 mr-2" />
+              Start Planning with AI
+            </Button>
+          </Link>
+          <Link to="/explore/themes">
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-4 text-lg rounded-full"
+            >
+              Browse Travel Ideas
+            </Button>
+          </Link>
         </div>
 
         {/* Quick Stats */}

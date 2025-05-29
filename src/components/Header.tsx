@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuList, NavigationMenuTrigger } from '@/components/ui/navigation-menu';
 import { User, Menu, X, Globe } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,13 +14,13 @@ const Header = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <a href="/" className="flex items-center space-x-2">
+            <Link to="/" className="flex items-center space-x-2">
               <img 
                 src="/lovable-uploads/94fa41ec-96bd-400a-8fc5-4c52f8f19917.png" 
                 alt="Sanchaari Logo" 
                 className="h-10 w-auto"
               />
-            </a>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
@@ -43,18 +44,18 @@ const Header = () => {
                         </div>
                       </div>
                       <div className="grid gap-1">
-                        <a href="/explore/themes" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-900">
+                        <Link to="/explore/themes" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-900">
                           <div className="text-sm font-medium leading-none">Travel Themes</div>
                           <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                             Adventure, Wellness, Cultural tours and more
                           </p>
-                        </a>
-                        <a href="/explore/destinations" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-900">
+                        </Link>
+                        <Link to="/explore/destinations" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-900">
                           <div className="text-sm font-medium leading-none">Destination Guides</div>
                           <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                             In-depth guides for every Indian destination
                           </p>
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   </NavigationMenuContent>
@@ -66,18 +67,18 @@ const Header = () => {
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <div className="grid gap-3 p-6 md:w-[400px]">
-                      <a href="/trips/dashboard" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-900">
+                      <Link to="/trips/dashboard" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-900">
                         <div className="text-sm font-medium leading-none">My Trips Dashboard</div>
                         <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                           Manage all your planned and ongoing trips
                         </p>
-                      </a>
-                      <a href="/trips/new" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-900">
+                      </Link>
+                      <Link to="/trips/new" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-900">
                         <div className="text-sm font-medium leading-none">Create New Trip</div>
                         <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                           Start planning your next adventure with AI
                         </p>
-                      </a>
+                      </Link>
                     </div>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
@@ -88,38 +89,38 @@ const Header = () => {
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <div className="grid gap-3 p-6 md:w-[500px] lg:grid-cols-2">
-                      <a href="/search/flights" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-900">
+                      <Link to="/search/flights" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-900">
                         <div className="text-sm font-medium leading-none">Flights</div>
                         <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                           Find the best flight deals
                         </p>
-                      </a>
-                      <a href="/search/hotels" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-900">
+                      </Link>
+                      <Link to="/search/hotels" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-900">
                         <div className="text-sm font-medium leading-none">Hotels</div>
                         <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                           Book accommodations
                         </p>
-                      </a>
-                      <a href="/search/activities" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-900">
+                      </Link>
+                      <Link to="/search/activities" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-900">
                         <div className="text-sm font-medium leading-none">Activities</div>
                         <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                           Discover experiences
                         </p>
-                      </a>
-                      <a href="/search/packages" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-900">
+                      </Link>
+                      <Link to="/search/packages" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-900">
                         <div className="text-sm font-medium leading-none">Packages</div>
                         <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                           Complete travel packages
                         </p>
-                      </a>
+                      </Link>
                     </div>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
-                  <a href="/help/center" className="text-gray-700 hover:text-blue-600 transition-colors px-3 py-2 text-sm font-medium">
+                  <Link to="/help/center" className="text-gray-700 hover:text-blue-600 transition-colors px-3 py-2 text-sm font-medium">
                     Support
-                  </a>
+                  </Link>
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
@@ -156,10 +157,10 @@ const Header = () => {
         {isMenuOpen && (
           <div className="lg:hidden py-4 border-t border-blue-100">
             <div className="space-y-4">
-              <a href="/explore/themes" className="block px-3 py-2 text-gray-700 hover:text-blue-600">Explore Themes</a>
-              <a href="/trips/dashboard" className="block px-3 py-2 text-gray-700 hover:text-blue-600">My Trips</a>
-              <a href="/search/flights" className="block px-3 py-2 text-gray-700 hover:text-blue-600">Search</a>
-              <a href="/help/center" className="block px-3 py-2 text-gray-700 hover:text-blue-600">Support</a>
+              <Link to="/explore/themes" className="block px-3 py-2 text-gray-700 hover:text-blue-600">Explore Themes</Link>
+              <Link to="/trips/dashboard" className="block px-3 py-2 text-gray-700 hover:text-blue-600">My Trips</Link>
+              <Link to="/search/flights" className="block px-3 py-2 text-gray-700 hover:text-blue-600">Search</Link>
+              <Link to="/help/center" className="block px-3 py-2 text-gray-700 hover:text-blue-600">Support</Link>
               <div className="pt-4 border-t border-blue-100 space-y-2">
                 <Button variant="outline" className="w-full border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white">
                   Sign In

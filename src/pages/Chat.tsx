@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import Header from '@/components/Header';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface Message {
   id: string;
@@ -15,6 +16,7 @@ interface Message {
 }
 
 const Chat = () => {
+  const navigate = useNavigate();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -93,7 +95,7 @@ const Chat = () => {
           {/* Chat Header */}
           <div className="bg-white border-b border-gray-200 p-4 flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="sm" onClick={() => window.history.back()}>
+              <Button variant="ghost" size="sm" onClick={() => navigate('/')}>
                 <ArrowLeft className="h-4 w-4" />
               </Button>
               <div>
@@ -220,9 +222,11 @@ const Chat = () => {
                     </div>
                   </div>
                   
-                  <Button className="w-full mt-4 bg-blue-600 hover:bg-blue-700">
-                    View Full Itinerary
-                  </Button>
+                  <Link to="/trips/new">
+                    <Button className="w-full mt-4 bg-blue-600 hover:bg-blue-700">
+                      View Full Itinerary
+                    </Button>
+                  </Link>
                 </CardContent>
               </Card>
             </div>
@@ -233,8 +237,8 @@ const Chat = () => {
       {/* Footer */}
       <footer className="bg-white border-t border-gray-200 p-4 text-center text-xs text-gray-500">
         <p>AI-generated recommendations. Please verify details before booking. 
-        <a href="/privacy" className="text-blue-600 hover:underline ml-1">Privacy Policy</a> | 
-        <a href="/terms" className="text-blue-600 hover:underline ml-1">Terms of Service</a>
+        <Link to="/privacy" className="text-blue-600 hover:underline ml-1">Privacy Policy</Link> | 
+        <Link to="/terms" className="text-blue-600 hover:underline ml-1">Terms of Service</Link>
         </p>
       </footer>
     </div>

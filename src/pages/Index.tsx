@@ -8,6 +8,7 @@ import AIAssistantPreview from '@/components/AIAssistantPreview';
 import TestimonialsCarousel from '@/components/TestimonialsCarousel';
 import NewsletterSignup from '@/components/NewsletterSignup';
 import { Compass, Instagram, Twitter, Linkedin, Youtube, Globe } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Index = () => {
   return (
@@ -42,27 +43,27 @@ const Index = () => {
             <div>
               <h3 className="font-semibold mb-4">Destinations</h3>
               <ul className="space-y-2 text-blue-200">
-                <li><a href="/explore/destinations/north-india" className="hover:text-white transition-colors">North India</a></li>
-                <li><a href="/explore/destinations/south-india" className="hover:text-white transition-colors">South India</a></li>
-                <li><a href="/explore/destinations/east-india" className="hover:text-white transition-colors">East India</a></li>
-                <li><a href="/explore/destinations/west-india" className="hover:text-white transition-colors">West India</a></li>
+                <li><Link to="/explore/destinations/north-india" className="hover:text-white transition-colors">North India</Link></li>
+                <li><Link to="/explore/destinations/south-india" className="hover:text-white transition-colors">South India</Link></li>
+                <li><Link to="/explore/destinations/east-india" className="hover:text-white transition-colors">East India</Link></li>
+                <li><Link to="/explore/destinations/west-india" className="hover:text-white transition-colors">West India</Link></li>
               </ul>
             </div>
             <div>
               <h3 className="font-semibold mb-4">Company</h3>
               <ul className="space-y-2 text-blue-200">
-                <li><a href="/about" className="hover:text-white transition-colors">About Us</a></li>
-                <li><a href="/help/contact" className="hover:text-white transition-colors">Contact</a></li>
-                <li><a href="/careers" className="hover:text-white transition-colors">Careers</a></li>
-                <li><a href="/press" className="hover:text-white transition-colors">Press</a></li>
+                <li><Link to="/about" className="hover:text-white transition-colors">About Us</Link></li>
+                <li><Link to="/help/contact" className="hover:text-white transition-colors">Contact</Link></li>
+                <li><Link to="/careers" className="hover:text-white transition-colors">Careers</Link></li>
+                <li><Link to="/press" className="hover:text-white transition-colors">Press</Link></li>
               </ul>
             </div>
             <div>
               <h3 className="font-semibold mb-4">Support & Legal</h3>
               <ul className="space-y-2 text-blue-200">
-                <li><a href="/help/center" className="hover:text-white transition-colors">Help Center</a></li>
-                <li><a href="/privacy" className="hover:text-white transition-colors">Privacy Policy</a></li>
-                <li><a href="/terms" className="hover:text-white transition-colors">Terms of Service</a></li>
+                <li><Link to="/help/center" className="hover:text-white transition-colors">Help Center</Link></li>
+                <li><Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+                <li><Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
                 <li>
                   <div className="flex items-center space-x-2 text-blue-200 hover:text-white cursor-pointer transition-colors">
                     <Globe className="h-4 w-4" />
