@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuList, NavigationMenuTrigger } from '@/components/ui/navigation-menu';
-import { Compass, User, Menu, X, Globe } from 'lucide-react';
+import { User, Menu, X, Globe } from 'lucide-react';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,8 +13,13 @@ const Header = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <Compass className="h-8 w-8 text-blue-600" />
-            <span className="text-2xl font-bold text-blue-900">Sanchaari</span>
+            <a href="/" className="flex items-center space-x-2">
+              <img 
+                src="/lovable-uploads/94fa41ec-96bd-400a-8fc5-4c52f8f19917.png" 
+                alt="Sanchaari Logo" 
+                className="h-10 w-auto"
+              />
+            </a>
           </div>
 
           {/* Desktop Navigation */}
