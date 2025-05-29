@@ -1,11 +1,13 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, User, Settings, LogOut, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const isLoggedIn = false; // This would come from auth context in real app
 
   return (
     <header className="bg-white/95 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-blue-100">
@@ -24,11 +26,11 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-8">
+            <Link to="/trips/dashboard" className="text-gray-700 hover:text-blue-600 transition-colors">
+              My Trips
+            </Link>
             <Link to="/explore/destinations" className="text-gray-700 hover:text-blue-600 transition-colors">
               Explore Destinations
-            </Link>
-            <Link to="/explore/themes" className="text-gray-700 hover:text-blue-600 transition-colors">
-              Themes
             </Link>
             <Link to="/help/center" className="text-gray-700 hover:text-blue-600 transition-colors">
               Help
@@ -42,11 +44,58 @@ const Header = () => {
                 Plan with AI
               </Button>
             </Link>
-            <Link to="/profile/me">
-              <Button variant="outline" className="border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white">
-                Login / Sign Up
-              </Button>
-            </Link>
+            
+            {isLoggedIn ? (
+              <div className="relative">
+                <Button
+                  variant="ghost"
+                  className="flex items-center space-x-2"
+                  onClick={() => setShowProfileDropdown(!showProfileDropdown)}
+                >
+                  <User className="h-4 w-4" />
+                  <ChevronDown className="h-4 w-4" />
+                </Button>
+                
+                {showProfileDropdown && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 z-50">
+                    <div className="py-1">
+                      <Link
+                        to="/profile/me"
+                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={() => setShowProfileDropdown(false)}
+                      >
+                        <User className="h-4 w-4 mr-2" />
+                        Profile
+                      </Link>
+                      <Link
+                        to="/profile/preferences"
+                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={() => setShowProfileDropdown(false)}
+                      >
+                        <Settings className="h-4 w-4 mr-2" />
+                        Preferences
+                      </Link>
+                      <button
+                        className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={() => {
+                          setShowProfileDropdown(false);
+                          // Handle logout
+                        }}
+                      >
+                        <LogOut className="h-4 w-4 mr-2" />
+                        Logout
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link to="/profile/me">
+                <Button variant="outline" className="border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white">
+                  Login / Sign Up
+                </Button>
+              </Link>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -66,11 +115,11 @@ const Header = () => {
         {isMenuOpen && (
           <div className="lg:hidden py-4 border-t border-blue-100">
             <div className="space-y-4">
+              <Link to="/trips/dashboard" className="block px-3 py-2 text-gray-700 hover:text-blue-600">
+                My Trips
+              </Link>
               <Link to="/explore/destinations" className="block px-3 py-2 text-gray-700 hover:text-blue-600">
                 Explore Destinations
-              </Link>
-              <Link to="/explore/themes" className="block px-3 py-2 text-gray-700 hover:text-blue-600">
-                Themes
               </Link>
               <Link to="/help/center" className="block px-3 py-2 text-gray-700 hover:text-blue-600">
                 Help
@@ -81,11 +130,29 @@ const Header = () => {
                     Plan with AI
                   </Button>
                 </Link>
-                <Link to="/profile/me">
-                  <Button variant="outline" className="w-full border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white">
-                    Login / Sign Up
-                  </Button>
-                </Link>
+                {isLoggedIn ? (
+                  <div className="space-y-2">
+                    <Link to="/profile/me">
+                      <Button variant="outline" className="w-full">
+                        Profile
+                      </Button>
+                    </Link>
+                    <Link to="/profile/preferences">
+                      <Button variant="outline" className="w-full">
+                        Preferences
+                      </Button>
+                    </Link>
+                    <Button variant="outline" className="w-full text-red-600 border-red-600">
+                      Logout
+                    </Button>
+                  </div>
+                ) : (
+                  <Link to="/profile/me">
+                    <Button variant="outline" className="w-full border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white">
+                      Login / Sign Up
+                    </Button>
+                  </Link>
+                )}
               </div>
             </div>
           </div>
