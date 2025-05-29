@@ -8,6 +8,12 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-route
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import FloatingChatbot from "./components/FloatingChatbot";
+import TripsDashboard from "./pages/TripsDashboard";
+import CreateNewTrip from "./pages/CreateNewTrip";
+import ItineraryDetails from "./pages/ItineraryDetails";
+import CollaborativePlanning from "./pages/CollaborativePlanning";
+import BudgetTracker from "./pages/BudgetTracker";
+import PackingList from "./pages/PackingList";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +42,12 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/chat" element={<ChatRedirectHandler />} />
+          <Route path="/trips/dashboard" element={<TripsDashboard />} />
+          <Route path="/trips/new" element={<CreateNewTrip />} />
+          <Route path="/trips/:tripId" element={<ItineraryDetails />} />
+          <Route path="/trips/:tripId/collaborate" element={<CollaborativePlanning />} />
+          <Route path="/trips/:tripId/budget" element={<BudgetTracker />} />
+          <Route path="/trips/:tripId/packing" element={<PackingList />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
