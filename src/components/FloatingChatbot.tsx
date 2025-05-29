@@ -3,8 +3,6 @@ import React, { useState } from 'react';
 import { MessageCircle, X, Send, Mic } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
 
 interface Message {
@@ -83,6 +81,7 @@ const FloatingChatbot = () => {
     <div className="hidden lg:block">
       {!isOpen && (
         <Button
+          data-floating-chatbot-trigger
           onClick={() => setIsOpen(true)}
           className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-blue-600 hover:bg-blue-700 shadow-lg z-50"
           size="icon"
@@ -185,6 +184,7 @@ const FloatingChatbot = () => {
       <Drawer open={isOpen} onOpenChange={setIsOpen}>
         <DrawerTrigger asChild>
           <Button
+            data-floating-chatbot-trigger
             className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-blue-600 hover:bg-blue-700 shadow-lg z-50"
             size="icon"
           >

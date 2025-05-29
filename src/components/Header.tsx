@@ -9,6 +9,14 @@ const Header = () => {
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const isLoggedIn = false; // This would come from auth context in real app
 
+  const openFloatingChatbot = () => {
+    // This will trigger the floating chatbot to open
+    const chatbotButton = document.querySelector('[data-floating-chatbot-trigger]') as HTMLButtonElement;
+    if (chatbotButton) {
+      chatbotButton.click();
+    }
+  };
+
   return (
     <header className="bg-white/95 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-blue-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -39,11 +47,12 @@ const Header = () => {
 
           {/* Desktop CTAs */}
           <div className="hidden lg:flex items-center space-x-4">
-            <Link to="/chat">
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                Plan with AI
-              </Button>
-            </Link>
+            <Button 
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+              onClick={openFloatingChatbot}
+            >
+              Plan with AI
+            </Button>
             
             {isLoggedIn ? (
               <div className="relative">
@@ -125,11 +134,12 @@ const Header = () => {
                 Help
               </Link>
               <div className="pt-4 border-t border-blue-100 space-y-2">
-                <Link to="/chat">
-                  <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-                    Plan with AI
-                  </Button>
-                </Link>
+                <Button 
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                  onClick={openFloatingChatbot}
+                >
+                  Plan with AI
+                </Button>
                 {isLoggedIn ? (
                   <div className="space-y-2">
                     <Link to="/profile/me">
