@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const Logout = () => {
   const { logout } = useAuth();
@@ -10,11 +11,14 @@ const Logout = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const performLogout = () => {
+    const performLogout = async () => {
+      // Add a small delay for better UX
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
       logout();
       toast({ 
-        title: "Logged out", 
-        description: "You have been successfully logged out." 
+        title: "Signed out successfully", 
+        description: "Thank you for using Sanchaari. See you next time!" 
       });
       navigate('/');
     };
@@ -23,10 +27,13 @@ const Logout = () => {
   }, [logout, toast, navigate]);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="text-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-        <p className="text-gray-600">Logging you out...</p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center">
+      <div className="text-center max-w-md mx-auto p-8">
+        <div className="bg-white rounded-2xl shadow-xl p-8 border">
+          <LoadingSpinner size="lg" />
+          <h2 className="text-xl font-semibold text-gray-900 mt-4">Signing you out...</h2>
+          <p className="text-gray-600 mt-2">Thank you for using Sanchaari</p>
+        </div>
       </div>
     </div>
   );
