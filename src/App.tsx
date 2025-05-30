@@ -5,17 +5,57 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CentralizedAuthProvider } from "./contexts/CentralizedAuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
+
+// Public Pages
 import Index from "./pages/Index";
+import Chat from "./pages/Chat";
+import Search from "./pages/Search";
+import SearchFlights from "./pages/SearchFlights";
+import SearchHotels from "./pages/SearchHotels";
+import SearchActivities from "./pages/SearchActivities";
+import SearchPackages from "./pages/SearchPackages";
+import DestinationGuide from "./pages/DestinationGuide";
+import TravelThemes from "./pages/TravelThemes";
+import TravelBlog from "./pages/TravelBlog";
+import Community from "./pages/Community";
+import HelpCenter from "./pages/HelpCenter";
+import ContactUs from "./pages/ContactUs";
+import GrievanceRedressal from "./pages/GrievanceRedressal";
+import Safety from "./pages/Safety";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
+import Cookies from "./pages/Cookies";
+import About from "./pages/About";
+import Careers from "./pages/Careers";
+import NotFound from "./pages/NotFound";
+import ServerError from "./pages/ServerError";
+import Maintenance from "./pages/Maintenance";
+
+// Auth Pages
 import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import TravelHistory from "./pages/TravelHistory";
-import SavedTrips from "./pages/SavedTrips";
-import SearchResults from "./pages/SearchResults";
-import BookingConfirmation from "./pages/BookingConfirmation";
-import Profile from "./pages/Profile";
+import Logout from "./pages/Logout";
+import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
-import ProtectedRoute from "./components/ProtectedRoute";
+import EmailVerification from "./pages/EmailVerification";
+
+// Protected Pages
+import TripsDashboard from "./pages/TripsDashboard";
+import CreateNewTrip from "./pages/CreateNewTrip";
+import ItineraryDetails from "./pages/ItineraryDetails";
+import CollaborativePlanning from "./pages/CollaborativePlanning";
+import BudgetTracker from "./pages/BudgetTracker";
+import PackingList from "./pages/PackingList";
+import Checkout from "./pages/Checkout";
+import BookingConfirmation from "./pages/BookingConfirmation";
+import UserProfile from "./pages/UserProfile";
+import TravelPreferences from "./pages/TravelPreferences";
+import TravelHistory from "./pages/TravelHistory";
+import SavedTrips from "./pages/SavedTrips";
+import Notifications from "./pages/Notifications";
+import LoyaltyRewards from "./pages/LoyaltyRewards";
+import PaymentMethods from "./pages/PaymentMethods";
 
 const queryClient = new QueryClient();
 
@@ -29,33 +69,132 @@ const App = () => (
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Index />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/search" element={<SearchResults />} />
+            <Route path="/chat" element={<Chat />} />
+            
+            {/* Auth Routes */}
+            <Route path="/auth/login" element={<Login />} />
+            <Route path="/auth/logout" element={<Logout />} />
+            <Route path="/auth/register" element={<Register />} />
+            <Route path="/auth/forgot-password" element={<ForgotPassword />} />
+            <Route path="/auth/reset-password" element={<ResetPassword />} />
+            <Route path="/auth/verify-email" element={<EmailVerification />} />
 
-            {/* Protected Traveler Routes */}
-            <Route path="/travel-history" element={
+            {/* Search Routes */}
+            <Route path="/search" element={<Search />} />
+            <Route path="/search/flights" element={<SearchFlights />} />
+            <Route path="/search/hotels" element={<SearchHotels />} />
+            <Route path="/search/activities" element={<SearchActivities />} />
+            <Route path="/search/packages" element={<SearchPackages />} />
+
+            {/* Explore Routes */}
+            <Route path="/explore/destinations/:cityName" element={<DestinationGuide />} />
+            <Route path="/explore/themes" element={<TravelThemes />} />
+
+            {/* Content Routes */}
+            <Route path="/blog" element={<TravelBlog />} />
+            <Route path="/community" element={<Community />} />
+
+            {/* Help Routes */}
+            <Route path="/help/center" element={<HelpCenter />} />
+            <Route path="/help/contact" element={<ContactUs />} />
+            <Route path="/help/grievance" element={<GrievanceRedressal />} />
+
+            {/* Legal Routes */}
+            <Route path="/safety" element={<Safety />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/cookies" element={<Cookies />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/careers" element={<Careers />} />
+
+            {/* Protected Trip Routes */}
+            <Route path="/trips/dashboard" element={
               <ProtectedRoute allowedRoles={['traveler']}>
-                <TravelHistory />
+                <TripsDashboard />
               </ProtectedRoute>
             } />
-            <Route path="/saved-trips" element={
+            <Route path="/trips/new" element={
               <ProtectedRoute allowedRoles={['traveler']}>
-                <SavedTrips />
+                <CreateNewTrip />
               </ProtectedRoute>
             } />
-            <Route path="/booking-confirmation" element={
+            <Route path="/trips/:tripId" element={
+              <ProtectedRoute allowedRoles={['traveler']}>
+                <ItineraryDetails />
+              </ProtectedRoute>
+            } />
+            <Route path="/trips/:tripId/collaborate" element={
+              <ProtectedRoute allowedRoles={['traveler']}>
+                <CollaborativePlanning />
+              </ProtectedRoute>
+            } />
+            <Route path="/trips/:tripId/budget" element={
+              <ProtectedRoute allowedRoles={['traveler']}>
+                <BudgetTracker />
+              </ProtectedRoute>
+            } />
+            <Route path="/trips/:tripId/packing" element={
+              <ProtectedRoute allowedRoles={['traveler']}>
+                <PackingList />
+              </ProtectedRoute>
+            } />
+
+            {/* Protected Booking Routes */}
+            <Route path="/checkout/:bookingId" element={
+              <ProtectedRoute allowedRoles={['traveler']}>
+                <Checkout />
+              </ProtectedRoute>
+            } />
+            <Route path="/confirmation/:bookingId" element={
               <ProtectedRoute allowedRoles={['traveler']}>
                 <BookingConfirmation />
               </ProtectedRoute>
             } />
-            <Route path="/profile" element={
+
+            {/* Protected Profile Routes */}
+            <Route path="/profile/me" element={
               <ProtectedRoute allowedRoles={['traveler']}>
-                <Profile />
+                <UserProfile />
               </ProtectedRoute>
             } />
+            <Route path="/profile/preferences" element={
+              <ProtectedRoute allowedRoles={['traveler']}>
+                <TravelPreferences />
+              </ProtectedRoute>
+            } />
+            <Route path="/profile/history" element={
+              <ProtectedRoute allowedRoles={['traveler']}>
+                <TravelHistory />
+              </ProtectedRoute>
+            } />
+            <Route path="/profile/saved" element={
+              <ProtectedRoute allowedRoles={['traveler']}>
+                <SavedTrips />
+              </ProtectedRoute>
+            } />
+            <Route path="/profile/notifications" element={
+              <ProtectedRoute allowedRoles={['traveler']}>
+                <Notifications />
+              </ProtectedRoute>
+            } />
+            <Route path="/profile/rewards" element={
+              <ProtectedRoute allowedRoles={['traveler']}>
+                <LoyaltyRewards />
+              </ProtectedRoute>
+            } />
+            <Route path="/profile/payments" element={
+              <ProtectedRoute allowedRoles={['traveler']}>
+                <PaymentMethods />
+              </ProtectedRoute>
+            } />
+
+            {/* Error Routes */}
+            <Route path="/404" element={<NotFound />} />
+            <Route path="/500" element={<ServerError />} />
+            <Route path="/maintenance" element={<Maintenance />} />
+            
+            {/* Catch all route */}
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>

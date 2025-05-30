@@ -16,16 +16,20 @@ const Header = () => {
     setIsMenuOpen(false);
   };
 
-  // Only show traveler navigation
   const travelerNavItems = [
     { label: 'Search', href: '/search' },
-    { label: 'Travel History', href: '/travel-history' },
-    { label: 'Saved Trips', href: '/saved-trips' },
+    { label: 'Chat', href: '/chat' },
+    { label: 'My Trips', href: '/trips/dashboard' },
+    { label: 'Explore', href: '/explore/themes' },
   ];
 
   const getNavItems = () => {
     if (!isAuthenticated || !user) {
-      return [];
+      return [
+        { label: 'Search', href: '/search' },
+        { label: 'Chat', href: '/chat' },
+        { label: 'Explore', href: '/explore/themes' },
+      ];
     }
 
     if (user.userType === 'traveler') {
@@ -66,7 +70,7 @@ const Header = () => {
         <div className="hidden md:flex items-center space-x-4">
           {isAuthenticated && user ? (
             <div className="flex items-center space-x-4">
-              <Link to="/profile" className="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
+              <Link to="/profile/me" className="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
                 <User className="h-4 w-4" />
                 <span>{user.fullName?.split(' ')[0] || 'User'}</span>
               </Link>
@@ -76,10 +80,10 @@ const Header = () => {
             </div>
           ) : (
             <div className="flex items-center space-x-4">
-              <Link to="/login">
+              <Link to="/auth/login">
                 <Button variant="ghost" size="sm">Login</Button>
               </Link>
-              <Link to="/signup">
+              <Link to="/auth/register">
                 <Button size="sm">Sign Up</Button>
               </Link>
             </div>
@@ -114,7 +118,7 @@ const Header = () => {
               {isAuthenticated && user ? (
                 <div className="space-y-2">
                   <Link 
-                    to="/profile" 
+                    to="/profile/me" 
                     className="block text-gray-700 hover:text-blue-600"
                     onClick={() => setIsMenuOpen(false)}
                   >
@@ -126,10 +130,10 @@ const Header = () => {
                 </div>
               ) : (
                 <div className="space-y-2">
-                  <Link to="/login" onClick={() => setIsMenuOpen(false)}>
+                  <Link to="/auth/login" onClick={() => setIsMenuOpen(false)}>
                     <Button variant="ghost" size="sm" className="w-full">Login</Button>
                   </Link>
-                  <Link to="/signup" onClick={() => setIsMenuOpen(false)}>
+                  <Link to="/auth/register" onClick={() => setIsMenuOpen(false)}>
                     <Button size="sm" className="w-full">Sign Up</Button>
                   </Link>
                 </div>
