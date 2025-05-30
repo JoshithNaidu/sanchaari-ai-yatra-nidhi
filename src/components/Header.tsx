@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -11,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useCentralizedAuth } from '@/contexts/CentralizedAuthContext';
-import { Menu, X, User, Settings, LogOut, Dashboard } from 'lucide-react';
+import { Menu, X, User, Settings, LogOut, Home, ArrowLeft } from 'lucide-react';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -160,7 +159,7 @@ const Header = () => {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
                   <Link to={getDashboardPath()} className="flex items-center">
-                    <Dashboard className="mr-2 h-4 w-4" />
+                    <Home className="mr-2 h-4 w-4" />
                     Dashboard
                   </Link>
                 </DropdownMenuItem>
