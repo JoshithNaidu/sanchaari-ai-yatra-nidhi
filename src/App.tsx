@@ -83,6 +83,10 @@ import AdminIntegrations from "./pages/AdminIntegrations";
 import AdminPricing from "./pages/AdminPricing";
 import AdminAIAnalytics from "./pages/AdminAIAnalytics";
 import AdminAIModels from "./pages/AdminAIModels";
+import AdminAIFlows from "./pages/AdminAIFlows";
+import AdminAIHandoffs from "./pages/AdminAIHandoffs";
+import AdminAIKnowledgeBase from "./pages/AdminAIKnowledgeBase";
+import AdminAITrainingData from "./pages/AdminAITrainingData";
 
 const queryClient = new QueryClient();
 
@@ -167,6 +171,10 @@ const App = () => (
             <Route path="/admin/pricing" element={<AdminPricing />} />
             <Route path="/admin/ai/analytics" element={<AdminAIAnalytics />} />
             <Route path="/admin/ai/models" element={<AdminAIModels />} />
+            <Route path="/admin/ai/flows" element={<AdminAIFlows />} />
+            <Route path="/admin/ai/handoffs" element={<AdminAIHandoffs />} />
+            <Route path="/admin/ai/knowledge-base" element={<AdminAIKnowledgeBase />} />
+            <Route path="/admin/ai/training-data" element={<AdminAITrainingData />} />
             
             {/* Profile Routes */}
             <Route path="/profile/me" element={<UserProfile />} />
