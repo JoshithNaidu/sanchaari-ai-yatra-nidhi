@@ -5,15 +5,22 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { AuthProvider } from "./contexts/AuthContext";
 import { CentralizedAuthProvider } from "./contexts/CentralizedAuthContext";
 import { WorkflowProvider } from "./contexts/WorkflowContext";
+import RoleBasedHomepage from "./components/RoleBasedHomepage";
 import WorkflowDashboard from "./pages/WorkflowDashboard";
-import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import FloatingChatbot from "./components/FloatingChatbot";
 
-// Traveler-specific pages
+// Authentication Routes (Common)
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import EmailVerification from "./pages/EmailVerification";
+import Logout from "./pages/Logout";
+
+// TRAVELER-ONLY PAGES
 import TripsDashboard from "./pages/TripsDashboard";
 import CreateNewTrip from "./pages/CreateNewTrip";
 import ItineraryDetails from "./pages/ItineraryDetails";
@@ -35,15 +42,7 @@ import Notifications from "./pages/Notifications";
 import LoyaltyRewards from "./pages/LoyaltyRewards";
 import PaymentMethods from "./pages/PaymentMethods";
 
-// Authentication Routes (Common)
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import ForgotPassword from "./pages/ForgotPassword";
-import ResetPassword from "./pages/ResetPassword";
-import EmailVerification from "./pages/EmailVerification";
-import Logout from "./pages/Logout";
-
-// Partner Pages
+// PARTNER-ONLY PAGES
 import PartnerSignup from "./pages/PartnerSignup";
 import PartnerLogin from "./pages/PartnerLogin";
 import PartnerLogout from "./pages/PartnerLogout";
@@ -63,7 +62,7 @@ import PartnerHelpCenter from "./pages/PartnerHelpCenter";
 import PartnerContactSupport from "./pages/PartnerContactSupport";
 import PartnerMessages from "./pages/PartnerMessages";
 
-// Admin Pages
+// ADMIN-ONLY PAGES
 import AdminLogin from "./pages/AdminLogin";
 import AdminLogout from "./pages/AdminLogout";
 import AdminForgotPassword from "./pages/AdminForgotPassword";
@@ -85,7 +84,7 @@ import AdminUGC from "./pages/AdminUGC";
 import AdminFlaggedContent from "./pages/AdminFlaggedContent";
 import AdminReports from "./pages/AdminReports";
 
-// Public/Content Pages (Available to all)
+// PUBLIC CONTENT PAGES (Available to all user types)
 import DestinationGuides from "./pages/DestinationGuides";
 import TravelThemes from "./pages/TravelThemes";
 import TravelBlog from "./pages/TravelBlog";
@@ -109,7 +108,6 @@ const ChatRedirectHandler = () => {
   
   React.useEffect(() => {
     if (location.pathname === '/chat') {
-      // Trigger the floating chatbot to open
       const chatbotButton = document.querySelector('[data-floating-chatbot-trigger]') as HTMLButtonElement;
       if (chatbotButton) {
         chatbotButton.click();
@@ -129,8 +127,8 @@ const App = () => (
             <Toaster />
             <Sonner />
             <Routes>
-              {/* Public Routes */}
-              <Route path="/" element={<Index />} />
+              {/* Role-based Homepage */}
+              <Route path="/" element={<RoleBasedHomepage />} />
               <Route path="/chat" element={<ChatRedirectHandler />} />
               
               {/* Authentication Routes (Common to all user types) */}
