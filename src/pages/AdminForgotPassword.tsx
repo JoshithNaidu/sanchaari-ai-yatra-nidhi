@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useAuth } from '@/contexts/AuthContext';
+import { useCentralizedAuth } from '@/contexts/CentralizedAuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { Mail, ArrowLeft, Loader2, CheckCircle, Shield } from 'lucide-react';
 
@@ -11,7 +11,7 @@ const AdminForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const { forgotPassword } = useAuth();
+  const { forgotPassword } = useCentralizedAuth();
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -19,7 +19,7 @@ const AdminForgotPassword = () => {
     setIsLoading(true);
 
     try {
-      await forgotPassword(email);
+      const result = await forgotPassword(email);
       setIsSubmitted(true);
       toast({ 
         title: "Recovery instructions sent", 
