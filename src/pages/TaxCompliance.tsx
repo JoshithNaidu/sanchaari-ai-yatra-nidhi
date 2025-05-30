@@ -259,7 +259,7 @@ const TaxCompliance = () => {
                       variant={document.status === 'approved' ? 'outline' : 'default'} 
                       size="sm"
                       onClick={() => {
-                        const input = document.createElement('input');
+                        const input = React.createElement('input');
                         input.type = 'file';
                         input.accept = '.pdf,.jpg,.jpeg,.png';
                         input.onchange = (e) => {
@@ -268,7 +268,9 @@ const TaxCompliance = () => {
                             handleFileUpload(document.id, file);
                           }
                         };
+                        document.body.appendChild(input);
                         input.click();
+                        document.body.removeChild(input);
                       }}
                     >
                       <Upload className="h-3 w-3 mr-1" />
