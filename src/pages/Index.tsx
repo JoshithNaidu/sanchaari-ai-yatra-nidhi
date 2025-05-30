@@ -6,6 +6,7 @@ import QuickStartSection from '@/components/QuickStartSection';
 import HowItWorksSection from '@/components/HowItWorksSection';
 import FeaturedCollections from '@/components/FeaturedCollections';
 import Footer from '@/components/Footer';
+import FloatingChatbot from '@/components/FloatingChatbot';
 
 const Index = () => {
   return (
@@ -16,6 +17,7 @@ const Index = () => {
       <HowItWorksSection />
       <FeaturedCollections />
       <Footer />
+      <FloatingChatbot />
     </div>
   );
 };
