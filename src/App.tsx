@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -56,6 +55,7 @@ import SavedTrips from "./pages/SavedTrips";
 import Notifications from "./pages/Notifications";
 import LoyaltyRewards from "./pages/LoyaltyRewards";
 import PaymentMethods from "./pages/PaymentMethods";
+import Settings from "./pages/Settings";
 
 // Admin Pages
 import AdminHomepage from "./pages/AdminHomepage";
@@ -165,6 +165,13 @@ const App = () => (
             <Route path="/cookies" element={<Cookies />} />
             <Route path="/about" element={<About />} />
             <Route path="/careers" element={<Careers />} />
+
+            {/* Settings Route - Available for all authenticated users */}
+            <Route path="/settings" element={
+              <ProtectedRoute allowedRoles={['traveler', 'admin', 'partner']}>
+                <Settings />
+              </ProtectedRoute>
+            } />
 
             {/* Protected Trip Routes */}
             <Route path="/trips/dashboard" element={
