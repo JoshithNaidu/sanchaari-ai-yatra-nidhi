@@ -57,6 +57,17 @@ import Notifications from "./pages/Notifications";
 import LoyaltyRewards from "./pages/LoyaltyRewards";
 import PaymentMethods from "./pages/PaymentMethods";
 
+// Admin Pages
+import AdminHomepage from "./pages/AdminHomepage";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminLogin from "./pages/AdminLogin";
+import AdminLogout from "./pages/AdminLogout";
+import AdminForgotPassword from "./pages/AdminForgotPassword";
+import AdminUsers from "./pages/AdminUsers";
+import AdminTrips from "./pages/AdminTrips";
+import AdminDestinations from "./pages/AdminDestinations";
+import AdminChatbotAnalytics from "./pages/AdminChatbotAnalytics";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -185,6 +196,41 @@ const App = () => (
             <Route path="/profile/payments" element={
               <ProtectedRoute allowedRoles={['traveler']}>
                 <PaymentMethods />
+              </ProtectedRoute>
+            } />
+
+            {/* Admin Routes */}
+            <Route path="/admin" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminHomepage />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/dashboard" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/logout" element={<AdminLogout />} />
+            <Route path="/admin/forgot-password" element={<AdminForgotPassword />} />
+            <Route path="/admin/users" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminUsers />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/trips" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminTrips />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/destinations" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminDestinations />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/analytics/chatbot" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminChatbotAnalytics />
               </ProtectedRoute>
             } />
 
