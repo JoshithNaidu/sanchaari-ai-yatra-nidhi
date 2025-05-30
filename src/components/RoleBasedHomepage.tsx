@@ -1,11 +1,10 @@
 
 import React from 'react';
 import { useCentralizedAuth } from '@/contexts/CentralizedAuthContext';
-import { Navigate } from 'react-router-dom';
 import Index from '@/pages/Index';
-import AdminDashboard from '@/pages/AdminDashboard';
-import PartnerDashboard from '@/pages/PartnerDashboard';
-import TripsDashboard from '@/pages/TripsDashboard';
+import AdminHomepage from '@/components/AdminHomepage';
+import PartnerHomepage from '@/components/PartnerHomepage';
+import TravelerHomepage from '@/components/TravelerHomepage';
 
 const RoleBasedHomepage = () => {
   const { user, isAuthenticated, isLoading } = useCentralizedAuth();
@@ -26,11 +25,11 @@ const RoleBasedHomepage = () => {
   // Role-based homepage routing
   switch (user.userType) {
     case 'admin':
-      return <AdminDashboard />;
+      return <AdminHomepage />;
     case 'partner':
-      return <PartnerDashboard />;
+      return <PartnerHomepage />;
     case 'traveler':
-      return <TripsDashboard />;
+      return <TravelerHomepage />;
     default:
       return <Index />;
   }
