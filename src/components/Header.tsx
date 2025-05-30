@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Search, Menu } from 'lucide-react';
+import { Search, Menu, User, LogIn } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Header = () => {
@@ -41,6 +41,19 @@ const Header = () => {
           <Link to="/chat">
             <Button variant="outline" size="sm">
               Chat with AI
+            </Button>
+          </Link>
+          
+          <Link to="/login">
+            <Button variant="ghost" size="sm" className="gap-2">
+              <LogIn className="h-4 w-4" />
+              <span className="hidden sm:inline">Login</span>
+            </Button>
+          </Link>
+          
+          <Link to="/signup">
+            <Button variant="default" size="sm">
+              Sign Up
             </Button>
           </Link>
           
