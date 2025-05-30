@@ -4,360 +4,321 @@ import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { 
-  BarChart3,
-  TrendingUp,
-  TrendingDown,
-  Users,
-  CreditCard,
-  MapPin,
-  Calendar,
-  Download,
-  ArrowLeft,
-  AlertTriangle,
-  CheckCircle,
-  Clock,
-  Star
+  ArrowLeft, Download, Calendar, TrendingUp, TrendingDown, 
+  Users, DollarSign, MapPin, Star, BarChart3, PieChart 
 } from 'lucide-react';
 
 const AdminReports = () => {
-  const [timeRange, setTimeRange] = useState('30d');
+  const [dateRange, setDateRange] = useState('last30days');
+  const [reportType, setReportType] = useState('overview');
 
-  const kpiMetrics = [
-    {
-      title: "Revenue",
-      daily: "₹2.8L",
-      mtd: "₹45.2L",
-      ytd: "₹384.5L",
-      change: "+12.5%",
-      trend: "up",
-      icon: CreditCard,
-      color: "text-green-600"
-    },
-    {
-      title: "Gross Bookings",
-      daily: "147",
-      mtd: "3,420",
-      ytd: "28,650",
-      change: "+8.2%",
-      trend: "up",
-      icon: Calendar,
-      color: "text-blue-600"
-    },
-    {
-      title: "Cancellations",
-      daily: "12",
-      mtd: "285",
-      ytd: "2,145",
-      change: "-3.1%",
-      trend: "down",
-      icon: AlertTriangle,
-      color: "text-orange-600"
-    },
-    {
-      title: "Active Listings",
-      daily: "8,450",
-      mtd: "8,450",
-      ytd: "8,450",
-      change: "+15.8%",
-      trend: "up",
-      icon: MapPin,
-      color: "text-purple-600"
-    },
-    {
-      title: "Conversion Rate",
-      daily: "6.8%",
-      mtd: "7.2%",
-      ytd: "6.9%",
-      change: "+0.4%",
-      trend: "up",
-      icon: TrendingUp,
-      color: "text-green-600"
-    },
-    {
-      title: "Customer NPS",
-      daily: "8.5",
-      mtd: "8.3",
-      ytd: "8.1",
-      change: "+0.2",
-      trend: "up",
-      icon: Star,
-      color: "text-yellow-600"
-    }
-  ];
-
-  const alerts = [
-    {
-      type: "Revenue Drop",
-      message: "Daily revenue 15% below weekly average",
-      severity: "high",
-      timestamp: "2 hours ago"
-    },
-    {
-      type: "Booking Spike",
-      message: "Unusual booking volume from Mumbai region",
-      severity: "medium",
-      timestamp: "4 hours ago"
-    },
-    {
-      type: "SLA Breach",
-      message: "Support ticket response time exceeded 24h SLA",
-      severity: "high",
-      timestamp: "6 hours ago"
-    }
+  const revenueData = [
+    { period: 'Jan 2024', revenue: 1250000, bookings: 234, growth: 12.5 },
+    { period: 'Feb 2024', revenue: 1180000, bookings: 198, growth: -5.6 },
+    { period: 'Mar 2024', revenue: 1420000, bookings: 267, growth: 20.3 },
+    { period: 'Apr 2024', revenue: 1560000, bookings: 298, growth: 9.9 },
+    { period: 'May 2024', revenue: 1680000, bookings: 321, growth: 7.7 }
   ];
 
   const topDestinations = [
-    { name: "Goa", bookings: 245, revenue: "₹12.5L", growth: "+18%" },
-    { name: "Manali", bookings: 189, revenue: "₹8.7L", growth: "+12%" },
-    { name: "Kerala", bookings: 156, revenue: "₹9.2L", growth: "+8%" },
-    { name: "Rajasthan", bookings: 134, revenue: "₹11.1L", growth: "+22%" },
-    { name: "Kashmir", bookings: 98, revenue: "₹7.8L", growth: "+5%" }
+    { name: 'Goa', bookings: 156, revenue: 2340000, rating: 4.6 },
+    { name: 'Kerala', bookings: 134, revenue: 2010000, rating: 4.8 },
+    { name: 'Rajasthan', bookings: 98, revenue: 1950000, rating: 4.5 },
+    { name: 'Himachal Pradesh', bookings: 87, revenue: 1420000, rating: 4.7 },
+    { name: 'Kashmir', bookings: 76, revenue: 1890000, rating: 4.9 }
+  ];
+
+  const userGrowth = [
+    { period: 'Week 1', newUsers: 45, activeUsers: 1250 },
+    { period: 'Week 2', newUsers: 67, activeUsers: 1289 },
+    { period: 'Week 3', newUsers: 52, activeUsers: 1334 },
+    { period: 'Week 4', newUsers: 78, activeUsers: 1398 }
   ];
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <header className="bg-white border-b border-gray-200 shadow-sm">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Link to="/admin/dashboard" className="flex items-center text-gray-600 hover:text-blue-600">
+              <Link to="/admin" className="flex items-center text-gray-600 hover:text-blue-600">
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Dashboard
+                Back to Admin
               </Link>
-              <h1 className="text-2xl font-bold text-gray-900">Performance Dashboard</h1>
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900">Analytics & Reports</h1>
+                <p className="text-sm text-gray-600">Business intelligence and performance insights</p>
+              </div>
             </div>
-            <div className="flex items-center gap-4">
-              <select 
-                className="border rounded px-3 py-1 text-sm"
-                value={timeRange}
-                onChange={(e) => setTimeRange(e.target.value)}
-              >
-                <option value="7d">Last 7 Days</option>
-                <option value="30d">Last 30 Days</option>
-                <option value="90d">Last 90 Days</option>
-                <option value="1y">Last Year</option>
-              </select>
-              <Button variant="outline" size="sm" className="gap-2">
-                <Download className="h-4 w-4" />
-                Export Report
+            <div className="flex gap-2">
+              <Select value={dateRange} onValueChange={setDateRange}>
+                <SelectTrigger className="w-40">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="last7days">Last 7 days</SelectItem>
+                  <SelectItem value="last30days">Last 30 days</SelectItem>
+                  <SelectItem value="last90days">Last 90 days</SelectItem>
+                  <SelectItem value="lastyear">Last year</SelectItem>
+                </SelectContent>
+              </Select>
+              <Button variant="outline" size="sm">
+                <Download className="h-4 w-4 mr-2" />
+                Export
               </Button>
-              <Link to="/admin/logout">
-                <Button variant="destructive" size="sm">Logout</Button>
-              </Link>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
-        
-        {/* KPI Metrics Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          {kpiMetrics.map((metric, index) => (
-            <Card key={index}>
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-sm font-medium text-gray-600">{metric.title}</h3>
-                  <metric.icon className={`h-5 w-5 ${metric.color}`} />
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-gray-500">Daily</span>
-                    <span className="text-sm font-bold">{metric.daily}</span>
+      <div className="container mx-auto px-4 py-6">
+        <Tabs defaultValue="overview" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="revenue">Revenue</TabsTrigger>
+            <TabsTrigger value="users">User Analytics</TabsTrigger>
+            <TabsTrigger value="destinations">Destinations</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="overview" className="space-y-6">
+            {/* Key Metrics */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+                  <DollarSign className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">₹76,89,000</div>
+                  <div className="flex items-center text-xs text-green-600">
+                    <TrendingUp className="h-3 w-3 mr-1" />
+                    +12.5% from last month
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-gray-500">MTD</span>
-                    <span className="text-sm font-bold">{metric.mtd}</span>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Total Bookings</CardTitle>
+                  <Calendar className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">1,326</div>
+                  <div className="flex items-center text-xs text-green-600">
+                    <TrendingUp className="h-3 w-3 mr-1" />
+                    +8.2% from last month
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-gray-500">YTD</span>
-                    <span className="text-sm font-bold">{metric.ytd}</span>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Active Users</CardTitle>
+                  <Users className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">4,567</div>
+                  <div className="flex items-center text-xs text-green-600">
+                    <TrendingUp className="h-3 w-3 mr-1" />
+                    +18.9% from last month
                   </div>
-                  <div className="flex items-center justify-between pt-2 border-t">
-                    <span className="text-xs text-gray-500">Change</span>
-                    <div className="flex items-center gap-1">
-                      {metric.trend === 'up' ? (
-                        <TrendingUp className="h-3 w-3 text-green-500" />
-                      ) : (
-                        <TrendingDown className="h-3 w-3 text-red-500" />
-                      )}
-                      <span className={`text-xs font-medium ${metric.trend === 'up' ? 'text-green-600' : 'text-red-600'}`}>
-                        {metric.change}
-                      </span>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Avg Rating</CardTitle>
+                  <Star className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">4.7</div>
+                  <div className="flex items-center text-xs text-red-600">
+                    <TrendingDown className="h-3 w-3 mr-1" />
+                    -0.2 from last month
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Quick Insights */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <BarChart3 className="h-5 w-5" />
+                    Revenue Trend
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {revenueData.slice(-3).map((item, index) => (
+                      <div key={index} className="flex items-center justify-between">
+                        <span className="text-sm">{item.period}</span>
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium">₹{(item.revenue / 100000).toFixed(1)}L</span>
+                          <Badge className={item.growth > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>
+                            {item.growth > 0 ? '+' : ''}{item.growth}%
+                          </Badge>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <MapPin className="h-5 w-5" />
+                    Top Destinations
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {topDestinations.slice(0, 3).map((dest, index) => (
+                      <div key={index} className="flex items-center justify-between">
+                        <div>
+                          <span className="font-medium">{dest.name}</span>
+                          <div className="flex items-center gap-1 text-xs text-gray-500">
+                            <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                            {dest.rating}
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="font-medium">{dest.bookings} bookings</div>
+                          <div className="text-xs text-gray-500">₹{(dest.revenue / 100000).toFixed(1)}L</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="revenue" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Revenue Analytics</CardTitle>
+                <CardDescription>Detailed revenue breakdown and trends</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-green-600">₹1.68Cr</div>
+                      <div className="text-sm text-gray-600">This Month</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-blue-600">₹1.56Cr</div>
+                      <div className="text-sm text-gray-600">Last Month</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-purple-600">+7.7%</div>
+                      <div className="text-sm text-gray-600">Growth Rate</div>
+                    </div>
+                  </div>
+                  
+                  <div className="border rounded-lg p-4">
+                    <h3 className="font-medium mb-4">Monthly Revenue Breakdown</h3>
+                    <div className="space-y-2">
+                      {revenueData.map((item, index) => (
+                        <div key={index} className="flex items-center justify-between py-2">
+                          <span>{item.period}</span>
+                          <div className="flex items-center gap-4">
+                            <span className="font-mono">₹{(item.revenue / 100000).toFixed(1)}L</span>
+                            <span className="text-sm text-gray-500">{item.bookings} bookings</span>
+                            <Badge className={item.growth > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>
+                              {item.growth > 0 ? '+' : ''}{item.growth}%
+                            </Badge>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
               </CardContent>
             </Card>
-          ))}
-        </div>
+          </TabsContent>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          
-          {/* Main Charts Area */}
-          <div className="lg:col-span-2 space-y-6">
-            
-            {/* Booking Trends Chart */}
+          <TabsContent value="users" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Booking Trends</CardTitle>
-                <CardDescription>Daily bookings with confirmed vs cancelled breakdown</CardDescription>
+                <CardTitle>User Growth & Engagement</CardTitle>
+                <CardDescription>User acquisition and retention metrics</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
-                  <div className="text-center">
-                    <BarChart3 className="h-12 w-12 text-gray-400 mx-auto mb-2" />
-                    <p className="text-gray-500">Booking trends chart placeholder</p>
-                    <p className="text-xs text-gray-400">Time series visualization would go here</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <h3 className="font-medium mb-4">Weekly User Growth</h3>
+                    <div className="space-y-3">
+                      {userGrowth.map((week, index) => (
+                        <div key={index} className="flex items-center justify-between p-3 border rounded">
+                          <span className="font-medium">{week.period}</span>
+                          <div className="text-right">
+                            <div className="text-sm">+{week.newUsers} new users</div>
+                            <div className="text-xs text-gray-500">{week.activeUsers} active</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h3 className="font-medium mb-4">User Segments</h3>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 border rounded">
+                        <span>New Users (0-30 days)</span>
+                        <Badge>342</Badge>
+                      </div>
+                      <div className="flex items-center justify-between p-3 border rounded">
+                        <span>Regular Users (30-90 days)</span>
+                        <Badge>1,256</Badge>
+                      </div>
+                      <div className="flex items-center justify-between p-3 border rounded">
+                        <span>Loyal Users (90+ days)</span>
+                        <Badge>2,969</Badge>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
 
-            {/* Geographic Heatmap */}
+          <TabsContent value="destinations" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Geographic Performance</CardTitle>
-                <CardDescription>User activity and bookings by region</CardDescription>
+                <CardTitle>Destination Performance</CardTitle>
+                <CardDescription>Popular destinations and booking trends</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
-                  <div className="text-center">
-                    <MapPin className="h-12 w-12 text-gray-400 mx-auto mb-2" />
-                    <p className="text-gray-500">Interactive map placeholder</p>
-                    <p className="text-xs text-gray-400">Geographic heatmap visualization would go here</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Top Destinations Table */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Top Performing Destinations</CardTitle>
-                <CardDescription>Highest booking volume and revenue destinations</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {topDestinations.map((dest, index) => (
-                    <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                      <div className="flex items-center gap-3">
+                    <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
+                      <div className="flex items-center gap-4">
                         <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                          <span className="text-sm font-medium text-blue-600">{index + 1}</span>
+                          <span className="text-sm font-bold text-blue-600">#{index + 1}</span>
                         </div>
                         <div>
-                          <p className="font-medium">{dest.name}</p>
-                          <p className="text-xs text-gray-500">{dest.bookings} bookings</p>
+                          <h3 className="font-medium">{dest.name}</h3>
+                          <div className="flex items-center gap-2 text-sm text-gray-500">
+                            <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                            {dest.rating} rating
+                          </div>
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="font-medium">{dest.revenue}</p>
-                        <p className="text-xs text-green-600">{dest.growth}</p>
+                        <div className="font-bold">₹{(dest.revenue / 100000).toFixed(1)}L</div>
+                        <div className="text-sm text-gray-500">{dest.bookings} bookings</div>
                       </div>
                     </div>
                   ))}
                 </div>
               </CardContent>
             </Card>
-          </div>
-
-          {/* Sidebar */}
-          <div className="space-y-6">
-            
-            {/* System Alerts */}
-            <Card>
-              <CardHeader>
-                <CardTitle>System Alerts</CardTitle>
-                <CardDescription>Real-time notifications and threshold breaches</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {alerts.map((alert, index) => (
-                    <div key={index} className="border rounded-lg p-3">
-                      <div className="flex items-start gap-2">
-                        <AlertTriangle className={`h-4 w-4 mt-0.5 ${alert.severity === 'high' ? 'text-red-500' : 'text-yellow-500'}`} />
-                        <div className="flex-1">
-                          <p className="font-medium text-sm">{alert.type}</p>
-                          <p className="text-xs text-gray-600">{alert.message}</p>
-                          <p className="text-xs text-gray-400 mt-1">{alert.timestamp}</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Quick Actions */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Quick Actions</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <Button className="w-full gap-2">
-                    <Download className="h-4 w-4" />
-                    Generate Report
-                  </Button>
-                  <Button variant="outline" className="w-full gap-2">
-                    <BarChart3 className="h-4 w-4" />
-                    Custom Analytics
-                  </Button>
-                  <Button variant="outline" className="w-full gap-2">
-                    <AlertTriangle className="h-4 w-4" />
-                    Set Alert Thresholds
-                  </Button>
-                  <Button variant="outline" className="w-full gap-2">
-                    <Calendar className="h-4 w-4" />
-                    Schedule Reports
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* System Health */}
-            <Card>
-              <CardHeader>
-                <CardTitle>System Health</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">API Response Time</span>
-                    <div className="flex items-center gap-1">
-                      <CheckCircle className="h-3 w-3 text-green-500" />
-                      <span className="text-sm font-medium">245ms</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Server Uptime</span>
-                    <div className="flex items-center gap-1">
-                      <CheckCircle className="h-3 w-3 text-green-500" />
-                      <span className="text-sm font-medium">99.9%</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Payment Gateway</span>
-                    <div className="flex items-center gap-1">
-                      <CheckCircle className="h-3 w-3 text-green-500" />
-                      <span className="text-sm font-medium">Online</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Support Queue</span>
-                    <div className="flex items-center gap-1">
-                      <Clock className="h-3 w-3 text-yellow-500" />
-                      <span className="text-sm font-medium">24 pending</span>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );

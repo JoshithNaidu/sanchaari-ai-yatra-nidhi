@@ -256,7 +256,34 @@ const App = () => (
               </ProtectedRoute>
             } />
             
-            {/* Other Admin Routes */}
+            {/* New Admin Management Routes */}
+            <Route path="/admin/bookings" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminBookings />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/integrations" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminIntegrations />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/pricing" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminPricing />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/ugc" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminUGC />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/reports" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminReports />
+              </ProtectedRoute>
+            } />
+            
+            {/* Existing Admin Routes */}
             <Route path="/admin/trips" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminTrips />

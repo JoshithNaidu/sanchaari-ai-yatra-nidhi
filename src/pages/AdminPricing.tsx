@@ -4,412 +4,369 @@ import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { 
-  ArrowLeft,
-  Edit,
-  Save,
-  Download,
-  Percent,
-  TrendingUp,
-  Calendar,
-  AlertTriangle
+  ArrowLeft, Settings, Save, Edit, Plus, TrendingUp, 
+  Percent, DollarSign, Calculator, History 
 } from 'lucide-react';
 
 const AdminPricing = () => {
-  const [editingRate, setEditingRate] = useState<string | null>(null);
-  const [newRate, setNewRate] = useState('');
+  const [editingCell, setEditingCell] = useState<string | null>(null);
+  const [pricingData, setPricingData] = useState({
+    flights: { baseRate: 5.0, markup: 8.5, commission: 12.0 },
+    hotels: { baseRate: 7.5, markup: 10.0, commission: 15.0 },
+    activities: { baseRate: 3.5, markup: 12.0, commission: 18.0 },
+    packages: { baseRate: 6.0, markup: 15.0, commission: 20.0 }
+  });
 
-  const pricingData = [
+  const partners = [
+    { id: 'PTR001', name: 'TravelCorp India', tier: 'Tier 1', commission: 15.0, deals: 234 },
+    { id: 'PTR002', name: 'Mountain Adventures', tier: 'Tier 2', commission: 12.0, deals: 89 },
+    { id: 'PTR003', name: 'City Hotels', tier: 'Tier 1', commission: 18.0, deals: 156 },
+    { id: 'PTR004', name: 'Heritage Hotels', tier: 'Premium', commission: 22.0, deals: 67 }
+  ];
+
+  const pricingRules = [
     {
-      id: "HOTEL",
-      type: "Hotel",
-      currentRate: "12%",
-      minRate: "8%",
-      maxRate: "18%",
-      lastUpdated: "2024-05-15",
-      updatedBy: "admin@sanchaari.com"
+      id: 1,
+      name: 'Peak Season Europe',
+      condition: 'Destination: Europe AND Month: Jun-Aug',
+      action: 'Increase markup by 5%',
+      priority: 1,
+      active: true
     },
     {
-      id: "HOMESTAY",
-      type: "Homestay",
-      currentRate: "15%",
-      minRate: "10%",
-      maxRate: "20%",
-      lastUpdated: "2024-05-20",
-      updatedBy: "ops@sanchaari.com"
+      id: 2,
+      name: 'Low Inventory Boost',
+      condition: 'Available rooms < 10',
+      action: 'Increase markup by 3%',
+      priority: 2,
+      active: true
     },
     {
-      id: "PACKAGE",
-      type: "Package Tour",
-      currentRate: "10%",
-      minRate: "7%",
-      maxRate: "15%",
-      lastUpdated: "2024-05-25",
-      updatedBy: "admin@sanchaari.com"
-    },
-    {
-      id: "EXPERIENCE",
-      type: "Experience",
-      currentRate: "20%",
-      minRate: "15%",
-      maxRate: "25%",
-      lastUpdated: "2024-05-10",
-      updatedBy: "pricing@sanchaari.com"
-    },
-    {
-      id: "VEHICLE",
-      type: "Vehicle Rental",
-      currentRate: "8%",
-      minRate: "5%",
-      maxRate: "12%",
-      lastUpdated: "2024-05-28",
-      updatedBy: "admin@sanchaari.com"
+      id: 3,
+      name: 'Last Minute Deals',
+      condition: 'Booking within 7 days',
+      action: 'Decrease markup by 2%',
+      priority: 3,
+      active: false
     }
   ];
 
-  const overrideRules = [
-    {
-      id: "OR001",
-      name: "Northeast India Promotion",
-      type: "Destination",
-      target: "Assam, Meghalaya, Nagaland",
-      adjustment: "-10%",
-      effectiveFrom: "2024-06-01",
-      effectiveTo: "2024-08-31",
-      status: "Active"
-    },
-    {
-      id: "OR002",
-      name: "Premium Partner Boost",
-      type: "Partner",
-      target: "Heritage Hotels Group",
-      adjustment: "+5%",
-      effectiveFrom: "2024-05-15",
-      effectiveTo: "2024-12-31",
-      status: "Active"
-    },
-    {
-      id: "OR003",
-      name: "Summer Sale",
-      type: "Category",
-      target: "Beach Resorts",
-      adjustment: "-15%",
-      effectiveFrom: "2024-04-01",
-      effectiveTo: "2024-06-30",
-      status: "Expired"
-    }
-  ];
-
-  const auditLogs = [
-    {
-      id: "AL001",
-      timestamp: "2024-05-30 14:30:00",
-      admin: "admin@sanchaari.com",
-      action: "Rate Change",
-      details: "Hotel commission: 10% → 12%",
-      reason: "Market adjustment"
-    },
-    {
-      id: "AL002",
-      timestamp: "2024-05-29 16:45:00",
-      admin: "ops@sanchaari.com",
-      action: "Override Created",
-      details: "Created Northeast India promotion rule",
-      reason: "Regional marketing campaign"
-    },
-    {
-      id: "AL003",
-      timestamp: "2024-05-28 11:20:00",
-      admin: "pricing@sanchaari.com",
-      action: "Rate Change",
-      details: "Experience commission: 18% → 20%",
-      reason: "Competitive analysis update"
-    }
-  ];
-
-  const handleEditRate = (id: string, currentRate: string) => {
-    setEditingRate(id);
-    setNewRate(currentRate.replace('%', ''));
-  };
-
-  const handleSaveRate = () => {
-    // Here you would typically make an API call to save the new rate
-    console.log(`Saving new rate: ${newRate}% for ${editingRate}`);
-    setEditingRate(null);
-    setNewRate('');
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'Active': return 'bg-green-100 text-green-800';
-      case 'Expired': return 'bg-red-100 text-red-800';
-      case 'Scheduled': return 'bg-blue-100 text-blue-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
+  const handleCellEdit = (category: string, field: string, value: string) => {
+    setPricingData(prev => ({
+      ...prev,
+      [category]: {
+        ...prev[category as keyof typeof prev],
+        [field]: parseFloat(value) || 0
+      }
+    }));
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <header className="bg-white border-b border-gray-200 shadow-sm">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Link to="/admin/dashboard" className="flex items-center text-gray-600 hover:text-blue-600">
+              <Link to="/admin" className="flex items-center text-gray-600 hover:text-blue-600">
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Dashboard
+                Back to Admin
               </Link>
-              <h1 className="text-2xl font-bold text-gray-900">Pricing & Commission Management</h1>
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900">Pricing & Commission Management</h1>
+                <p className="text-sm text-gray-600">Configure markups and commission structures</p>
+              </div>
             </div>
-            <div className="flex items-center gap-4">
-              <Button variant="outline" size="sm" className="gap-2">
-                <Download className="h-4 w-4" />
-                Export Audit
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm">
+                <History className="h-4 w-4 mr-2" />
+                Version History
               </Button>
-              <Link to="/admin/logout">
-                <Button variant="destructive" size="sm">Logout</Button>
-              </Link>
+              <Button size="sm">
+                <Save className="h-4 w-4 mr-2" />
+                Save Changes
+              </Button>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Avg Commission</p>
-                  <p className="text-2xl font-bold text-blue-600">13.8%</p>
-                </div>
-                <Percent className="h-8 w-8 text-blue-600" />
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Revenue Impact</p>
-                  <p className="text-2xl font-bold text-green-600">+2.3%</p>
-                </div>
-                <TrendingUp className="h-8 w-8 text-green-600" />
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Active Overrides</p>
-                  <p className="text-2xl font-bold text-purple-600">2</p>
-                </div>
-                <AlertTriangle className="h-8 w-8 text-purple-600" />
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Last Updated</p>
-                  <p className="text-2xl font-bold text-gray-600">2d ago</p>
-                </div>
-                <Calendar className="h-8 w-8 text-gray-600" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+      <div className="container mx-auto px-4 py-6">
+        <Tabs defaultValue="markup" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="markup">Markup Editor</TabsTrigger>
+            <TabsTrigger value="rules">Pricing Rules</TabsTrigger>
+            <TabsTrigger value="partners">Partner Commission</TabsTrigger>
+            <TabsTrigger value="simulation">Simulation</TabsTrigger>
+          </TabsList>
 
-        {/* Commission Rates */}
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle>Commission Rates by Listing Type</CardTitle>
-            <CardDescription>Manage platform commission rates for different service categories</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="border rounded-lg">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Listing Type</TableHead>
-                    <TableHead>Current Rate</TableHead>
-                    <TableHead>Min Rate</TableHead>
-                    <TableHead>Max Rate</TableHead>
-                    <TableHead>Last Updated</TableHead>
-                    <TableHead>Updated By</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {pricingData.map((item) => (
-                    <TableRow key={item.id}>
-                      <TableCell className="font-medium">{item.type}</TableCell>
-                      <TableCell>
-                        {editingRate === item.id ? (
-                          <div className="flex items-center gap-2">
+          <TabsContent value="markup" className="space-y-6">
+            {/* Revenue Overview */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+                  <DollarSign className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">₹12,45,680</div>
+                  <p className="text-xs text-muted-foreground">+8.2% from last month</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Avg Markup</CardTitle>
+                  <Percent className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">11.4%</div>
+                  <p className="text-xs text-muted-foreground">Across all categories</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Commission Paid</CardTitle>
+                  <TrendingUp className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">₹1,98,450</div>
+                  <p className="text-xs text-muted-foreground">16.8% of total revenue</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Markup Editor Table */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Category Markup Configuration</CardTitle>
+                <CardDescription>Configure base rates, markups, and commission percentages by category</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="rounded-md border">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Category</TableHead>
+                        <TableHead>Base Rate (%)</TableHead>
+                        <TableHead>Admin Markup (%)</TableHead>
+                        <TableHead>Partner Commission (%)</TableHead>
+                        <TableHead>Effective Rate (%)</TableHead>
+                        <TableHead>Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {Object.entries(pricingData).map(([category, data]) => (
+                        <TableRow key={category}>
+                          <TableCell className="font-medium capitalize">{category}</TableCell>
+                          <TableCell>
                             <Input
                               type="number"
-                              value={newRate}
-                              onChange={(e) => setNewRate(e.target.value)}
+                              step="0.1"
+                              value={data.baseRate}
+                              onChange={(e) => handleCellEdit(category, 'baseRate', e.target.value)}
                               className="w-20"
-                              min={parseInt(item.minRate)}
-                              max={parseInt(item.maxRate)}
                             />
-                            <span>%</span>
-                          </div>
-                        ) : (
-                          <span className="font-semibold text-blue-600">{item.currentRate}</span>
-                        )}
-                      </TableCell>
-                      <TableCell className="text-green-600">{item.minRate}</TableCell>
-                      <TableCell className="text-red-600">{item.maxRate}</TableCell>
-                      <TableCell>{item.lastUpdated}</TableCell>
-                      <TableCell className="text-sm text-gray-600">{item.updatedBy}</TableCell>
-                      <TableCell>
-                        {editingRate === item.id ? (
-                          <div className="flex gap-2">
-                            <Button size="sm" onClick={handleSaveRate}>
-                              <Save className="h-3 w-3 mr-1" />
-                              Save
+                          </TableCell>
+                          <TableCell>
+                            <Input
+                              type="number"
+                              step="0.1"
+                              value={data.markup}
+                              onChange={(e) => handleCellEdit(category, 'markup', e.target.value)}
+                              className="w-20"
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Input
+                              type="number"
+                              step="0.1"
+                              value={data.commission}
+                              onChange={(e) => handleCellEdit(category, 'commission', e.target.value)}
+                              className="w-20"
+                            />
+                          </TableCell>
+                          <TableCell className="font-medium">
+                            {(data.baseRate + data.markup).toFixed(1)}%
+                          </TableCell>
+                          <TableCell>
+                            <Button size="sm" variant="outline">
+                              <Edit className="h-3 w-3 mr-1" />
+                              Rules
                             </Button>
-                            <Button variant="outline" size="sm" onClick={() => setEditingRate(null)}>
-                              Cancel
-                            </Button>
-                          </div>
-                        ) : (
-                          <Button 
-                            variant="outline" 
-                            size="sm" 
-                            onClick={() => handleEditRate(item.id, item.currentRate)}
-                          >
-                            <Edit className="h-3 w-3 mr-1" />
-                            Edit
-                          </Button>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
-        {/* Override Rules */}
-        <Card className="mb-6">
-          <CardHeader>
-            <div className="flex justify-between items-center">
-              <div>
-                <CardTitle>Override Rules</CardTitle>
-                <CardDescription>Custom pricing rules for specific partners, destinations, or categories</CardDescription>
-              </div>
-              <Button className="gap-2">
-                <Edit className="h-4 w-4" />
-                Create Override
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="border rounded-lg">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Rule Name</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Target</TableHead>
-                    <TableHead>Adjustment</TableHead>
-                    <TableHead>Effective Period</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {overrideRules.map((rule) => (
-                    <TableRow key={rule.id}>
-                      <TableCell className="font-medium">{rule.name}</TableCell>
-                      <TableCell>
-                        <Badge variant="outline">{rule.type}</Badge>
-                      </TableCell>
-                      <TableCell>{rule.target}</TableCell>
-                      <TableCell>
-                        <span className={`font-semibold ${rule.adjustment.startsWith('+') ? 'text-green-600' : 'text-red-600'}`}>
-                          {rule.adjustment}
-                        </span>
-                      </TableCell>
-                      <TableCell>
-                        <div className="text-sm">
-                          <p>{rule.effectiveFrom}</p>
-                          <p className="text-gray-500">to {rule.effectiveTo}</p>
+          <TabsContent value="rules" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle>Dynamic Pricing Rules</CardTitle>
+                    <CardDescription>Conditional markup adjustments based on various factors</CardDescription>
+                  </div>
+                  <Button>
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Rule
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {pricingRules.map((rule) => (
+                    <div key={rule.id} className="border rounded-lg p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="font-medium">{rule.name}</h3>
+                        <div className="flex items-center gap-2">
+                          <Badge variant={rule.active ? "default" : "secondary"}>
+                            {rule.active ? "Active" : "Inactive"}
+                          </Badge>
+                          <span className="text-sm text-gray-500">Priority {rule.priority}</span>
                         </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge className={getStatusColor(rule.status)}>
-                          {rule.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <Button variant="outline" size="sm">
+                      </div>
+                      <p className="text-sm text-gray-600 mb-2">
+                        <strong>If:</strong> {rule.condition}
+                      </p>
+                      <p className="text-sm text-gray-600 mb-3">
+                        <strong>Then:</strong> {rule.action}
+                      </p>
+                      <div className="flex gap-2">
+                        <Button size="sm" variant="outline">
                           <Edit className="h-3 w-3 mr-1" />
                           Edit
                         </Button>
-                      </TableCell>
-                    </TableRow>
+                        <Button size="sm" variant="outline">
+                          {rule.active ? "Disable" : "Enable"}
+                        </Button>
+                      </div>
+                    </div>
                   ))}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
-        {/* Audit Trail */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Audit Trail</CardTitle>
-            <CardDescription>History of all pricing and commission changes</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="border rounded-lg">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Timestamp</TableHead>
-                    <TableHead>Admin</TableHead>
-                    <TableHead>Action</TableHead>
-                    <TableHead>Details</TableHead>
-                    <TableHead>Reason</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {auditLogs.map((log) => (
-                    <TableRow key={log.id}>
-                      <TableCell className="font-mono text-sm">{log.timestamp}</TableCell>
-                      <TableCell>{log.admin}</TableCell>
-                      <TableCell>
-                        <Badge variant="outline">{log.action}</Badge>
-                      </TableCell>
-                      <TableCell>{log.details}</TableCell>
-                      <TableCell className="text-sm text-gray-600">{log.reason}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
+          <TabsContent value="partners" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Partner Commission Structure</CardTitle>
+                <CardDescription>Manage commission rates for travel partners</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="rounded-md border">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Partner</TableHead>
+                        <TableHead>Tier</TableHead>
+                        <TableHead>Commission Rate</TableHead>
+                        <TableHead>Active Deals</TableHead>
+                        <TableHead>Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {partners.map((partner) => (
+                        <TableRow key={partner.id}>
+                          <TableCell>
+                            <div>
+                              <div className="font-medium">{partner.name}</div>
+                              <div className="text-sm text-gray-500">{partner.id}</div>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant="outline">{partner.tier}</Badge>
+                          </TableCell>
+                          <TableCell className="font-medium">{partner.commission}%</TableCell>
+                          <TableCell>{partner.deals}</TableCell>
+                          <TableCell>
+                            <Button size="sm" variant="outline">
+                              <Edit className="h-3 w-3 mr-1" />
+                              Edit
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="simulation" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Calculator className="h-5 w-5" />
+                  Pricing Impact Simulation
+                </CardTitle>
+                <CardDescription>Preview how pricing changes will affect revenue and bookings</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <h3 className="font-medium">Simulation Parameters</h3>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Category</label>
+                      <select className="w-full p-2 border rounded">
+                        <option>Hotels</option>
+                        <option>Flights</option>
+                        <option>Activities</option>
+                        <option>Packages</option>
+                      </select>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Markup Change (%)</label>
+                      <Input type="number" placeholder="+2.5" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Time Period</label>
+                      <select className="w-full p-2 border rounded">
+                        <option>Next 30 days</option>
+                        <option>Next 90 days</option>
+                        <option>Next 6 months</option>
+                      </select>
+                    </div>
+                    <Button className="w-full">
+                      <Calculator className="h-4 w-4 mr-2" />
+                      Run Simulation
+                    </Button>
+                  </div>
+                  <div className="space-y-4">
+                    <h3 className="font-medium">Projected Impact</h3>
+                    <div className="space-y-3">
+                      <div className="flex justify-between">
+                        <span className="text-sm text-gray-600">Revenue Change</span>
+                        <span className="font-medium text-green-600">+₹45,230</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm text-gray-600">Booking Volume Change</span>
+                        <span className="font-medium text-red-600">-23 bookings</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm text-gray-600">Conversion Rate</span>
+                        <span className="font-medium">-0.8%</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm text-gray-600">Partner Commission</span>
+                        <span className="font-medium">+₹6,785</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );

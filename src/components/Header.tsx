@@ -39,13 +39,30 @@ const Header = () => {
     return [];
   };
 
+  // Determine home path based on user type
+  const getHomePath = () => {
+    if (!isAuthenticated || !user) {
+      return '/';
+    }
+    
+    switch (user.userType) {
+      case 'admin':
+        return '/admin';
+      case 'partner':
+        return '/partner/dashboard';
+      case 'traveler':
+      default:
+        return '/';
+    }
+  };
+
   const navItems = getNavItems();
 
   return (
     <header className="bg-white shadow-sm border-b sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         {/* Logo */}
-        <Link to="/" className="hover:opacity-80 transition-opacity">
+        <Link to={getHomePath()} className="hover:opacity-80 transition-opacity">
           <img 
             src="/lovable-uploads/94fa41ec-96bd-400a-8fc5-4c52f8f19917.png" 
             alt="Sanchaari Logo" 
@@ -53,26 +70,34 @@ const Header = () => {
           />
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              to={item.href}
-              className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        {/* Desktop Navigation - Only show for non-admin users */}
+        {user?.userType !== 'admin' && (
+          <nav className="hidden md:flex items-center space-x-8">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                to={item.href}
+                className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+        )}
 
         {/* Auth Section */}
         <div className="hidden md:flex items-center space-x-4">
           {isAuthenticated && user ? (
             <div className="flex items-center space-x-4">
-              <Link to="/profile/me" className="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
+              <Link 
+                to={user.userType === 'admin' ? '/admin' : '/profile/me'} 
+                className="flex items-center space-x-2 text-gray-700 hover:text-blue-600"
+              >
                 <User className="h-4 w-4" />
                 <span>{user.fullName?.split(' ')[0] || 'User'}</span>
+                {user.userType === 'admin' && (
+                  <span className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">Admin</span>
+                )}
               </Link>
               <Button onClick={handleLogout} variant="outline" size="sm">
                 Logout
@@ -90,17 +115,19 @@ const Header = () => {
           )}
         </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          onClick={toggleMenu}
-          className="md:hidden p-2 text-gray-600 hover:text-gray-900"
-        >
-          {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
+        {/* Mobile Menu Button - Only show for non-admin users */}
+        {user?.userType !== 'admin' && (
+          <button
+            onClick={toggleMenu}
+            className="md:hidden p-2 text-gray-600 hover:text-gray-900"
+          >
+            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        )}
       </div>
 
-      {/* Mobile Menu */}
-      {isMenuOpen && (
+      {/* Mobile Menu - Only show for non-admin users */}
+      {isMenuOpen && user?.userType !== 'admin' && (
         <div className="md:hidden bg-white border-t">
           <div className="container mx-auto px-4 py-4 space-y-4">
             {navItems.map((item) => (
