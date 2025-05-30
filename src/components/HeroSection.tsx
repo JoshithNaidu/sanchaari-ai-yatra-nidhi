@@ -39,15 +39,6 @@ const HeroSection = () => {
               Chat with the Travel Planner
             </Button>
           </Link>
-          <Link to="/explore/destinations">
-            <Button 
-              size="lg" 
-              variant="outline" 
-              className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 text-lg rounded-full"
-            >
-              Browse Destinations
-            </Button>
-          </Link>
           <Button 
             size="lg" 
             variant="ghost" 

@@ -4,6 +4,15 @@ import { Compass, Instagram, Linkedin, Youtube } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
+  const handleSocialClick = (platform: string) => {
+    const urls = {
+      instagram: 'https://instagram.com',
+      linkedin: 'https://linkedin.com',
+      youtube: 'https://youtube.com'
+    };
+    window.open(urls[platform as keyof typeof urls], '_blank');
+  };
+
   return (
     <footer className="bg-blue-900 text-white py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -21,9 +30,18 @@ const Footer = () => {
               Your AI-powered companion for exploring the incredible diversity of India.
             </p>
             <div className="flex space-x-4">
-              <Instagram className="h-5 w-5 text-blue-200 hover:text-white cursor-pointer transition-colors" />
-              <Linkedin className="h-5 w-5 text-blue-200 hover:text-white cursor-pointer transition-colors" />
-              <Youtube className="h-5 w-5 text-blue-200 hover:text-white cursor-pointer transition-colors" />
+              <Instagram 
+                className="h-5 w-5 text-blue-200 hover:text-white cursor-pointer transition-colors" 
+                onClick={() => handleSocialClick('instagram')}
+              />
+              <Linkedin 
+                className="h-5 w-5 text-blue-200 hover:text-white cursor-pointer transition-colors" 
+                onClick={() => handleSocialClick('linkedin')}
+              />
+              <Youtube 
+                className="h-5 w-5 text-blue-200 hover:text-white cursor-pointer transition-colors" 
+                onClick={() => handleSocialClick('youtube')}
+              />
             </div>
           </div>
 

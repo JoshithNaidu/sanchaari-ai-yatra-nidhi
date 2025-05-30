@@ -20,10 +20,30 @@ const Search = () => {
   const [packageType, setPackageType] = useState('all');
 
   const popularSearches = [
-    { destination: 'Goa', type: 'Beach Paradise', image: '/placeholder.svg', price: '₹15,000' },
-    { destination: 'Kerala', type: 'Backwaters', image: '/placeholder.svg', price: '₹12,000' },
-    { destination: 'Rajasthan', type: 'Heritage Tours', image: '/placeholder.svg', price: '₹18,000' },
-    { destination: 'Himachal', type: 'Mountain Escape', image: '/placeholder.svg', price: '₹14,000' },
+    { 
+      destination: 'Goa', 
+      type: 'Beach Paradise', 
+      image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=400&q=80', 
+      price: '₹15,000' 
+    },
+    { 
+      destination: 'Kerala', 
+      type: 'Backwaters', 
+      image: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=400&q=80', 
+      price: '₹12,000' 
+    },
+    { 
+      destination: 'Rajasthan', 
+      type: 'Heritage Tours', 
+      image: 'https://images.unsplash.com/photo-1599661046827-dacff0acdb4b?auto=format&fit=crop&w=400&q=80', 
+      price: '₹18,000' 
+    },
+    { 
+      destination: 'Himachal', 
+      type: 'Mountain Escape', 
+      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=400&q=80', 
+      price: '₹14,000' 
+    },
   ];
 
   const handleSearch = () => {
@@ -355,7 +375,12 @@ const Search = () => {
             {popularSearches.map((search, index) => (
               <Card key={index} className="cursor-pointer hover:shadow-md transition-shadow">
                 <CardContent className="p-4">
-                  <div className="aspect-video bg-gray-200 rounded-lg mb-3 relative">
+                  <div className="aspect-video bg-gray-200 rounded-lg mb-3 relative overflow-hidden">
+                    <img 
+                      src={search.image} 
+                      alt={search.destination}
+                      className="w-full h-full object-cover"
+                    />
                     <div className="absolute bottom-2 left-2 bg-white/90 px-2 py-1 rounded text-sm font-medium">
                       {search.price}
                     </div>

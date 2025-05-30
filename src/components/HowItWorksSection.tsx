@@ -1,10 +1,12 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { MessageCircle, Sparkles, MapPin } from 'lucide-react';
+import { MessageCircle, Sparkles, MapPin, Play } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const HowItWorksSection = () => {
+  const [showVideoModal, setShowVideoModal] = useState(false);
+
   const steps = [
     {
       number: "01",
@@ -29,9 +31,9 @@ const HowItWorksSection = () => {
       icon: MapPin,
       title: "You travel, we track and optimize",
       description: "Real-time updates and suggestions to make your trip even better",
-      cta: "View Itinerary",
-      link: "#",
-      disabled: true
+      cta: "View Sample",
+      link: "/trips/dashboard",
+      disabled: false
     }
   ];
 
@@ -42,16 +44,25 @@ const HowItWorksSection = () => {
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             How It Works
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
             Three simple steps to your perfect trip
           </p>
+          <Button 
+            size="lg" 
+            variant="outline" 
+            className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-6 py-3 text-lg rounded-full"
+            onClick={() => setShowVideoModal(true)}
+          >
+            <Play className="h-5 w-5 mr-2" />
+            Watch How It Works
+          </Button>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {steps.map((step, index) => (
             <div key={index} className="text-center relative">
-              {/* Step Number */}
-              <div className="text-6xl font-bold text-blue-100 mb-4">
+              {/* Step Number - positioned better */}
+              <div className="text-5xl font-bold text-blue-50 mb-2 select-none">
                 {step.number}
               </div>
               
@@ -69,29 +80,36 @@ const HowItWorksSection = () => {
               </p>
 
               {/* CTA */}
-              {step.disabled ? (
-                <Button 
-                  disabled 
-                  className="bg-gray-300 text-gray-500 px-6 py-2 rounded-full cursor-not-allowed"
-                >
+              <Link to={step.link}>
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full">
                   {step.cta}
                 </Button>
-              ) : (
-                <Link to={step.link}>
-                  <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full">
-                    {step.cta}
-                  </Button>
-                </Link>
-              )}
-
-              {/* Connector Line */}
-              {index < steps.length - 1 && (
-                <div className="hidden lg:block absolute top-24 left-full w-full h-0.5 bg-gray-200 transform -translate-x-1/2"></div>
-              )}
+              </Link>
             </div>
           ))}
         </div>
       </div>
+
+      {/* Video Modal */}
+      {showVideoModal && (
+        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg p-6 max-w-2xl w-full">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-semibold text-gray-900">How It Works</h3>
+              <Button
+                variant="ghost"
+                onClick={() => setShowVideoModal(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                ✕
+              </Button>
+            </div>
+            <div className="aspect-video bg-gray-200 rounded-lg flex items-center justify-center">
+              <p className="text-gray-600">Demo video placeholder</p>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
