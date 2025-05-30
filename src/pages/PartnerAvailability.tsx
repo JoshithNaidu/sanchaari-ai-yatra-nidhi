@@ -51,15 +51,16 @@ const PartnerAvailability = () => {
       date.setDate(today.getDate() + i);
       
       const dayData = calendarData.find(d => d.date === date.toISOString().split('T')[0]) || {
-        date: date.toISOString().split('T')[0],
         available: true,
         rate: rateRules.defaultRate,
         booked: false
       };
       
       days.push({
-        date: date,
-        ...dayData
+        date: date, // Keep the Date object
+        available: dayData.available,
+        rate: dayData.rate,
+        booked: dayData.booked
       });
     }
     return days;
