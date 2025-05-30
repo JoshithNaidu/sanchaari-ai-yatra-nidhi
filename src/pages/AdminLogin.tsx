@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
-import { useAuth } from '@/contexts/AuthContext';
+import { useCentralizedAuth } from '@/contexts/CentralizedAuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { Eye, EyeOff, Loader2, Mail, Lock, Shield } from 'lucide-react';
 
@@ -14,41 +14,31 @@ const AdminLogin = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [failedAttempts, setFailedAttempts] = useState(0);
 
-  const { login } = useAuth();
+  const { login, isLoading } = useCentralizedAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
 
-    try {
-      const success = await login(email, password, 'admin');
-      if (success) {
-        toast({ 
-          title: "Admin access granted", 
-          description: "Welcome to the admin dashboard." 
-        });
-        navigate('/admin/dashboard');
-      } else {
-        setFailedAttempts(prev => prev + 1);
-        toast({ 
-          title: "Authentication failed", 
-          description: "Invalid admin credentials. Please check your email and password.",
-          variant: "destructive"
-        });
-      }
-    } catch (error) {
+    const result = await login(email, password, 'admin');
+    if (result.success) {
       toast({ 
-        title: "System error", 
-        description: "Please contact system administrator if the problem persists.",
+        title: "Admin access granted", 
+        description: "Welcome to the admin dashboard." 
+      });
+      if (result.redirectTo) {
+        navigate(result.redirectTo);
+      }
+    } else {
+      setFailedAttempts(prev => prev + 1);
+      toast({ 
+        title: "Authentication failed", 
+        description: result.message,
         variant: "destructive"
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 
