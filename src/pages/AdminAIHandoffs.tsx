@@ -208,7 +208,7 @@ const AdminAIHandoffs = () => {
               <div className="flex items-center justify-between p-3 border rounded">
                 <div>
                   <div className="font-medium">Confidence threshold</div>
-                  <div className="text-sm text-gray-600">Escalate when AI confidence < 70%</div>
+                  <div className="text-sm text-gray-600">Escalate when AI confidence &lt; 70%</div>
                 </div>
                 <Button size="sm" variant="outline">Edit</Button>
               </div>
