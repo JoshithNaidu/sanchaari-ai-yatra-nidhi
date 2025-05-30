@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { LogIn, UserPlus, User, LogOut, Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
+import { useCentralizedAuth } from '@/contexts/CentralizedAuthContext';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,7 +13,7 @@ import {
 import { useState } from 'react';
 
 const Header = () => {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useCentralizedAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -63,7 +63,7 @@ const Header = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56 bg-white shadow-lg border">
                 <DropdownMenuItem asChild>
-                  <Link to={user.userType === 'partner' ? '/partner/dashboard' : '/trips/dashboard'} className="flex items-center w-full">
+                  <Link to={user.userType === 'partner' ? '/partner/dashboard' : user.userType === 'admin' ? '/admin/dashboard' : '/trips/dashboard'} className="flex items-center w-full">
                     Dashboard
                   </Link>
                 </DropdownMenuItem>
