@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -28,6 +27,13 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import EmailVerification from "./pages/EmailVerification";
 import Logout from "./pages/Logout";
+import UserProfile from "./pages/UserProfile";
+import TravelPreferences from "./pages/TravelPreferences";
+import TravelHistory from "./pages/TravelHistory";
+import SavedTrips from "./pages/SavedTrips";
+import Notifications from "./pages/Notifications";
+import LoyaltyRewards from "./pages/LoyaltyRewards";
+import PaymentMethods from "./pages/PaymentMethods";
 
 const queryClient = new QueryClient();
 
@@ -78,6 +84,15 @@ const App = () => (
             <Route path="/auth/reset-password" element={<ResetPassword />} />
             <Route path="/auth/verify-email" element={<EmailVerification />} />
             <Route path="/auth/logout" element={<Logout />} />
+            
+            {/* Profile Routes */}
+            <Route path="/profile/me" element={<UserProfile />} />
+            <Route path="/profile/preferences" element={<TravelPreferences />} />
+            <Route path="/profile/history" element={<TravelHistory />} />
+            <Route path="/profile/saved" element={<SavedTrips />} />
+            <Route path="/profile/notifications" element={<Notifications />} />
+            <Route path="/profile/rewards" element={<LoyaltyRewards />} />
+            <Route path="/profile/payments" element={<PaymentMethods />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

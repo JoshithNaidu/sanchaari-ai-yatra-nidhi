@@ -68,7 +68,16 @@ const Header = () => {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/profile" className="flex items-center w-full">Profile</Link>
+                  <Link to="/profile/me" className="flex items-center w-full">My Profile</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/profile/history" className="flex items-center w-full">Travel History</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/profile/saved" className="flex items-center w-full">Saved Trips</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/profile/rewards" className="flex items-center w-full">Rewards</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link to="/auth/logout" className="flex items-center w-full text-red-600">
@@ -79,20 +88,12 @@ const Header = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <div className="flex items-center gap-3">
-              <Link to="/auth/login">
-                <Button variant="ghost" size="sm" className="gap-2 hover:bg-gray-100 transition-colors">
-                  <LogIn className="h-4 w-4" />
-                  <span className="hidden sm:inline">Login</span>
-                </Button>
-              </Link>
-              <Link to="/auth/register">
-                <Button size="sm" className="gap-2 bg-blue-600 hover:bg-blue-700 transition-colors shadow-sm">
-                  <UserPlus className="h-4 w-4" />
-                  <span className="hidden sm:inline">Sign Up</span>
-                </Button>
-              </Link>
-            </div>
+            <Link to="/auth/login">
+              <Button size="sm" className="gap-2 bg-blue-600 hover:bg-blue-700 transition-colors shadow-sm">
+                <LogIn className="h-4 w-4" />
+                <span className="hidden sm:inline">Get Started</span>
+              </Button>
+            </Link>
           )}
           
           <Button 
