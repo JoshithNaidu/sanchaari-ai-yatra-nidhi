@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -50,6 +51,12 @@ import Careers from "./pages/Careers";
 import ServerError from "./pages/ServerError";
 import Maintenance from "./pages/Maintenance";
 
+// Partner Pages
+import PartnerSignup from "./pages/PartnerSignup";
+import PartnerLogin from "./pages/PartnerLogin";
+import PartnerLogout from "./pages/PartnerLogout";
+import PartnerForgotPassword from "./pages/PartnerForgotPassword";
+
 const queryClient = new QueryClient();
 
 const ChatRedirectHandler = () => {
@@ -99,6 +106,12 @@ const App = () => (
             <Route path="/auth/reset-password" element={<ResetPassword />} />
             <Route path="/auth/verify-email" element={<EmailVerification />} />
             <Route path="/auth/logout" element={<Logout />} />
+            
+            {/* Partner Routes */}
+            <Route path="/partner/signup" element={<PartnerSignup />} />
+            <Route path="/partner/login" element={<PartnerLogin />} />
+            <Route path="/partner/logout" element={<PartnerLogout />} />
+            <Route path="/partner/forgot-password" element={<PartnerForgotPassword />} />
             
             {/* Profile Routes */}
             <Route path="/profile/me" element={<UserProfile />} />
