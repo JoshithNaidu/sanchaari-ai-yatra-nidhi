@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
+import { useCentralizedAuth } from '@/contexts/CentralizedAuthContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -23,7 +22,7 @@ import {
 } from 'lucide-react';
 
 const PartnerDashboard = () => {
-  const { user, logout } = useAuth();
+  const { user, logout } = useCentralizedAuth();
   const [timePeriod, setTimePeriod] = useState('week');
 
   const metrics = {
