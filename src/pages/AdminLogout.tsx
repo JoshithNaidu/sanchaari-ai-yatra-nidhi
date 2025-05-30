@@ -1,12 +1,12 @@
 
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
+import { useCentralizedAuth } from '@/contexts/CentralizedAuthContext';
 import { useToast } from '@/hooks/use-toast';
 import LoadingSpinner from '@/components/LoadingSpinner';
 
 const AdminLogout = () => {
-  const { logout } = useAuth();
+  const { logout } = useCentralizedAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -15,7 +15,7 @@ const AdminLogout = () => {
       // Add a small delay for better UX
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      logout();
+      await logout();
       toast({ 
         title: "Admin session ended", 
         description: "You have been securely logged out of the admin portal." 
