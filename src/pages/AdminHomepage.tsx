@@ -346,7 +346,7 @@ const AdminHomepage = () => {
                 <AlertDescription className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <span>{alert.message}</span>
-                    <Badge size="sm" className="text-xs">
+                    <Badge className="text-xs">
                       {alert.priority}
                     </Badge>
                   </div>
