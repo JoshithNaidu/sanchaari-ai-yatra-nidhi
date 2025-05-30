@@ -88,6 +88,14 @@ import AdminAIHandoffs from "./pages/AdminAIHandoffs";
 import AdminAIKnowledgeBase from "./pages/AdminAIKnowledgeBase";
 import AdminAITrainingData from "./pages/AdminAITrainingData";
 
+// New Admin Content & Reports Pages
+import AdminDestinations from "./pages/AdminDestinations";
+import AdminBlog from "./pages/AdminBlog";
+import AdminPromotions from "./pages/AdminPromotions";
+import AdminUGC from "./pages/AdminUGC";
+import AdminFlaggedContent from "./pages/AdminFlaggedContent";
+import AdminReports from "./pages/AdminReports";
+
 const queryClient = new QueryClient();
 
 const ChatRedirectHandler = () => {
