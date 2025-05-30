@@ -1,270 +1,141 @@
 
-import React from 'react';
-import { Button } from '@/components/ui/button';
-import { LogIn, UserPlus, User, LogOut, Menu, X, Settings, Shield, Building2 } from 'lucide-react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 import { useCentralizedAuth } from '@/contexts/CentralizedAuthContext';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuSeparator,
-} from '@/components/ui/dropdown-menu';
-import { useState } from 'react';
+import { Menu, X, User } from 'lucide-react';
 
 const Header = () => {
-  const { user, isAuthenticated } = useCentralizedAuth();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, isAuthenticated, logout } = useCentralizedAuth();
 
-  // Define navigation based on user type
-  const getNavigationItems = () => {
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  const handleLogout = async () => {
+    await logout();
+    setIsMenuOpen(false);
+  };
+
+  // Only show traveler navigation
+  const travelerNavItems = [
+    { label: 'Search', href: '/search' },
+    { label: 'Travel History', href: '/travel-history' },
+    { label: 'Saved Trips', href: '/saved-trips' },
+  ];
+
+  const getNavItems = () => {
     if (!isAuthenticated || !user) {
-      // Public navigation for non-authenticated users
-      return [
-        { to: "/explore/destinations", label: "Destinations" },
-        { to: "/blog", label: "Travel Blog" },
-        { to: "/community", label: "Community" },
-        { to: "/about", label: "About" }
-      ];
+      return [];
     }
 
-    switch (user.userType) {
-      case 'traveler':
-        return [
-          { to: "/trips/dashboard", label: "My Trips" },
-          { to: "/search", label: "Search" },
-          { to: "/explore/destinations", label: "Destinations" },
-          { to: "/workflows", label: "Workflows" }
-        ];
-      
-      case 'partner':
-        return [
-          { to: "/partner/dashboard", label: "Dashboard" },
-          { to: "/partner/inventory/listings", label: "Listings" },
-          { to: "/partner/bookings/list", label: "Bookings" },
-          { to: "/partner/reports/revenue", label: "Reports" }
-        ];
-      
-      case 'admin':
-        return [
-          { to: "/admin/dashboard", label: "Dashboard" },
-          { to: "/admin/users/list", label: "Users" },
-          { to: "/admin/bookings/all", label: "All Bookings" },
-          { to: "/admin/reports/overview", label: "Reports" }
-        ];
-      
-      default:
-        return [];
+    if (user.userType === 'traveler') {
+      return travelerNavItems;
     }
+
+    return [];
   };
 
-  const getProfileMenuItems = () => {
-    if (!user) return [];
-
-    switch (user.userType) {
-      case 'traveler':
-        return [
-          { to: "/trips/dashboard", label: "Dashboard" },
-          { to: "/profile/me", label: "My Profile" },
-          { to: "/profile/history", label: "Travel History" },
-          { to: "/profile/saved", label: "Saved Trips" },
-          { to: "/profile/rewards", label: "Rewards" }
-        ];
-      
-      case 'partner':
-        return [
-          { to: "/partner/dashboard", label: "Dashboard" },
-          { to: "/partner/profile/company", label: "Company Profile" },
-          { to: "/partner/messages", label: "Messages" },
-          { to: "/partner/help/center", label: "Help Center" }
-        ];
-      
-      case 'admin':
-        return [
-          { to: "/admin/dashboard", label: "Dashboard" },
-          { to: "/admin/users/list", label: "User Management" },
-          { to: "/admin/integrations", label: "System Settings" }
-        ];
-      
-      default:
-        return [];
-    }
-  };
-
-  const navigationItems = getNavigationItems();
-  const profileMenuItems = getProfileMenuItems();
+  const navItems = getNavItems();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 shadow-sm">
-      <div className="container flex h-16 items-center justify-between px-4">
-        <div className="flex items-center gap-8">
-          <Link to="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
-            <img 
-              src="/lovable-uploads/94fa41ec-96bd-400a-8fc5-4c52f8f19917.png" 
-              alt="Sanchaari Logo" 
-              className="h-9 w-auto"
-            />
-          </Link>
-          
-          <nav className="hidden md:flex items-center space-x-8 text-sm font-medium">
-            {navigationItems.map((item) => (
-              <Link 
-                key={item.to}
-                to={item.to} 
-                className="text-gray-700 hover:text-blue-600 transition-colors relative group"
-              >
-                {item.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all group-hover:w-full"></span>
+    <header className="bg-white shadow-sm border-b sticky top-0 z-50">
+      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+        {/* Logo */}
+        <Link to="/" className="hover:opacity-80 transition-opacity">
+          <img 
+            src="/lovable-uploads/94fa41ec-96bd-400a-8fc5-4c52f8f19917.png" 
+            alt="Sanchaari Logo" 
+            className="h-8 w-auto"
+          />
+        </Link>
+
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center space-x-8">
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              to={item.href}
+              className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+
+        {/* Auth Section */}
+        <div className="hidden md:flex items-center space-x-4">
+          {isAuthenticated && user ? (
+            <div className="flex items-center space-x-4">
+              <Link to="/profile" className="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
+                <User className="h-4 w-4" />
+                <span>{user.fullName?.split(' ')[0] || 'User'}</span>
               </Link>
-            ))}
-          </nav>
+              <Button onClick={handleLogout} variant="outline" size="sm">
+                Logout
+              </Button>
+            </div>
+          ) : (
+            <div className="flex items-center space-x-4">
+              <Link to="/login">
+                <Button variant="ghost" size="sm">Login</Button>
+              </Link>
+              <Link to="/signup">
+                <Button size="sm">Sign Up</Button>
+              </Link>
+            </div>
+          )}
         </div>
 
-        <div className="flex items-center gap-4">
-          {/* Only show chat for travelers */}
-          {(!isAuthenticated || user?.userType === 'traveler') && (
-            <Link to="/chat">
-              <Button variant="outline" size="sm" className="hidden sm:flex hover:bg-blue-50 hover:border-blue-300 transition-colors">
-                Chat with AI
-              </Button>
-            </Link>
-          )}
-          
-          {isAuthenticated && user ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="gap-2 hover:bg-gray-100 transition-colors">
-                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-medium">
-                    {user.fullName.charAt(0).toUpperCase()}
-                  </div>
-                  <span className="hidden sm:inline font-medium">{user.fullName}</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 bg-white shadow-lg border">
-                {profileMenuItems.map((item) => (
-                  <DropdownMenuItem key={item.to} asChild>
-                    <Link to={item.to} className="flex items-center w-full">
-                      {item.label}
-                    </Link>
-                  </DropdownMenuItem>
-                ))}
-                <DropdownMenuItem asChild>
-                  <Link to="/auth/logout" className="flex items-center w-full text-red-600">
-                    <LogOut className="h-4 w-4 mr-2" />
-                    Logout
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button size="sm" className="gap-2 bg-blue-600 hover:bg-blue-700 transition-colors shadow-sm">
-                  <LogIn className="h-4 w-4" />
-                  <span className="hidden sm:inline">Sign In</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 bg-white shadow-lg border">
-                <DropdownMenuItem asChild>
-                  <Link to="/auth/login" className="flex items-center w-full">
-                    <User className="h-4 w-4 mr-2" />
-                    Traveler Login
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/partner/login" className="flex items-center w-full">
-                    <Building2 className="h-4 w-4 mr-2" />
-                    Partner Login
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/admin/login" className="flex items-center w-full">
-                    <Shield className="h-4 w-4 mr-2" />
-                    Admin Login
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link to="/auth/register" className="flex items-center w-full">
-                    <UserPlus className="h-4 w-4 mr-2" />
-                    Create Account
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/partner/signup" className="flex items-center w-full">
-                    <Building2 className="h-4 w-4 mr-2" />
-                    Partner Signup
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          )}
-          
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="md:hidden"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-          </Button>
-        </div>
+        {/* Mobile Menu Button */}
+        <button
+          onClick={toggleMenu}
+          className="md:hidden p-2 text-gray-600 hover:text-gray-900"
+        >
+          {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        </button>
       </div>
 
       {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="md:hidden border-t bg-white shadow-lg">
-          <nav className="flex flex-col space-y-1 px-4 py-4">
-            {navigationItems.map((item) => (
-              <Link 
-                key={item.to}
-                to={item.to} 
-                className="px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
+      {isMenuOpen && (
+        <div className="md:hidden bg-white border-t">
+          <div className="container mx-auto px-4 py-4 space-y-4">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                to={item.href}
+                className="block text-gray-700 hover:text-blue-600 transition-colors font-medium"
+                onClick={() => setIsMenuOpen(false)}
               >
                 {item.label}
               </Link>
             ))}
             
-            {(!isAuthenticated || user?.userType === 'traveler') && (
-              <Link to="/chat" className="px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors">
-                Chat with AI
-              </Link>
-            )}
-            
-            {!isAuthenticated && (
-              <>
-                <div className="border-t my-2"></div>
-                <div className="px-3 py-1 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                  Sign In
+            <div className="pt-4 border-t">
+              {isAuthenticated && user ? (
+                <div className="space-y-2">
+                  <Link 
+                    to="/profile" 
+                    className="block text-gray-700 hover:text-blue-600"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Profile
+                  </Link>
+                  <Button onClick={handleLogout} variant="outline" size="sm" className="w-full">
+                    Logout
+                  </Button>
                 </div>
-                <Link to="/auth/login" className="px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors flex items-center">
-                  <User className="h-4 w-4 mr-2" />
-                  Traveler Login
-                </Link>
-                <Link to="/partner/login" className="px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors flex items-center">
-                  <Building2 className="h-4 w-4 mr-2" />
-                  Partner Login
-                </Link>
-                <Link to="/admin/login" className="px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors flex items-center">
-                  <Shield className="h-4 w-4 mr-2" />
-                  Admin Login
-                </Link>
-                <div className="border-t my-2"></div>
-                <div className="px-3 py-1 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                  Sign Up
+              ) : (
+                <div className="space-y-2">
+                  <Link to="/login" onClick={() => setIsMenuOpen(false)}>
+                    <Button variant="ghost" size="sm" className="w-full">Login</Button>
+                  </Link>
+                  <Link to="/signup" onClick={() => setIsMenuOpen(false)}>
+                    <Button size="sm" className="w-full">Sign Up</Button>
+                  </Link>
                 </div>
-                <Link to="/auth/register" className="px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors flex items-center">
-                  <UserPlus className="h-4 w-4 mr-2" />
-                  Create Account
-                </Link>
-                <Link to="/partner/signup" className="px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors flex items-center">
-                  <Building2 className="h-4 w-4 mr-2" />
-                  Partner Signup
-                </Link>
-              </>
-            )}
-          </nav>
+              )}
+            </div>
+          </div>
         </div>
       )}
     </header>

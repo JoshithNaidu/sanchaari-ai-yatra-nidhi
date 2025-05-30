@@ -2,8 +2,6 @@
 import React from 'react';
 import { useCentralizedAuth } from '@/contexts/CentralizedAuthContext';
 import Index from '@/pages/Index';
-import AdminHomepage from '@/components/AdminHomepage';
-import PartnerHomepage from '@/components/PartnerHomepage';
 import TravelerHomepage from '@/components/TravelerHomepage';
 
 const RoleBasedHomepage = () => {
@@ -22,17 +20,13 @@ const RoleBasedHomepage = () => {
     return <Index />;
   }
 
-  // Role-based homepage routing
-  switch (user.userType) {
-    case 'admin':
-      return <AdminHomepage />;
-    case 'partner':
-      return <PartnerHomepage />;
-    case 'traveler':
-      return <TravelerHomepage />;
-    default:
-      return <Index />;
+  // Only handle traveler users now
+  if (user.userType === 'traveler') {
+    return <TravelerHomepage />;
   }
+
+  // Fallback to public homepage for any other user type
+  return <Index />;
 };
 
 export default RoleBasedHomepage;
