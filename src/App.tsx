@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -61,6 +62,17 @@ import PartnerAvailability from "./pages/PartnerAvailability";
 import PartnerBookings from "./pages/PartnerBookings";
 import PartnerPayouts from "./pages/PartnerPayouts";
 
+// New Partner Pages
+import BookingVolumeReports from "./pages/BookingVolumeReports";
+import CustomerFeedbackReports from "./pages/CustomerFeedbackReports";
+import RevenueReports from "./pages/RevenueReports";
+import CompanyProfile from "./pages/CompanyProfile";
+import ApiCredentials from "./pages/ApiCredentials";
+import TaxCompliance from "./pages/TaxCompliance";
+import PartnerHelpCenter from "./pages/PartnerHelpCenter";
+import PartnerContactSupport from "./pages/PartnerContactSupport";
+import PartnerMessages from "./pages/PartnerMessages";
+
 const queryClient = new QueryClient();
 
 const ChatRedirectHandler = () => {
@@ -121,6 +133,17 @@ const App = () => (
             <Route path="/partner/inventory/availability" element={<PartnerAvailability />} />
             <Route path="/partner/bookings/list" element={<PartnerBookings />} />
             <Route path="/partner/payouts" element={<PartnerPayouts />} />
+            
+            {/* New Partner Routes */}
+            <Route path="/partner/reports/volume" element={<BookingVolumeReports />} />
+            <Route path="/partner/reports/feedback" element={<CustomerFeedbackReports />} />
+            <Route path="/partner/reports/revenue" element={<RevenueReports />} />
+            <Route path="/partner/profile/company" element={<CompanyProfile />} />
+            <Route path="/partner/profile/api-credentials" element={<ApiCredentials />} />
+            <Route path="/partner/profile/compliance" element={<TaxCompliance />} />
+            <Route path="/partner/help/center" element={<PartnerHelpCenter />} />
+            <Route path="/partner/help/contact" element={<PartnerContactSupport />} />
+            <Route path="/partner/messages" element={<PartnerMessages />} />
             
             {/* Profile Routes */}
             <Route path="/profile/me" element={<UserProfile />} />
