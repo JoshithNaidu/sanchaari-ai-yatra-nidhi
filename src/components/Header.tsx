@@ -17,6 +17,84 @@ const Header = () => {
   const { user, isAuthenticated } = useCentralizedAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  // Define navigation based on user type
+  const getNavigationItems = () => {
+    if (!isAuthenticated || !user) {
+      // Public navigation for non-authenticated users
+      return [
+        { to: "/explore/destinations", label: "Destinations" },
+        { to: "/blog", label: "Travel Blog" },
+        { to: "/community", label: "Community" },
+        { to: "/about", label: "About" }
+      ];
+    }
+
+    switch (user.userType) {
+      case 'traveler':
+        return [
+          { to: "/trips/dashboard", label: "My Trips" },
+          { to: "/search", label: "Search" },
+          { to: "/explore/destinations", label: "Destinations" },
+          { to: "/workflows", label: "Workflows" }
+        ];
+      
+      case 'partner':
+        return [
+          { to: "/partner/dashboard", label: "Dashboard" },
+          { to: "/partner/inventory/listings", label: "Listings" },
+          { to: "/partner/bookings/list", label: "Bookings" },
+          { to: "/partner/reports/revenue", label: "Reports" }
+        ];
+      
+      case 'admin':
+        return [
+          { to: "/admin/dashboard", label: "Dashboard" },
+          { to: "/admin/users/list", label: "Users" },
+          { to: "/admin/bookings/all", label: "All Bookings" },
+          { to: "/admin/reports/overview", label: "Reports" }
+        ];
+      
+      default:
+        return [];
+    }
+  };
+
+  const getProfileMenuItems = () => {
+    if (!user) return [];
+
+    switch (user.userType) {
+      case 'traveler':
+        return [
+          { to: "/trips/dashboard", label: "Dashboard" },
+          { to: "/profile/me", label: "My Profile" },
+          { to: "/profile/history", label: "Travel History" },
+          { to: "/profile/saved", label: "Saved Trips" },
+          { to: "/profile/rewards", label: "Rewards" }
+        ];
+      
+      case 'partner':
+        return [
+          { to: "/partner/dashboard", label: "Dashboard" },
+          { to: "/partner/profile/company", label: "Company Profile" },
+          { to: "/partner/messages", label: "Messages" },
+          { to: "/partner/help/center", label: "Help Center" }
+        ];
+      
+      case 'admin':
+        return [
+          { to: "/admin/dashboard", label: "Dashboard" },
+          { to: "/admin/users/list", label: "User Management" },
+          { to: "/admin/integrations", label: "System Settings" }
+        ];
+      
+      default:
+        return [];
+    }
+  };
+
+  const navigationItems = getNavigationItems();
+  const profileMenuItems = getProfileMenuItems();
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 shadow-sm">
       <div className="container flex h-16 items-center justify-between px-4">
@@ -30,31 +108,28 @@ const Header = () => {
           </Link>
           
           <nav className="hidden md:flex items-center space-x-8 text-sm font-medium">
-            <Link to="/trips/dashboard" className="text-gray-700 hover:text-blue-600 transition-colors relative group">
-              My Trips
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all group-hover:w-full"></span>
-            </Link>
-            <Link to="/explore/destinations" className="text-gray-700 hover:text-blue-600 transition-colors relative group">
-              Destinations
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all group-hover:w-full"></span>
-            </Link>
-            <Link to="/search" className="text-gray-700 hover:text-blue-600 transition-colors relative group">
-              Search
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all group-hover:w-full"></span>
-            </Link>
-            <Link to="/workflows" className="text-gray-700 hover:text-blue-600 transition-colors relative group">
-              Workflows
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all group-hover:w-full"></span>
-            </Link>
+            {navigationItems.map((item) => (
+              <Link 
+                key={item.to}
+                to={item.to} 
+                className="text-gray-700 hover:text-blue-600 transition-colors relative group"
+              >
+                {item.label}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all group-hover:w-full"></span>
+              </Link>
+            ))}
           </nav>
         </div>
 
         <div className="flex items-center gap-4">
-          <Link to="/chat">
-            <Button variant="outline" size="sm" className="hidden sm:flex hover:bg-blue-50 hover:border-blue-300 transition-colors">
-              Chat with AI
-            </Button>
-          </Link>
+          {/* Only show chat for travelers */}
+          {(!isAuthenticated || user?.userType === 'traveler') && (
+            <Link to="/chat">
+              <Button variant="outline" size="sm" className="hidden sm:flex hover:bg-blue-50 hover:border-blue-300 transition-colors">
+                Chat with AI
+              </Button>
+            </Link>
+          )}
           
           {isAuthenticated && user ? (
             <DropdownMenu>
@@ -67,23 +142,13 @@ const Header = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56 bg-white shadow-lg border">
-                <DropdownMenuItem asChild>
-                  <Link to={user.userType === 'partner' ? '/partner/dashboard' : user.userType === 'admin' ? '/admin/dashboard' : '/trips/dashboard'} className="flex items-center w-full">
-                    Dashboard
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/profile/me" className="flex items-center w-full">My Profile</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/profile/history" className="flex items-center w-full">Travel History</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/profile/saved" className="flex items-center w-full">Saved Trips</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/profile/rewards" className="flex items-center w-full">Rewards</Link>
-                </DropdownMenuItem>
+                {profileMenuItems.map((item) => (
+                  <DropdownMenuItem key={item.to} asChild>
+                    <Link to={item.to} className="flex items-center w-full">
+                      {item.label}
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
                 <DropdownMenuItem asChild>
                   <Link to="/auth/logout" className="flex items-center w-full text-red-600">
                     <LogOut className="h-4 w-4 mr-2" />
@@ -151,21 +216,21 @@ const Header = () => {
       {mobileMenuOpen && (
         <div className="md:hidden border-t bg-white shadow-lg">
           <nav className="flex flex-col space-y-1 px-4 py-4">
-            <Link to="/trips/dashboard" className="px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors">
-              My Trips
-            </Link>
-            <Link to="/explore/destinations" className="px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors">
-              Destinations
-            </Link>
-            <Link to="/search" className="px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors">
-              Search
-            </Link>
-            <Link to="/workflows" className="px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors">
-              Workflows
-            </Link>
-            <Link to="/chat" className="px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors">
-              Chat with AI
-            </Link>
+            {navigationItems.map((item) => (
+              <Link 
+                key={item.to}
+                to={item.to} 
+                className="px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
+              >
+                {item.label}
+              </Link>
+            ))}
+            
+            {(!isAuthenticated || user?.userType === 'traveler') && (
+              <Link to="/chat" className="px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors">
+                Chat with AI
+              </Link>
+            )}
             
             {!isAuthenticated && (
               <>
