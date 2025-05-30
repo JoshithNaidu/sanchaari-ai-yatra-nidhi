@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -189,60 +188,60 @@ const TaxCompliance = () => {
 
         {/* Documents Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {documents.map((document) => (
-            <Card key={document.id} className="relative">
+          {documents.map((doc) => (
+            <Card key={doc.id} className="relative">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle className="flex items-center gap-2">
                     <FileText className="h-5 w-5" />
-                    {document.name}
-                    {document.required && <span className="text-red-500">*</span>}
+                    {doc.name}
+                    {doc.required && <span className="text-red-500">*</span>}
                   </CardTitle>
-                  <Badge className={getStatusColor(document.status)}>
-                    {getStatusIcon(document.status)}
-                    <span className="ml-1 capitalize">{document.status}</span>
+                  <Badge className={getStatusColor(doc.status)}>
+                    {getStatusIcon(doc.status)}
+                    <span className="ml-1 capitalize">{doc.status}</span>
                   </Badge>
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   {/* Document Info */}
-                  {document.uploadedDate && (
+                  {doc.uploadedDate && (
                     <div className="text-sm">
                       <p className="text-gray-600">
-                        Uploaded: {new Date(document.uploadedDate).toLocaleDateString()}
+                        Uploaded: {new Date(doc.uploadedDate).toLocaleDateString()}
                       </p>
-                      {document.expiryDate && (
+                      {doc.expiryDate && (
                         <p className="text-gray-600">
-                          Expires: {new Date(document.expiryDate).toLocaleDateString()}
+                          Expires: {new Date(doc.expiryDate).toLocaleDateString()}
                         </p>
                       )}
                     </div>
                   )}
 
                   {/* Rejection Reason */}
-                  {document.status === 'rejected' && document.rejectionReason && (
+                  {doc.status === 'rejected' && doc.rejectionReason && (
                     <div className="p-3 bg-red-50 border border-red-200 rounded-md">
                       <p className="text-sm text-red-700">
-                        <strong>Rejection Reason:</strong> {document.rejectionReason}
+                        <strong>Rejection Reason:</strong> {doc.rejectionReason}
                       </p>
                     </div>
                   )}
 
                   {/* Upload Progress */}
-                  {uploadProgress[document.id] !== undefined && uploadProgress[document.id] < 100 && (
+                  {uploadProgress[doc.id] !== undefined && uploadProgress[doc.id] < 100 && (
                     <div>
                       <div className="flex justify-between text-sm mb-1">
                         <span>Uploading...</span>
-                        <span>{uploadProgress[document.id]}%</span>
+                        <span>{uploadProgress[doc.id]}%</span>
                       </div>
-                      <Progress value={uploadProgress[document.id]} className="w-full" />
+                      <Progress value={uploadProgress[doc.id]} className="w-full" />
                     </div>
                   )}
 
                   {/* Actions */}
                   <div className="flex gap-2">
-                    {document.fileUrl && (
+                    {doc.fileUrl && (
                       <>
                         <Button variant="outline" size="sm">
                           <Eye className="h-3 w-3 mr-1" />
@@ -256,25 +255,25 @@ const TaxCompliance = () => {
                     )}
                     
                     <Button 
-                      variant={document.status === 'approved' ? 'outline' : 'default'} 
+                      variant={doc.status === 'approved' ? 'outline' : 'default'} 
                       size="sm"
                       onClick={() => {
-                        const input = React.createElement('input');
+                        const input = window.document.createElement('input');
                         input.type = 'file';
                         input.accept = '.pdf,.jpg,.jpeg,.png';
                         input.onchange = (e) => {
                           const file = (e.target as HTMLInputElement).files?.[0];
                           if (file) {
-                            handleFileUpload(document.id, file);
+                            handleFileUpload(doc.id, file);
                           }
                         };
-                        document.body.appendChild(input);
+                        window.document.body.appendChild(input);
                         input.click();
-                        document.body.removeChild(input);
+                        window.document.body.removeChild(input);
                       }}
                     >
                       <Upload className="h-3 w-3 mr-1" />
-                      {document.fileUrl ? 'Replace' : 'Upload'}
+                      {doc.fileUrl ? 'Replace' : 'Upload'}
                     </Button>
                   </div>
 
