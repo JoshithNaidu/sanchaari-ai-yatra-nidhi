@@ -1,10 +1,23 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Search, Menu, User, LogIn } from 'lucide-react';
+import { Search, Menu, LogIn, UserPlus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Header = () => {
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+
+  const handleAuthClick = () => {
+    if (isLoggedIn) {
+      // Handle logout
+      setIsLoggedIn(false);
+    } else {
+      // Handle login/signup
+      // For now, just toggle to simulate login
+      setIsLoggedIn(true);
+    }
+  };
+
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
       <div className="container flex h-16 items-center justify-between px-4">
@@ -44,18 +57,17 @@ const Header = () => {
             </Button>
           </Link>
           
-          <Link to="/login">
-            <Button variant="ghost" size="sm" className="gap-2">
-              <LogIn className="h-4 w-4" />
-              <span className="hidden sm:inline">Login</span>
-            </Button>
-          </Link>
-          
-          <Link to="/signup">
-            <Button variant="default" size="sm">
-              Sign Up
-            </Button>
-          </Link>
+          <Button 
+            variant={isLoggedIn ? "ghost" : "default"} 
+            size="sm" 
+            className="gap-2"
+            onClick={handleAuthClick}
+          >
+            {isLoggedIn ? <UserPlus className="h-4 w-4" /> : <LogIn className="h-4 w-4" />}
+            <span className="hidden sm:inline">
+              {isLoggedIn ? "Account" : "Login"}
+            </span>
+          </Button>
           
           <Button variant="ghost" size="sm" className="md:hidden">
             <Menu className="h-4 w-4" />
