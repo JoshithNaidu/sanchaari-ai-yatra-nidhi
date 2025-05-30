@@ -16,9 +16,27 @@ import PartnerListings from './pages/PartnerListings';
 import PartnerPayouts from './pages/PartnerPayouts';
 import PartnerHomepage from './pages/PartnerHomepage';
 import Settings from './pages/Settings';
+import PartnerBookingVolumeReports from './pages/PartnerBookingVolumeReports';
+import PartnerCustomerFeedbackReports from './pages/PartnerCustomerFeedbackReports';
+import PartnerRevenueReports from './pages/PartnerRevenueReports';
+import PartnerCompanyProfile from './pages/PartnerCompanyProfile';
+import PartnerApiCredentials from './pages/PartnerApiCredentials';
+import PartnerTaxCompliance from './pages/PartnerTaxCompliance';
+import PartnerHelpCenter from './pages/PartnerHelpCenter';
+import PartnerContactSupport from './pages/PartnerContactSupport';
+import PartnerMessages from './pages/PartnerMessages';
 
 const ProtectedRoute = ({ children, allowedRoles }: { children: React.ReactNode, allowedRoles: string[] }) => {
-  const { isAuthenticated, user } = useCentralizedAuth();
+  const { isAuthenticated, user, isLoading } = useCentralizedAuth();
+
+  // Show loading while checking authentication
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
     return <Navigate to="/partner/login" />;
@@ -80,6 +98,86 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={['partner']}>
                   <PartnerPayouts />
+                </ProtectedRoute>
+              } 
+            />
+
+            {/* Partner Reports */}
+            <Route 
+              path="/partner/reports/volume" 
+              element={
+                <ProtectedRoute allowedRoles={['partner']}>
+                  <PartnerBookingVolumeReports />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/partner/reports/feedback" 
+              element={
+                <ProtectedRoute allowedRoles={['partner']}>
+                  <PartnerCustomerFeedbackReports />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/partner/reports/revenue" 
+              element={
+                <ProtectedRoute allowedRoles={['partner']}>
+                  <PartnerRevenueReports />
+                </ProtectedRoute>
+              } 
+            />
+
+            {/* Partner Profile */}
+            <Route 
+              path="/partner/profile/company" 
+              element={
+                <ProtectedRoute allowedRoles={['partner']}>
+                  <PartnerCompanyProfile />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/partner/profile/api-credentials" 
+              element={
+                <ProtectedRoute allowedRoles={['partner']}>
+                  <PartnerApiCredentials />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/partner/profile/compliance" 
+              element={
+                <ProtectedRoute allowedRoles={['partner']}>
+                  <PartnerTaxCompliance />
+                </ProtectedRoute>
+              } 
+            />
+
+            {/* Partner Support */}
+            <Route 
+              path="/partner/help/center" 
+              element={
+                <ProtectedRoute allowedRoles={['partner']}>
+                  <PartnerHelpCenter />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/partner/help/contact" 
+              element={
+                <ProtectedRoute allowedRoles={['partner']}>
+                  <PartnerContactSupport />
+                </ProtectedRoute>
+              } 
+            />
+
+            {/* Partner Communication */}
+            <Route 
+              path="/partner/messages" 
+              element={
+                <ProtectedRoute allowedRoles={['partner']}>
+                  <PartnerMessages />
                 </ProtectedRoute>
               } 
             />
