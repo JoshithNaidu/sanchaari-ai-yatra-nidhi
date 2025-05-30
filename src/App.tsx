@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -14,6 +13,13 @@ import ItineraryDetails from "./pages/ItineraryDetails";
 import CollaborativePlanning from "./pages/CollaborativePlanning";
 import BudgetTracker from "./pages/BudgetTracker";
 import PackingList from "./pages/PackingList";
+import Search from "./pages/Search";
+import FlightSearchResults from "./pages/FlightSearchResults";
+import HotelSearchResults from "./pages/HotelSearchResults";
+import ActivitySearchResults from "./pages/ActivitySearchResults";
+import PackageSearchResults from "./pages/PackageSearchResults";
+import Checkout from "./pages/Checkout";
+import BookingConfirmation from "./pages/BookingConfirmation";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +48,13 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/chat" element={<ChatRedirectHandler />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/search/flights" element={<FlightSearchResults />} />
+          <Route path="/search/hotels" element={<HotelSearchResults />} />
+          <Route path="/search/activities" element={<ActivitySearchResults />} />
+          <Route path="/search/packages" element={<PackageSearchResults />} />
+          <Route path="/checkout/:bookingId" element={<Checkout />} />
+          <Route path="/confirmation/:bookingId" element={<BookingConfirmation />} />
           <Route path="/trips/dashboard" element={<TripsDashboard />} />
           <Route path="/trips/new" element={<CreateNewTrip />} />
           <Route path="/trips/:tripId" element={<ItineraryDetails />} />
