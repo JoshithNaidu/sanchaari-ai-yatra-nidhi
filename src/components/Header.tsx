@@ -1,22 +1,18 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Search, Menu, LogIn, UserPlus } from 'lucide-react';
+import { LogIn, UserPlus, User, LogOut, Menu } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 const Header = () => {
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-
-  const handleAuthClick = () => {
-    if (isLoggedIn) {
-      // Handle logout
-      setIsLoggedIn(false);
-    } else {
-      // Handle login/signup
-      // For now, just toggle to simulate login
-      setIsLoggedIn(true);
-    }
-  };
+  const { user, isAuthenticated } = useAuth();
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
@@ -50,17 +46,47 @@ const Header = () => {
             </Button>
           </Link>
           
-          <Button 
-            variant={isLoggedIn ? "ghost" : "default"} 
-            size="sm" 
-            className="gap-2"
-            onClick={handleAuthClick}
-          >
-            {isLoggedIn ? <UserPlus className="h-4 w-4" /> : <LogIn className="h-4 w-4" />}
-            <span className="hidden sm:inline">
-              {isLoggedIn ? "Account" : "Login"}
-            </span>
-          </Button>
+          {isAuthenticated && user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="gap-2">
+                  <User className="h-4 w-4" />
+                  <span className="hidden sm:inline">{user.fullName}</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem asChild>
+                  <Link to={user.userType === 'partner' ? '/partner/dashboard' : '/trips/dashboard'}>
+                    Dashboard
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/profile">Profile</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/auth/logout">
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Logout
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Link to="/auth/login">
+                <Button variant="ghost" size="sm" className="gap-2">
+                  <LogIn className="h-4 w-4" />
+                  <span className="hidden sm:inline">Login</span>
+                </Button>
+              </Link>
+              <Link to="/auth/register">
+                <Button size="sm" className="gap-2">
+                  <UserPlus className="h-4 w-4" />
+                  <span className="hidden sm:inline">Sign Up</span>
+                </Button>
+              </Link>
+            </div>
+          )}
           
           <Button variant="ghost" size="sm" className="md:hidden">
             <Menu className="h-4 w-4" />

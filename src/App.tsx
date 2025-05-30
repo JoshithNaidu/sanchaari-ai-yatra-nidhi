@@ -1,9 +1,11 @@
+
 import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { AuthProvider } from "./contexts/AuthContext";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import FloatingChatbot from "./components/FloatingChatbot";
@@ -20,6 +22,12 @@ import ActivitySearchResults from "./pages/ActivitySearchResults";
 import PackageSearchResults from "./pages/PackageSearchResults";
 import Checkout from "./pages/Checkout";
 import BookingConfirmation from "./pages/BookingConfirmation";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import EmailVerification from "./pages/EmailVerification";
+import Logout from "./pages/Logout";
 
 const queryClient = new QueryClient();
 
@@ -42,30 +50,41 @@ const ChatRedirectHandler = () => {
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/chat" element={<ChatRedirectHandler />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/search/flights" element={<FlightSearchResults />} />
-          <Route path="/search/hotels" element={<HotelSearchResults />} />
-          <Route path="/search/activities" element={<ActivitySearchResults />} />
-          <Route path="/search/packages" element={<PackageSearchResults />} />
-          <Route path="/checkout/:bookingId" element={<Checkout />} />
-          <Route path="/confirmation/:bookingId" element={<BookingConfirmation />} />
-          <Route path="/trips/dashboard" element={<TripsDashboard />} />
-          <Route path="/trips/new" element={<CreateNewTrip />} />
-          <Route path="/trips/:tripId" element={<ItineraryDetails />} />
-          <Route path="/trips/:tripId/collaborate" element={<CollaborativePlanning />} />
-          <Route path="/trips/:tripId/budget" element={<BudgetTracker />} />
-          <Route path="/trips/:tripId/packing" element={<PackingList />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <FloatingChatbot />
-      </TooltipProvider>
+      <AuthProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/chat" element={<ChatRedirectHandler />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/search/flights" element={<FlightSearchResults />} />
+            <Route path="/search/hotels" element={<HotelSearchResults />} />
+            <Route path="/search/activities" element={<ActivitySearchResults />} />
+            <Route path="/search/packages" element={<PackageSearchResults />} />
+            <Route path="/checkout/:bookingId" element={<Checkout />} />
+            <Route path="/confirmation/:bookingId" element={<BookingConfirmation />} />
+            <Route path="/trips/dashboard" element={<TripsDashboard />} />
+            <Route path="/trips/new" element={<CreateNewTrip />} />
+            <Route path="/trips/:tripId" element={<ItineraryDetails />} />
+            <Route path="/trips/:tripId/collaborate" element={<CollaborativePlanning />} />
+            <Route path="/trips/:tripId/budget" element={<BudgetTracker />} />
+            <Route path="/trips/:tripId/packing" element={<PackingList />} />
+            
+            {/* Authentication Routes */}
+            <Route path="/auth/login" element={<Login />} />
+            <Route path="/auth/register" element={<Register />} />
+            <Route path="/auth/forgot-password" element={<ForgotPassword />} />
+            <Route path="/auth/reset-password" element={<ResetPassword />} />
+            <Route path="/auth/verify-email" element={<EmailVerification />} />
+            <Route path="/auth/logout" element={<Logout />} />
+            
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <FloatingChatbot />
+        </TooltipProvider>
+      </AuthProvider>
     </BrowserRouter>
   </QueryClientProvider>
 );
