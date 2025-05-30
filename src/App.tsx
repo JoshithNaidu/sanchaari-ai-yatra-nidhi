@@ -41,6 +41,14 @@ import Community from "./pages/Community";
 import HelpCenter from "./pages/HelpCenter";
 import ContactUs from "./pages/ContactUs";
 import GrievanceRedressal from "./pages/GrievanceRedressal";
+import Safety from "./pages/Safety";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
+import Cookies from "./pages/Cookies";
+import About from "./pages/About";
+import Careers from "./pages/Careers";
+import ServerError from "./pages/ServerError";
+import Maintenance from "./pages/Maintenance";
 
 const queryClient = new QueryClient();
 
@@ -112,6 +120,16 @@ const App = () => (
             <Route path="/help/center" element={<HelpCenter />} />
             <Route path="/help/contact" element={<ContactUs />} />
             <Route path="/help/grievance" element={<GrievanceRedressal />} />
+            
+            {/* Legal & System Routes */}
+            <Route path="/safety" element={<Safety />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/cookies" element={<Cookies />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/careers" element={<Careers />} />
+            <Route path="/500" element={<ServerError />} />
+            <Route path="/maintenance" element={<Maintenance />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
