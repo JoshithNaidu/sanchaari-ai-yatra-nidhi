@@ -5,27 +5,31 @@ interface User {
   id: string;
   email: string;
   fullName: string;
-  userType: 'traveler' | 'partner';
+  userType: 'traveler' | 'partner' | 'admin';
+  role?: 'admin' | 'compliance_officer' | 'support_agent';
   isVerified: boolean;
+  permissions?: string[];
 }
 
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
-  login: (email: string, password: string, userType?: 'traveler' | 'partner') => Promise<boolean>;
+  isAdmin: boolean;
+  login: (email: string, password: string, userType?: 'traveler' | 'partner' | 'admin') => Promise<boolean>;
   register: (userData: RegisterData) => Promise<boolean>;
   logout: () => void;
   forgotPassword: (email: string) => Promise<boolean>;
   resetPassword: (token: string, password: string) => Promise<boolean>;
   verifyEmail: (token: string) => Promise<boolean>;
   resendVerification: () => Promise<boolean>;
+  hasPermission: (permission: string) => boolean;
 }
 
 interface RegisterData {
   fullName: string;
   email: string;
   password: string;
-  userType: 'traveler' | 'partner';
+  userType: 'traveler' | 'partner' | 'admin';
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -52,17 +56,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
-  const login = async (email: string, password: string): Promise<boolean> => {
+  const login = async (email: string, password: string, userType?: 'traveler' | 'partner' | 'admin'): Promise<boolean> => {
     // Simulate API call
     try {
-      // Mock successful login
-      const mockUser: User = {
-        id: '1',
-        email,
-        fullName: 'John Doe',
-        userType: email.includes('partner') ? 'partner' : 'traveler',
-        isVerified: true
-      };
+      let mockUser: User;
+      
+      // Check if it's an admin login
+      if (email.includes('admin') || userType === 'admin') {
+        mockUser = {
+          id: '1',
+          email,
+          fullName: 'Admin User',
+          userType: 'admin',
+          role: 'admin',
+          isVerified: true,
+          permissions: ['user_management', 'partner_management', 'system_config', 'view_analytics']
+        };
+      } else {
+        mockUser = {
+          id: '1',
+          email,
+          fullName: 'John Doe',
+          userType: email.includes('partner') ? 'partner' : 'traveler',
+          isVerified: true
+        };
+      }
       
       localStorage.setItem('user', JSON.stringify(mockUser));
       setUser(mockUser);
@@ -128,16 +146,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return true;
   };
 
+  const hasPermission = (permission: string): boolean => {
+    return user?.permissions?.includes(permission) || false;
+  };
+
+  const isAdmin = user?.userType === 'admin';
+
   const value = {
     user,
     isAuthenticated,
+    isAdmin,
     login,
     register,
     logout,
     forgotPassword,
     resetPassword,
     verifyEmail,
-    resendVerification
+    resendVerification,
+    hasPermission
   };
 
   return React.createElement(AuthContext.Provider, { value }, children);

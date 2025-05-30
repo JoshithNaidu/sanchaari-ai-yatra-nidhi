@@ -73,6 +73,13 @@ import PartnerHelpCenter from "./pages/PartnerHelpCenter";
 import PartnerContactSupport from "./pages/PartnerContactSupport";
 import PartnerMessages from "./pages/PartnerMessages";
 
+// Admin Pages
+import AdminLogin from "./pages/AdminLogin";
+import AdminLogout from "./pages/AdminLogout";
+import AdminForgotPassword from "./pages/AdminForgotPassword";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminUserList from "./pages/AdminUserList";
+
 const queryClient = new QueryClient();
 
 const ChatRedirectHandler = () => {
@@ -144,6 +151,13 @@ const App = () => (
             <Route path="/partner/help/center" element={<PartnerHelpCenter />} />
             <Route path="/partner/help/contact" element={<PartnerContactSupport />} />
             <Route path="/partner/messages" element={<PartnerMessages />} />
+            
+            {/* Admin Routes */}
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/logout" element={<AdminLogout />} />
+            <Route path="/admin/forgot-password" element={<AdminForgotPassword />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/users/list" element={<AdminUserList />} />
             
             {/* Profile Routes */}
             <Route path="/profile/me" element={<UserProfile />} />
