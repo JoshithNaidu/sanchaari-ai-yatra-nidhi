@@ -39,6 +39,12 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import EmailVerification from "./pages/EmailVerification";
 
+// Partner Pages
+import PartnerHomepage from "./pages/PartnerHomepage";
+import PartnerLogin from "./pages/PartnerLogin";
+import PartnerLogout from "./pages/PartnerLogout";
+import PartnerForgotPassword from "./pages/PartnerForgotPassword";
+
 // Protected Pages
 import TripsDashboard from "./pages/TripsDashboard";
 import CreateNewTrip from "./pages/CreateNewTrip";
@@ -137,6 +143,21 @@ const App = () => (
             <Route path="/auth/forgot-password" element={<ForgotPassword />} />
             <Route path="/auth/reset-password" element={<ResetPassword />} />
             <Route path="/auth/verify-email" element={<EmailVerification />} />
+
+            {/* Partner Routes */}
+            <Route path="/partner" element={
+              <ProtectedRoute allowedRoles={['partner']}>
+                <PartnerHomepage />
+              </ProtectedRoute>
+            } />
+            <Route path="/partner/home" element={
+              <ProtectedRoute allowedRoles={['partner']}>
+                <PartnerHomepage />
+              </ProtectedRoute>
+            } />
+            <Route path="/partner/login" element={<PartnerLogin />} />
+            <Route path="/partner/logout" element={<PartnerLogout />} />
+            <Route path="/partner/forgot-password" element={<PartnerForgotPassword />} />
 
             {/* Search Routes */}
             <Route path="/search" element={<Search />} />
