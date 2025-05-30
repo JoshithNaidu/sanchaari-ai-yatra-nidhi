@@ -22,7 +22,8 @@ const FlightSearchResults = () => {
       duration: '2h 30m',
       stops: 'Non-stop',
       price: 4500,
-      baggage: '15kg included'
+      baggage: '15kg included',
+      logo: 'https://images.unsplash.com/photo-1556388158-158dc45da493?auto=format&fit=crop&w=100&q=80'
     },
     {
       id: 'flight-2',
@@ -33,7 +34,8 @@ const FlightSearchResults = () => {
       duration: '2h 40m',
       stops: 'Non-stop',
       price: 5200,
-      baggage: '25kg included'
+      baggage: '25kg included',
+      logo: 'https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?auto=format&fit=crop&w=100&q=80'
     },
     {
       id: 'flight-3',
@@ -44,7 +46,8 @@ const FlightSearchResults = () => {
       duration: '4h 30m',
       stops: '1 stop',
       price: 3800,
-      baggage: '15kg included'
+      baggage: '15kg included',
+      logo: 'https://images.unsplash.com/photo-1583776221291-b15591b26726?auto=format&fit=crop&w=100&q=80'
     }
   ];
 
@@ -147,7 +150,7 @@ const FlightSearchResults = () => {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-6 flex-1">
                         <div className="text-center">
-                          <img src="/placeholder.svg" alt={flight.airline} className="w-8 h-8 mx-auto mb-1" />
+                          <img src={flight.logo} alt={flight.airline} className="w-8 h-8 mx-auto mb-1 rounded" />
                           <div className="text-xs text-gray-600">{flight.flightNumber}</div>
                         </div>
 
@@ -177,11 +180,11 @@ const FlightSearchResults = () => {
                       </div>
 
                       <div className="text-right ml-6">
-                        <div className="text-2xl font-bold text-blue-600">₹{flight.price.toLocaleString()}</div>
+                        <div className="text-2xl font-bold text-emerald-600">₹{flight.price.toLocaleString()}</div>
                         <div className="text-xs text-gray-600 mb-2">{flight.baggage}</div>
                         <Button 
                           onClick={() => handleBookFlight(flight.id)}
-                          className="bg-blue-600 hover:bg-blue-700 text-white"
+                          className="bg-emerald-600 hover:bg-emerald-700 text-white"
                         >
                           Select
                         </Button>

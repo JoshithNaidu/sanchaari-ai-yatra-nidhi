@@ -3,31 +3,81 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
-import { Camera, Save, Lock, Trash2 } from 'lucide-react';
+import { Camera, Save, Lock, Trash2, Upload } from 'lucide-react';
 import Header from '@/components/Header';
 
 const UserProfile = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
+  const [profileImage, setProfileImage] = useState('');
+  const [showPasswordDialog, setShowPasswordDialog] = useState(false);
+  const [showDeactivateDialog, setShowDeactivateDialog] = useState(false);
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  });
   const [formData, setFormData] = useState({
     fullName: user?.fullName || '',
     email: user?.email || '',
-    mobile: '',
-    gender: '',
-    dateOfBirth: '',
-    travelRole: ''
+    mobile: '+91 9876543210',
+    gender: 'male',
+    dateOfBirth: '1990-01-15',
+    travelRole: 'solo'
   });
 
   const handleSave = () => {
-    // Simulate API call
     setIsEditing(false);
     toast({
       title: "Profile updated",
       description: "Your profile has been successfully updated."
+    });
+  };
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setProfileImage(e.target?.result as string);
+        toast({
+          title: "Profile photo updated",
+          description: "Your profile photo has been updated successfully."
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleChangePassword = () => {
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      toast({
+        title: "Password mismatch",
+        description: "New password and confirm password do not match.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+    setShowPasswordDialog(false);
+    toast({
+      title: "Password changed",
+      description: "Your password has been changed successfully."
+    });
+  };
+
+  const handleDeactivateAccount = () => {
+    setShowDeactivateDialog(false);
+    toast({
+      title: "Account deactivation requested",
+      description: "Your account deactivation request has been submitted. You will receive an email confirmation.",
+      variant: "destructive"
     });
   };
 
@@ -47,12 +97,27 @@ const UserProfile = () => {
             <Card>
               <CardContent className="p-6 text-center">
                 <div className="relative inline-block mb-4">
-                  <div className="w-32 h-32 bg-blue-600 rounded-full flex items-center justify-center text-white text-4xl font-bold">
-                    {user?.fullName.charAt(0).toUpperCase()}
-                  </div>
-                  <button className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow">
+                  {profileImage ? (
+                    <img 
+                      src={profileImage} 
+                      alt="Profile" 
+                      className="w-32 h-32 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-32 h-32 bg-emerald-600 rounded-full flex items-center justify-center text-white text-4xl font-bold">
+                      {user?.fullName.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                  <label htmlFor="profile-upload" className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
                     <Camera className="h-4 w-4 text-gray-600" />
-                  </button>
+                    <input
+                      id="profile-upload"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="hidden"
+                    />
+                  </label>
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900">{user?.fullName}</h3>
                 <p className="text-gray-600 capitalize">{user?.userType}</p>
@@ -74,7 +139,7 @@ const UserProfile = () => {
                     <Button onClick={() => setIsEditing(false)} variant="outline">
                       Cancel
                     </Button>
-                    <Button onClick={handleSave} className="gap-2">
+                    <Button onClick={handleSave} className="gap-2 bg-emerald-600 hover:bg-emerald-700">
                       <Save className="h-4 w-4" />
                       Save Changes
                     </Button>
@@ -115,7 +180,6 @@ const UserProfile = () => {
                       value={formData.mobile}
                       onChange={(e) => setFormData(prev => ({ ...prev, mobile: e.target.value }))}
                       disabled={!isEditing}
-                      placeholder="Enter mobile number"
                     />
                   </div>
                   
@@ -129,7 +193,7 @@ const UserProfile = () => {
                       disabled={!isEditing}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select gender" />
+                        <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="male">Male</SelectItem>
@@ -164,7 +228,7 @@ const UserProfile = () => {
                       disabled={!isEditing}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select travel role" />
+                        <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="solo">Solo Traveler</SelectItem>
@@ -180,14 +244,83 @@ const UserProfile = () => {
 
             {/* Account Actions */}
             <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Button variant="outline" className="gap-2 h-12">
-                <Lock className="h-4 w-4" />
-                Change Password
-              </Button>
-              <Button variant="destructive" className="gap-2 h-12">
-                <Trash2 className="h-4 w-4" />
-                Deactivate Account
-              </Button>
+              <Dialog open={showPasswordDialog} onOpenChange={setShowPasswordDialog}>
+                <DialogTrigger asChild>
+                  <Button variant="outline" className="gap-2 h-12">
+                    <Lock className="h-4 w-4" />
+                    Change Password
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Change Password</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Current Password</label>
+                      <Input
+                        type="password"
+                        value={passwordData.currentPassword}
+                        onChange={(e) => setPasswordData(prev => ({ ...prev, currentPassword: e.target.value }))}
+                        placeholder="Enter current password"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">New Password</label>
+                      <Input
+                        type="password"
+                        value={passwordData.newPassword}
+                        onChange={(e) => setPasswordData(prev => ({ ...prev, newPassword: e.target.value }))}
+                        placeholder="Enter new password"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Confirm New Password</label>
+                      <Input
+                        type="password"
+                        value={passwordData.confirmPassword}
+                        onChange={(e) => setPasswordData(prev => ({ ...prev, confirmPassword: e.target.value }))}
+                        placeholder="Confirm new password"
+                      />
+                    </div>
+                    <div className="flex gap-2">
+                      <Button onClick={() => setShowPasswordDialog(false)} variant="outline" className="flex-1">
+                        Cancel
+                      </Button>
+                      <Button onClick={handleChangePassword} className="flex-1 bg-emerald-600 hover:bg-emerald-700">
+                        Update Password
+                      </Button>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
+
+              <Dialog open={showDeactivateDialog} onOpenChange={setShowDeactivateDialog}>
+                <DialogTrigger asChild>
+                  <Button variant="destructive" className="gap-2 h-12">
+                    <Trash2 className="h-4 w-4" />
+                    Deactivate Account
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Deactivate Account</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <p className="text-gray-600">
+                      Are you sure you want to deactivate your account? This action cannot be undone and you will lose access to all your data.
+                    </p>
+                    <div className="flex gap-2">
+                      <Button onClick={() => setShowDeactivateDialog(false)} variant="outline" className="flex-1">
+                        Cancel
+                      </Button>
+                      <Button onClick={handleDeactivateAccount} variant="destructive" className="flex-1">
+                        Deactivate Account
+                      </Button>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
         </div>

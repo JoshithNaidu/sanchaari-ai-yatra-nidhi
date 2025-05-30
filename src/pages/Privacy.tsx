@@ -1,265 +1,237 @@
 
-import React, { useState } from 'react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Button } from '@/components/ui/button';
-import { Shield, Mail, Download, Trash2 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Separator } from '@/components/ui/separator';
+import { Shield, Lock, Eye, Users, Mail } from 'lucide-react';
+import Header from '@/components/Header';
 
 const Privacy = () => {
-  const [activeSection, setActiveSection] = useState('overview');
-
-  const sections = [
-    { id: 'overview', title: 'Overview', icon: '📋' },
-    { id: 'collection', title: 'What We Collect', icon: '📊' },
-    { id: 'usage', title: 'How We Use Data', icon: '🔄' },
-    { id: 'sharing', title: 'Data Sharing', icon: '🤝' },
-    { id: 'storage', title: 'Data Storage', icon: '🗄️' },
-    { id: 'rights', title: 'Your Rights', icon: '⚖️' },
-    { id: 'children', title: 'Children\'s Privacy', icon: '👶' },
-    { id: 'cookies', title: 'Cookies', icon: '🍪' },
-    { id: 'contact', title: 'Contact Us', icon: '📞' }
-  ];
-
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-50">
       <Header />
       
-      <div className="max-w-6xl mx-auto px-4 py-12">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <Shield className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-          <h1 className="text-4xl font-bold mb-4">Privacy Policy</h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Your privacy is fundamental to us. This policy explains how Sanchaari collects, 
-            uses, and protects your personal information.
-          </p>
-          <p className="text-sm text-gray-500 mt-4">Last updated: December 29, 2024</p>
+      <div className="container mx-auto px-4 py-8 max-w-4xl">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Privacy Policy</h1>
+          <p className="text-gray-600">Last updated: May 30, 2025</p>
         </div>
 
-        <div className="grid lg:grid-cols-4 gap-8">
-          {/* Sidebar Navigation */}
-          <div className="lg:col-span-1">
-            <Card className="sticky top-24">
-              <CardHeader>
-                <CardTitle className="text-sm">Table of Contents</CardTitle>
-              </CardHeader>
-              <CardContent className="p-0">
-                <nav className="space-y-1">
-                  {sections.map((section) => (
-                    <button
-                      key={section.id}
-                      onClick={() => setActiveSection(section.id)}
-                      className={`w-full text-left px-4 py-2 text-sm transition-colors ${
-                        activeSection === section.id 
-                          ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-600' 
-                          : 'text-gray-700 hover:bg-gray-50'
-                      }`}
-                    >
-                      {section.icon} {section.title}
-                    </button>
-                  ))}
-                </nav>
-              </CardContent>
-            </Card>
-          </div>
+        <div className="space-y-6">
+          {/* Introduction */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Shield className="h-5 w-5 text-emerald-600" />
+                Introduction
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-700">
+                At Sanchaari, we are committed to protecting your privacy and ensuring the security of your personal information. 
+                This Privacy Policy explains how we collect, use, store, and protect your data when you use our travel platform.
+              </p>
+            </CardContent>
+          </Card>
 
-          {/* Main Content */}
-          <div className="lg:col-span-3">
-            <Card>
-              <CardContent className="p-8">
-                {activeSection === 'overview' && (
-                  <div className="space-y-6">
-                    <h2 className="text-2xl font-bold">Privacy Policy Overview</h2>
-                    <div className="bg-blue-50 p-6 rounded-lg">
-                      <h3 className="font-semibold mb-3">Quick Summary</h3>
-                      <ul className="space-y-2 text-sm">
-                        <li>• We collect data to provide and improve our travel services</li>
-                        <li>• We never sell your personal information</li>
-                        <li>• You have control over your data and can request deletion</li>
-                        <li>• We use industry-standard security measures</li>
-                        <li>• This policy complies with GDPR and India's DPDP Act</li>
-                      </ul>
-                    </div>
-                    <p className="text-gray-700">
-                      Sanchaari Technologies Private Limited ("Sanchaari," "we," "us," or "our") respects your privacy and is committed to protecting your personal data. This privacy policy will inform you about how we look after your personal data when you visit our website or use our services.
-                    </p>
-                  </div>
-                )}
+          {/* What We Collect */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Eye className="h-5 w-5 text-emerald-600" />
+                What Information We Collect
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <h4 className="font-semibold text-gray-900 mb-2">Personal Information</h4>
+                <ul className="text-gray-700 space-y-1 list-disc list-inside">
+                  <li>Name, email address, phone number</li>
+                  <li>Date of birth, gender, travel preferences</li>
+                  <li>Government ID details for bookings</li>
+                  <li>Payment information (processed securely)</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-900 mb-2">Usage Information</h4>
+                <ul className="text-gray-700 space-y-1 list-disc list-inside">
+                  <li>Search queries and booking history</li>
+                  <li>Device information and IP address</li>
+                  <li>Browser type and operating system</li>
+                  <li>Pages visited and time spent on our platform</li>
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
 
-                {activeSection === 'collection' && (
-                  <div className="space-y-6">
-                    <h2 className="text-2xl font-bold">What Information We Collect</h2>
-                    
-                    <div className="space-y-4">
-                      <h3 className="text-lg font-semibold">Personal Information</h3>
-                      <ul className="space-y-2 text-gray-700">
-                        <li>• Name, email address, and phone number</li>
-                        <li>• Government ID details for verification</li>
-                        <li>• Travel preferences and history</li>
-                        <li>• Payment information (stored securely)</li>
-                        <li>• Profile photos and user-generated content</li>
-                      </ul>
-                    </div>
+          {/* Why We Collect */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Users className="h-5 w-5 text-emerald-600" />
+                Why We Collect This Information
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="text-gray-700 space-y-2 list-disc list-inside">
+                <li>To provide and improve our travel booking services</li>
+                <li>To process bookings and communicate about your trips</li>
+                <li>To personalize your experience and provide recommendations</li>
+                <li>To prevent fraud and ensure platform security</li>
+                <li>To comply with legal and regulatory requirements</li>
+                <li>To send important updates about your bookings</li>
+              </ul>
+            </CardContent>
+          </Card>
 
-                    <div className="space-y-4">
-                      <h3 className="text-lg font-semibold">Technical Information</h3>
-                      <ul className="space-y-2 text-gray-700">
-                        <li>• IP address and browser information</li>
-                        <li>• Device type, operating system</li>
-                        <li>• Cookies and tracking technologies</li>
-                        <li>• Usage patterns and analytics data</li>
-                        <li>• Location data (with permission)</li>
-                      </ul>
-                    </div>
-                  </div>
-                )}
+          {/* Data Storage */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Lock className="h-5 w-5 text-emerald-600" />
+                Data Storage and Security
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <h4 className="font-semibold text-gray-900 mb-2">Storage Duration</h4>
+                <ul className="text-gray-700 space-y-1 list-disc list-inside">
+                  <li>Account information: Retained while your account is active</li>
+                  <li>Booking records: Kept for 7 years for tax and legal compliance</li>
+                  <li>Marketing preferences: Until you withdraw consent</li>
+                  <li>Usage data: Anonymized after 2 years</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-900 mb-2">Security Measures</h4>
+                <ul className="text-gray-700 space-y-1 list-disc list-inside">
+                  <li>256-bit SSL encryption for all data transmission</li>
+                  <li>PCI DSS compliant payment processing</li>
+                  <li>Regular security audits and vulnerability assessments</li>
+                  <li>Access controls and employee training on data protection</li>
+                  <li>Secure data centers with 24/7 monitoring</li>
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
 
-                {activeSection === 'usage' && (
-                  <div className="space-y-6">
-                    <h2 className="text-2xl font-bold">How We Use Your Data</h2>
-                    
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div className="space-y-4">
-                        <h3 className="text-lg font-semibold">Service Provision</h3>
-                        <ul className="space-y-2 text-gray-700">
-                          <li>• Process bookings and payments</li>
-                          <li>• Provide customer support</li>
-                          <li>• Send booking confirmations</li>
-                          <li>• Enable trip planning features</li>
-                        </ul>
-                      </div>
+          {/* Data Sharing */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Who We Share Information With</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="text-gray-700 space-y-2 list-disc list-inside">
+                <li><strong>Service Providers:</strong> Airlines, hotels, and activity providers for bookings</li>
+                <li><strong>Payment Processors:</strong> Secure payment gateway providers</li>
+                <li><strong>Technology Partners:</strong> Analytics and marketing platforms (anonymized data)</li>
+                <li><strong>Legal Authorities:</strong> When required by law or to protect our rights</li>
+                <li><strong>Business Transfers:</strong> In case of merger or acquisition (with notice)</li>
+              </ul>
+            </CardContent>
+          </Card>
 
-                      <div className="space-y-4">
-                        <h3 className="text-lg font-semibold">Personalization</h3>
-                        <ul className="space-y-2 text-gray-700">
-                          <li>• Customize recommendations</li>
-                          <li>• Remember preferences</li>
-                          <li>• Improve AI assistance</li>
-                          <li>• Enhance user experience</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                )}
+          {/* Children's Privacy */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Children's Privacy</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <h4 className="font-semibold text-gray-900 mb-2">Age Restrictions</h4>
+                <p className="text-gray-700 mb-3">
+                  Our services are not intended for children under 13 years of age. We do not knowingly collect 
+                  personal information from children under 13.
+                </p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-900 mb-2">Parental Consent</h4>
+                <ul className="text-gray-700 space-y-1 list-disc list-inside">
+                  <li>Users aged 13-18 require parental consent for account creation</li>
+                  <li>Parents can request access to or deletion of their child's data</li>
+                  <li>We provide special protections for minors' personal information</li>
+                  <li>Educational content is provided about online safety for young travelers</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-900 mb-2">If You Believe We Have Child Data</h4>
+                <p className="text-gray-700">
+                  If you believe we have collected personal information from a child under 13, 
+                  please contact us immediately at <a href="mailto:privacy@sanchaari.com" className="text-emerald-600 hover:underline">privacy@sanchaari.com</a> 
+                  and we will delete such information promptly.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
 
-                {activeSection === 'sharing' && (
-                  <div className="space-y-6">
-                    <h2 className="text-2xl font-bold">When We Share Your Data</h2>
-                    
-                    <div className="space-y-4">
-                      <h3 className="text-lg font-semibold">Service Partners</h3>
-                      <p className="text-gray-700">
-                        We share necessary information with hotels, airlines, and activity providers to fulfill your bookings. 
-                        This includes your name, contact details, and booking preferences.
-                      </p>
-                    </div>
+          {/* Cookies */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Cookies and Tracking Technologies</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <h4 className="font-semibold text-gray-900 mb-2">Types of Cookies We Use</h4>
+                <ul className="text-gray-700 space-y-2 list-disc list-inside">
+                  <li><strong>Essential Cookies:</strong> Required for basic website functionality (login, cart)</li>
+                  <li><strong>Analytics Cookies:</strong> Help us understand how visitors use our site</li>
+                  <li><strong>Marketing Cookies:</strong> Used to deliver personalized advertisements</li>
+                  <li><strong>Preference Cookies:</strong> Remember your settings and preferences</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-900 mb-2">Cookie Management</h4>
+                <ul className="text-gray-700 space-y-1 list-disc list-inside">
+                  <li>You can control cookies through your browser settings</li>
+                  <li>Use our Cookie Preference Center to manage consent</li>
+                  <li>Some features may not work if cookies are disabled</li>
+                  <li>We respect "Do Not Track" browser signals</li>
+                </ul>
+              </div>
+              <p className="text-gray-700">
+                For detailed information about our cookie practices, please visit our 
+                <a href="/cookies" className="text-emerald-600 hover:underline ml-1">Cookie Policy</a>.
+              </p>
+            </CardContent>
+          </Card>
 
-                    <div className="space-y-4">
-                      <h3 className="text-lg font-semibold">Legal Requirements</h3>
-                      <p className="text-gray-700">
-                        We may disclose your information when required by law, to protect our rights, 
-                        or to comply with legal processes and government requests.
-                      </p>
-                    </div>
+          {/* Your Rights */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Your Privacy Rights</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="text-gray-700 space-y-2 list-disc list-inside">
+                <li><strong>Access:</strong> Request a copy of your personal data</li>
+                <li><strong>Rectification:</strong> Correct inaccurate or incomplete information</li>
+                <li><strong>Erasure:</strong> Request deletion of your data (subject to legal requirements)</li>
+                <li><strong>Portability:</strong> Receive your data in a machine-readable format</li>
+                <li><strong>Restriction:</strong> Limit how we process your information</li>
+                <li><strong>Objection:</strong> Opt out of marketing communications and profiling</li>
+              </ul>
+            </CardContent>
+          </Card>
 
-                    <div className="bg-red-50 p-4 rounded-lg">
-                      <h4 className="font-semibold text-red-800 mb-2">We Never:</h4>
-                      <ul className="space-y-1 text-red-700 text-sm">
-                        <li>• Sell your personal information</li>
-                        <li>• Share data with advertisers</li>
-                        <li>• Use your data for unrelated marketing</li>
-                      </ul>
-                    </div>
-                  </div>
-                )}
-
-                {activeSection === 'rights' && (
-                  <div className="space-y-6">
-                    <h2 className="text-2xl font-bold">Your Rights</h2>
-                    
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <Card>
-                        <CardHeader className="pb-3">
-                          <CardTitle className="flex items-center gap-2 text-lg">
-                            <Download className="h-5 w-5" />
-                            Access & Export
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <p className="text-sm text-gray-700 mb-3">
-                            Request a copy of all data we have about you
-                          </p>
-                          <Button size="sm" variant="outline">Request Data Export</Button>
-                        </CardContent>
-                      </Card>
-
-                      <Card>
-                        <CardHeader className="pb-3">
-                          <CardTitle className="flex items-center gap-2 text-lg">
-                            <Trash2 className="h-5 w-5" />
-                            Delete Account
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <p className="text-sm text-gray-700 mb-3">
-                            Request deletion of your account and data
-                          </p>
-                          <Button size="sm" variant="outline">Request Deletion</Button>
-                        </CardContent>
-                      </Card>
-                    </div>
-
-                    <div className="space-y-4">
-                      <h3 className="text-lg font-semibold">Additional Rights</h3>
-                      <ul className="space-y-2 text-gray-700">
-                        <li>• <strong>Rectification:</strong> Correct inaccurate personal data</li>
-                        <li>• <strong>Restrict Processing:</strong> Limit how we use your data</li>
-                        <li>• <strong>Data Portability:</strong> Transfer your data to another service</li>
-                        <li>• <strong>Object:</strong> Opt out of certain data processing</li>
-                      </ul>
-                    </div>
-                  </div>
-                )}
-
-                {activeSection === 'contact' && (
-                  <div className="space-y-6">
-                    <h2 className="text-2xl font-bold">Contact Our Data Protection Team</h2>
-                    
-                    <div className="bg-blue-50 p-6 rounded-lg">
-                      <h3 className="font-semibold mb-4">Data Protection Officer</h3>
-                      <div className="space-y-2">
-                        <p className="flex items-center gap-2">
-                          <Mail className="h-4 w-4" />
-                          <a href="mailto:dpo@sanchaari.com" className="text-blue-600 hover:underline">
-                            dpo@sanchaari.com
-                          </a>
-                        </p>
-                        <p className="text-sm text-gray-700">
-                          Response time: Within 72 hours for data protection queries
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-4">
-                      <Button asChild>
-                        <Link to="/help/contact">General Support</Link>
-                      </Button>
-                      <Button variant="outline" asChild>
-                        <Link to="/cookies">Cookie Policy</Link>
-                      </Button>
-                    </div>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </div>
+          {/* Contact */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Mail className="h-5 w-5 text-emerald-600" />
+                Contact Us
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-700 mb-4">
+                If you have questions about this Privacy Policy or want to exercise your rights, contact us:
+              </p>
+              <div className="space-y-2 text-gray-700">
+                <p><strong>Data Protection Officer:</strong> privacy@sanchaari.com</p>
+                <p><strong>Address:</strong> Sanchaari Technologies Pvt Ltd, Bangalore, India</p>
+                <p><strong>Phone:</strong> +91-1800-XXX-XXXX</p>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 };

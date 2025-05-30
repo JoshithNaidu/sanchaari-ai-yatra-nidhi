@@ -354,7 +354,7 @@ const Search = () => {
 
               <Button 
                 onClick={handleSearch}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 mt-6"
+                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 mt-6"
                 size="lg"
               >
                 <span className="flex items-center gap-2">

@@ -5,20 +5,24 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Calendar, MapPin, Users, IndianRupee, Eye, RotateCcw, Search, Filter } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
 import Header from '@/components/Header';
 
 const TravelHistory = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
 
-  // Mock data for travel history
+  // Mock data for travel history with proper images
   const travelHistory = [
     {
       id: 1,
       title: "Kerala Backwaters",
       destination: "Alleppey, Kerala",
       dateRange: "Mar 15-22, 2024",
-      coverImage: "/placeholder.svg",
+      coverImage: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=400&q=80",
       participants: 3,
       totalSpent: 45000,
       activities: 12,
@@ -29,7 +33,7 @@ const TravelHistory = () => {
       title: "Rajasthan Heritage",
       destination: "Jaipur, Udaipur",
       dateRange: "Jan 10-18, 2024",
-      coverImage: "/placeholder.svg",
+      coverImage: "https://images.unsplash.com/photo-1599661046827-dacff0acdb4b?auto=format&fit=crop&w=400&q=80",
       participants: 2,
       totalSpent: 65000,
       activities: 18,
@@ -40,13 +44,36 @@ const TravelHistory = () => {
       title: "Goa Beach Retreat",
       destination: "North Goa",
       dateRange: "Dec 20-25, 2023",
-      coverImage: "/placeholder.svg",
+      coverImage: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=400&q=80",
       participants: 6,
       totalSpent: 38000,
       activities: 8,
       type: "group"
     }
   ];
+
+  const handleViewTrip = (tripId: number) => {
+    navigate(`/trips/${tripId}`);
+    toast({
+      title: "Opening trip details",
+      description: "Loading your trip itinerary..."
+    });
+  };
+
+  const handleRepeatTrip = (trip: any) => {
+    navigate('/trips/new', { state: { repeatTrip: trip } });
+    toast({
+      title: "Creating new trip",
+      description: `Creating a new trip based on "${trip.title}"`
+    });
+  };
+
+  const filteredTrips = travelHistory.filter(trip => {
+    const matchesSearch = trip.destination.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         trip.title.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesFilter = filterType === 'all' || trip.type === filterType;
+    return matchesSearch && matchesFilter;
+  });
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -86,7 +113,7 @@ const TravelHistory = () => {
 
         {/* Travel History Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {travelHistory.map((trip) => (
+          {filteredTrips.map((trip) => (
             <Card key={trip.id} className="group hover:shadow-lg transition-shadow duration-300">
               <div className="relative">
                 <img
@@ -127,16 +154,25 @@ const TravelHistory = () => {
 
                 <div className="bg-gray-50 rounded-lg p-3 mb-4">
                   <div className="text-sm text-gray-600 text-center">
-                    <span className="font-medium text-blue-600">{trip.activities}</span> activities completed
+                    <span className="font-medium text-emerald-600">{trip.activities}</span> activities completed
                   </div>
                 </div>
 
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm" className="flex-1 gap-2">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="flex-1 gap-2"
+                    onClick={() => handleViewTrip(trip.id)}
+                  >
                     <Eye className="h-4 w-4" />
                     View Trip
                   </Button>
-                  <Button size="sm" className="flex-1 gap-2">
+                  <Button 
+                    size="sm" 
+                    className="flex-1 gap-2 bg-emerald-600 hover:bg-emerald-700"
+                    onClick={() => handleRepeatTrip(trip)}
+                  >
                     <RotateCcw className="h-4 w-4" />
                     Repeat Trip
                   </Button>
@@ -147,14 +183,20 @@ const TravelHistory = () => {
         </div>
 
         {/* Empty State */}
-        {travelHistory.length === 0 && (
+        {filteredTrips.length === 0 && (
           <div className="text-center py-12">
             <div className="w-24 h-24 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
               <MapPin className="h-12 w-12 text-gray-400" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">No trips yet</h3>
-            <p className="text-gray-600 mb-6">Start planning your first adventure!</p>
-            <Button>Plan Your First Trip</Button>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              {searchTerm || filterType !== 'all' ? 'No matching trips found' : 'No trips yet'}
+            </h3>
+            <p className="text-gray-600 mb-6">
+              {searchTerm || filterType !== 'all' ? 'Try adjusting your search or filters' : 'Start planning your first adventure!'}
+            </p>
+            <Button className="bg-emerald-600 hover:bg-emerald-700" onClick={() => navigate('/trips/new')}>
+              Plan Your First Trip
+            </Button>
           </div>
         )}
       </div>
