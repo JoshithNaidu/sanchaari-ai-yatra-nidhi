@@ -1,200 +1,417 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Header from '@/components/Header';
+import { useCentralizedAuth } from '@/contexts/CentralizedAuthContext';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Calendar, MapPin, Trash2, Eye, Plus, Search } from 'lucide-react';
-
-interface Trip {
-  id: string;
-  name: string;
-  destination: string;
-  startDate: string;
-  endDate: string;
-  status: 'Planning' | 'Booked' | 'Completed';
-}
+import { Progress } from '@/components/ui/progress';
+import { 
+  MapPin, 
+  Calendar, 
+  Plane, 
+  Hotel, 
+  Camera,
+  Plus,
+  Eye,
+  Edit,
+  Share,
+  Heart,
+  Users,
+  Clock,
+  CheckCircle,
+  AlertCircle,
+  TrendingUp,
+  Globe,
+  Star,
+  DollarSign
+} from 'lucide-react';
+import Header from '@/components/Header';
 
 const TripsDashboard = () => {
-  const [trips] = useState<Trip[]>([
-    {
-      id: '1',
-      name: 'My Trip to Paris',
-      destination: 'Paris, France',
-      startDate: '2024-06-15',
-      endDate: '2024-06-22',
-      status: 'Planning'
-    },
-    {
-      id: '2',
-      name: 'Kerala Backwaters',
-      destination: 'Kerala, India',
-      startDate: '2024-04-10',
-      endDate: '2024-04-17',
-      status: 'Completed'
-    }
-  ]);
+  const { user } = useCentralizedAuth();
+  const [activeTab, setActiveTab] = useState('upcoming');
 
-  const [filterStatus, setFilterStatus] = useState<string>('all');
-  const [sortBy, setSortBy] = useState<string>('recent');
-  const [searchTerm, setSearchTerm] = useState('');
+  // Mock trip data
+  const trips = {
+    upcoming: [
+      {
+        id: 'trip_001',
+        title: 'Tokyo Adventure',
+        destination: 'Tokyo, Japan',
+        dates: 'Mar 15 - Mar 22, 2024',
+        status: 'confirmed',
+        progress: 85,
+        image: '/placeholder.svg',
+        travelers: 2,
+        budget: 180000,
+        spent: 125000,
+        daysLeft: 12,
+        activities: 8,
+        bookings: { flights: true, hotels: true, activities: 6 }
+      },
+      {
+        id: 'trip_002', 
+        title: 'Kerala Backwaters',
+        destination: 'Alleppey, Kerala',
+        dates: 'Apr 5 - Apr 10, 2024',
+        status: 'planning',
+        progress: 45,
+        image: '/placeholder.svg',
+        travelers: 4,
+        budget: 85000,
+        spent: 25000,
+        daysLeft: 28,
+        activities: 3,
+        bookings: { flights: false, hotels: true, activities: 1 }
+      }
+    ],
+    past: [
+      {
+        id: 'trip_003',
+        title: 'Goa Beach Holiday',
+        destination: 'Goa, India',
+        dates: 'Dec 20 - Dec 27, 2023',
+        status: 'completed',
+        rating: 4.8,
+        memories: 145,
+        travelers: 3,
+        totalSpent: 65000
+      }
+    ],
+    saved: [
+      {
+        id: 'trip_004',
+        title: 'European Explorer',
+        destination: 'Paris, Rome, Barcelona',
+        estimatedBudget: 250000,
+        duration: '14 days',
+        saved: true
+      }
+    ]
+  };
 
-  const getStatusBadgeVariant = (status: string) => {
+  const quickStats = {
+    totalTrips: 8,
+    countriesVisited: 12,
+    totalSpent: 485000,
+    upcomingTrips: 2,
+    rewardPoints: 2450
+  };
+
+  const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Planning':
-        return 'default';
-      case 'Booked':
-        return 'secondary';
-      case 'Completed':
-        return 'outline';
-      default:
-        return 'default';
+      case 'confirmed': return 'bg-green-100 text-green-800';
+      case 'planning': return 'bg-blue-100 text-blue-800'; 
+      case 'completed': return 'bg-gray-100 text-gray-800';
+      default: return 'bg-yellow-100 text-yellow-800';
     }
   };
 
-  const filteredTrips = trips.filter(trip => {
-    const matchesStatus = filterStatus === 'all' || trip.status.toLowerCase() === filterStatus;
-    const matchesSearch = trip.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         trip.destination.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesStatus && matchesSearch;
-  });
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'confirmed': return <CheckCircle className="h-4 w-4" />;
+      case 'planning': return <Clock className="h-4 w-4" />;
+      case 'completed': return <CheckCircle className="h-4 w-4" />;
+      default: return <AlertCircle className="h-4 w-4" />;
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Main Content */}
+      <div className="container mx-auto px-4 py-8">
+        {/* Welcome Section */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">My Trips</h1>
-          <p className="text-gray-600">Manage all your travel adventures in one place</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Welcome back, {user?.fullName?.split(' ')[0] || 'Traveler'}! ✈️
+          </h1>
+          <p className="text-gray-600">Ready for your next adventure? Let's plan something amazing.</p>
         </div>
 
-        {/* Filter & Sort Toolbar */}
-        <div className="bg-white rounded-lg shadow-sm border p-4 mb-6">
-          <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
-            <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                <Input
-                  placeholder="Search trips..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 w-full sm:w-64"
-                />
-              </div>
-              
-              <Select value={filterStatus} onValueChange={setFilterStatus}>
-                <SelectTrigger className="w-full sm:w-40">
-                  <SelectValue placeholder="Filter by status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Status</SelectItem>
-                  <SelectItem value="planning">Planning</SelectItem>
-                  <SelectItem value="booked">Booked</SelectItem>
-                  <SelectItem value="completed">Completed</SelectItem>
-                </SelectContent>
-              </Select>
+        {/* Quick Stats */}
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+          <Card>
+            <CardContent className="p-4 text-center">
+              <Globe className="h-6 w-6 text-blue-600 mx-auto mb-2" />
+              <div className="text-2xl font-bold">{quickStats.totalTrips}</div>
+              <p className="text-xs text-gray-600">Total Trips</p>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardContent className="p-4 text-center">
+              <MapPin className="h-6 w-6 text-green-600 mx-auto mb-2" />
+              <div className="text-2xl font-bold">{quickStats.countriesVisited}</div>
+              <p className="text-xs text-gray-600">Countries</p>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardContent className="p-4 text-center">
+              <DollarSign className="h-6 w-6 text-purple-600 mx-auto mb-2" />
+              <div className="text-2xl font-bold">₹{(quickStats.totalSpent / 1000).toFixed(0)}K</div>
+              <p className="text-xs text-gray-600">Total Spent</p>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardContent className="p-4 text-center">
+              <Calendar className="h-6 w-6 text-orange-600 mx-auto mb-2" />
+              <div className="text-2xl font-bold">{quickStats.upcomingTrips}</div>
+              <p className="text-xs text-gray-600">Upcoming</p>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardContent className="p-4 text-center">
+              <Star className="h-6 w-6 text-yellow-600 mx-auto mb-2" />
+              <div className="text-2xl font-bold">{quickStats.rewardPoints}</div>
+              <p className="text-xs text-gray-600">Reward Points</p>
+            </CardContent>
+          </Card>
+        </div>
 
-              <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="w-full sm:w-40">
-                  <SelectValue placeholder="Sort by" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="recent">Most Recent</SelectItem>
-                  <SelectItem value="alphabetical">Alphabetical</SelectItem>
-                  <SelectItem value="start-date">Trip Start Date</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
+        {/* Quick Actions */}
+        <div className="mb-8">
+          <div className="flex flex-wrap gap-4">
             <Link to="/trips/new">
-              <Button className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto">
+              <Button className="bg-blue-600 hover:bg-blue-700">
                 <Plus className="h-4 w-4 mr-2" />
-                Create New Trip
+                Plan New Trip
+              </Button>
+            </Link>
+            <Link to="/search">
+              <Button variant="outline">
+                <Plane className="h-4 w-4 mr-2" />
+                Search Flights
+              </Button>
+            </Link>
+            <Link to="/search/hotels">
+              <Button variant="outline">
+                <Hotel className="h-4 w-4 mr-2" />
+                Find Hotels
+              </Button>
+            </Link>
+            <Link to="/explore/destinations">
+              <Button variant="outline">
+                <Globe className="h-4 w-4 mr-2" />
+                Explore Destinations
               </Button>
             </Link>
           </div>
         </div>
 
-        {/* Trip Cards Grid */}
-        {filteredTrips.length === 0 ? (
-          <div className="text-center py-16">
-            <div className="max-w-md mx-auto">
-              <div className="w-24 h-24 mx-auto mb-6 bg-blue-100 rounded-full flex items-center justify-center">
-                <MapPin className="h-12 w-12 text-blue-600" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                {searchTerm || filterStatus !== 'all' ? 'No trips found' : 'No trips yet'}
-              </h3>
-              <p className="text-gray-600 mb-6">
-                {searchTerm || filterStatus !== 'all' 
-                  ? 'Try adjusting your search or filters'
-                  : 'Start planning your next adventure and create your first trip'}
-              </p>
-              <Link to="/trips/new">
-                <Button className="bg-blue-600 hover:bg-blue-700">
-                  <Plus className="h-4 w-4 mr-2" />
-                  Create New Trip
-                </Button>
-              </Link>
-            </div>
+        {/* Trips Tabs */}
+        <div className="mb-6">
+          <div className="flex space-x-1 bg-gray-200 rounded-lg p-1 w-fit">
+            {['upcoming', 'past', 'saved'].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                  activeTab === tab 
+                    ? 'bg-white text-blue-600 shadow-sm' 
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                {tab.charAt(0).toUpperCase() + tab.slice(1)} Trips
+              </button>
+            ))}
           </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredTrips.map((trip) => (
-              <Card key={trip.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg truncate">{trip.name}</CardTitle>
-                    <Badge variant={getStatusBadgeVariant(trip.status)}>
-                      {trip.status}
+        </div>
+
+        {/* Upcoming Trips */}
+        {activeTab === 'upcoming' && (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {trips.upcoming.map((trip) => (
+              <Card key={trip.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                <div className="aspect-video bg-gradient-to-r from-blue-400 to-purple-500 relative">
+                  <div className="absolute inset-0 bg-black/20"></div>
+                  <div className="absolute top-4 left-4">
+                    <Badge className={getStatusColor(trip.status)} variant="secondary">
+                      <span className="flex items-center gap-1">
+                        {getStatusIcon(trip.status)}
+                        {trip.status}
+                      </span>
                     </Badge>
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <div className="flex items-center text-gray-600">
-                      <MapPin className="h-4 w-4 mr-2" />
-                      <span className="text-sm truncate">{trip.destination}</span>
+                  <div className="absolute bottom-4 left-4 text-white">
+                    <h3 className="text-xl font-bold">{trip.title}</h3>
+                    <p className="text-sm opacity-90">{trip.destination}</p>
+                  </div>
+                </div>
+                
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center text-sm text-gray-600">
+                      <Calendar className="h-4 w-4 mr-1" />
+                      {trip.dates}
                     </div>
-                    <div className="flex items-center text-gray-600">
-                      <Calendar className="h-4 w-4 mr-2" />
-                      <span className="text-sm">
-                        {new Date(trip.startDate).toLocaleDateString()} - {new Date(trip.endDate).toLocaleDateString()}
-                      </span>
+                    <div className="flex items-center text-sm text-gray-600">
+                      <Users className="h-4 w-4 mr-1" />
+                      {trip.travelers} travelers
                     </div>
-                    <div className="flex gap-2 pt-2">
-                      <Link to={`/trips/${trip.id}`} className="flex-1">
-                        <Button variant="outline" size="sm" className="w-full">
-                          <Eye className="h-3 w-3 mr-1" />
-                          View Itinerary
+                  </div>
+
+                  <div className="mb-4">
+                    <div className="flex justify-between text-sm mb-1">
+                      <span>Trip Planning Progress</span>
+                      <span>{trip.progress}%</span>
+                    </div>
+                    <Progress value={trip.progress} className="h-2" />
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-4 mb-4 text-sm">
+                    <div>
+                      <p className="text-gray-600">Budget</p>
+                      <p className="font-semibold">₹{trip.budget.toLocaleString()}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-600">Spent</p>
+                      <p className="font-semibold">₹{trip.spent.toLocaleString()}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-600">Days Left</p>
+                      <p className="font-semibold">{trip.daysLeft} days</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div className="flex space-x-2">
+                      <Link to={`/trips/${trip.id}`}>
+                        <Button size="sm" variant="outline">
+                          <Eye className="h-4 w-4 mr-1" />
+                          View
                         </Button>
                       </Link>
-                      <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
-                        <Trash2 className="h-3 w-3" />
+                      <Button size="sm" variant="outline">
+                        <Edit className="h-4 w-4 mr-1" />
+                        Edit
                       </Button>
                     </div>
+                    <Button size="sm" variant="ghost">
+                      <Share className="h-4 w-4" />
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
             ))}
-            
-            {/* Create New Trip Card */}
-            <Link to="/trips/new">
-              <Card className="border-dashed border-2 border-gray-300 hover:border-blue-400 hover:bg-blue-50/50 transition-colors cursor-pointer">
-                <CardContent className="flex flex-col items-center justify-center h-full min-h-[200px] text-center p-6">
-                  <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-                    <Plus className="h-6 w-6 text-blue-600" />
+          </div>
+        )}
+
+        {/* Past Trips */}
+        {activeTab === 'past' && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {trips.past.map((trip) => (
+              <Card key={trip.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                <div className="aspect-video bg-gradient-to-r from-green-400 to-blue-500 relative">
+                  <div className="absolute inset-0 bg-black/20"></div>
+                  <div className="absolute bottom-4 left-4 text-white">
+                    <h3 className="text-lg font-bold">{trip.title}</h3>
+                    <p className="text-sm opacity-90">{trip.destination}</p>
                   </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Create New Trip</h3>
-                  <p className="text-sm text-gray-600">Start planning your next adventure</p>
+                  <div className="absolute top-4 right-4">
+                    <div className="flex items-center bg-white/20 rounded-full px-2 py-1 text-white text-sm">
+                      <Star className="h-3 w-3 mr-1 fill-yellow-400 text-yellow-400" />
+                      {trip.rating}
+                    </div>
+                  </div>
+                </div>
+                
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center text-sm text-gray-600">
+                      <Calendar className="h-4 w-4 mr-1" />
+                      {trip.dates}
+                    </div>
+                    <div className="flex items-center text-sm text-gray-600">
+                      <Camera className="h-4 w-4 mr-1" />
+                      {trip.memories} photos
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <Button size="sm" variant="outline">
+                      <Eye className="h-4 w-4 mr-1" />
+                      View Memories
+                    </Button>
+                    <Button size="sm" variant="ghost">
+                      <Heart className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
-            </Link>
+            ))}
           </div>
+        )}
+
+        {/* Saved Trips */}
+        {activeTab === 'saved' && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {trips.saved.map((trip) => (
+              <Card key={trip.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                <div className="aspect-video bg-gradient-to-r from-purple-400 to-pink-500 relative">
+                  <div className="absolute inset-0 bg-black/20"></div>
+                  <div className="absolute bottom-4 left-4 text-white">
+                    <h3 className="text-lg font-bold">{trip.title}</h3>
+                    <p className="text-sm opacity-90">{trip.destination}</p>
+                  </div>
+                  <div className="absolute top-4 right-4">
+                    <Heart className="h-5 w-5 text-red-400 fill-red-400" />
+                  </div>
+                </div>
+                
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="text-sm text-gray-600">
+                      Estimated Budget: ₹{trip.estimatedBudget.toLocaleString()}
+                    </div>
+                    <div className="text-sm text-gray-600">
+                      {trip.duration}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+                      <Plus className="h-4 w-4 mr-1" />
+                      Plan This Trip
+                    </Button>
+                    <Button size="sm" variant="ghost">
+                      <Heart className="h-4 w-4 fill-red-400 text-red-400" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
+
+        {/* Empty State */}
+        {((activeTab === 'upcoming' && trips.upcoming.length === 0) || 
+          (activeTab === 'past' && trips.past.length === 0) || 
+          (activeTab === 'saved' && trips.saved.length === 0)) && (
+          <Card className="text-center py-12">
+            <CardContent>
+              <Plane className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                No {activeTab} trips yet
+              </h3>
+              <p className="text-gray-600 mb-6">
+                {activeTab === 'upcoming' && "Start planning your next adventure!"}
+                {activeTab === 'past' && "Your completed trips will appear here."}
+                {activeTab === 'saved' && "Save trips you're interested in for later."}
+              </p>
+              <Link to="/trips/new">
+                <Button className="bg-blue-600 hover:bg-blue-700">
+                  <Plus className="h-4 w-4 mr-2" />
+                  Plan Your First Trip
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
         )}
       </div>
     </div>

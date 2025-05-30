@@ -1,121 +1,146 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useCentralizedAuth } from '@/contexts/CentralizedAuthContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { useCentralizedAuth } from '@/contexts/CentralizedAuthContext';
+import { Progress } from '@/components/ui/progress';
 import { 
   Users, 
   Building2, 
-  CreditCard, 
-  AlertTriangle, 
+  DollarSign, 
   TrendingUp,
   TrendingDown,
+  AlertTriangle,
+  CheckCircle,
+  XCircle,
+  Clock,
+  BarChart3,
   Activity,
-  Calendar,
-  RefreshCw,
-  Download,
-  Eye
+  Globe,
+  Zap,
+  Shield,
+  Settings,
+  Bell,
+  LogOut,
+  Eye,
+  Plus,
+  Filter,
+  Calendar
 } from 'lucide-react';
 
 const AdminDashboard = () => {
-  const { user } = useCentralizedAuth();
-  const [refreshing, setRefreshing] = useState(false);
+  const { user, logout } = useCentralizedAuth();
+  const [timePeriod, setTimePeriod] = useState('month');
 
-  const handleRefresh = async () => {
-    setRefreshing(true);
-    // Simulate refresh
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    setRefreshing(false);
+  // System metrics
+  const systemMetrics = {
+    totalUsers: 15847,
+    activeUsers: 12563,
+    totalPartners: 342,
+    activePartners: 287,
+    totalBookings: 8439,
+    pendingBookings: 156,
+    totalRevenue: 45678900,
+    monthlyGrowth: 12.5,
+    systemUptime: 99.9,
+    apiResponseTime: 145
   };
 
-  const metrics = [
-    {
-      title: "Total Users",
-      value: "45,234",
-      delta: "+2.4%",
-      trend: "up",
-      icon: Users,
-      color: "text-blue-600"
+  // User activity data
+  const userActivity = [
+    { type: 'new_registrations', count: 145, change: +12 },
+    { type: 'active_sessions', count: 3247, change: +8 },
+    { type: 'bookings_completed', count: 89, change: -3 },
+    { type: 'support_tickets', count: 23, change: +5 }
+  ];
+
+  // Recent alerts
+  const systemAlerts = [
+    { 
+      id: 1, 
+      type: 'critical', 
+      message: 'High API response time detected on payment gateway', 
+      timestamp: '2 minutes ago',
+      action: 'Investigate'
     },
-    {
-      title: "Active Sessions",
-      value: "1,203",
-      delta: "+5.2%",
-      trend: "up",
-      icon: Activity,
-      color: "text-green-600"
+    { 
+      id: 2, 
+      type: 'warning', 
+      message: 'Unusual spike in failed login attempts', 
+      timestamp: '15 minutes ago',
+      action: 'Review Logs'
     },
-    {
-      title: "Bookings Today",
-      value: "127",
-      delta: "-1.2%",
-      trend: "down",
-      icon: Calendar,
-      color: "text-orange-600"
-    },
-    {
-      title: "Cancellations %",
-      value: "2.1%",
-      delta: "+0.3%",
-      trend: "down",
-      icon: AlertTriangle,
-      color: "text-red-600"
-    },
-    {
-      title: "Refunds Processed",
-      value: "₹1.2L",
-      delta: "-15%",
-      trend: "up",
-      icon: CreditCard,
-      color: "text-purple-600"
-    },
-    {
-      title: "SLA Breaches",
-      value: "3",
-      delta: "-2",
-      trend: "up",
-      icon: AlertTriangle,
-      color: "text-red-600"
+    { 
+      id: 3, 
+      type: 'info', 
+      message: 'Scheduled maintenance window approaching', 
+      timestamp: '1 hour ago',
+      action: 'Prepare'
     }
   ];
 
-  const recentBookings = [
-    { id: "BK001", amount: "₹25,000", user: "Rahul Sharma", partner: "TravelCorp", status: "confirmed", method: "UPI" },
-    { id: "BK002", amount: "₹45,000", user: "Priya Patel", partner: "BookMyTrip", status: "pending", method: "Card" },
-    { id: "BK003", amount: "₹18,500", user: "Amit Kumar", partner: "TravelCorp", status: "cancelled", method: "Wallet" },
-    { id: "BK004", amount: "₹67,000", user: "Sneha Singh", partner: "Wanderlust", status: "confirmed", method: "Card" },
-    { id: "BK005", amount: "₹32,000", user: "Vikram Joshi", partner: "BookMyTrip", status: "confirmed", method: "UPI" }
+  // Recent partner applications
+  const partnerApplications = [
+    { 
+      id: 'PA2024001', 
+      company: 'Mountain View Resorts', 
+      type: 'Hotels', 
+      status: 'pending_review',
+      submitted: '2024-01-15',
+      documents: 8
+    },
+    { 
+      id: 'PA2024002', 
+      company: 'Adventure Tours India', 
+      type: 'Activities', 
+      status: 'approved',
+      submitted: '2024-01-14',
+      documents: 12
+    },
+    { 
+      id: 'PA2024003', 
+      company: 'Sky Airlines', 
+      type: 'Flights', 
+      status: 'rejected',
+      submitted: '2024-01-13',
+      documents: 5
+    }
   ];
 
-  const recentSignups = [
-    { id: "USR001", name: "Anita Verma", time: "2 mins ago", device: "Mobile", source: "Organic" },
-    { id: "USR002", name: "Rajesh Gupta", time: "5 mins ago", device: "Desktop", source: "Google Ads" },
-    { id: "USR003", name: "Meera Shah", time: "12 mins ago", device: "Mobile", source: "Referral" },
-    { id: "USR004", name: "Suresh Reddy", time: "18 mins ago", device: "Desktop", source: "Facebook" },
-    { id: "USR005", name: "Kavya Nair", time: "25 mins ago", device: "Mobile", source: "Organic" }
+  // Top performing partners
+  const topPartners = [
+    { name: 'Luxury Hotels Group', bookings: 234, revenue: 1250000, rating: 4.8 },
+    { name: 'Adventure Seekers', bookings: 189, revenue: 890000, rating: 4.7 },
+    { name: 'City Break Hotels', bookings: 156, revenue: 675000, rating: 4.6 },
+    { name: 'Mountain Escapes', bookings: 142, revenue: 598000, rating: 4.9 }
   ];
 
-  const systemAlerts = [
-    { type: "critical", message: "High booking dropoff detected in Mumbai region", time: "5 mins ago" },
-    { type: "warning", message: "Payment gateway latency above threshold", time: "12 mins ago" },
-    { type: "info", message: "Partner onboarding queue requires attention", time: "1 hour ago" }
-  ];
+  const getAlertColor = (type: string) => {
+    switch (type) {
+      case 'critical': return 'border-red-200 bg-red-50 text-red-800';
+      case 'warning': return 'border-yellow-200 bg-yellow-50 text-yellow-800';
+      default: return 'border-blue-200 bg-blue-50 text-blue-800';
+    }
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'confirmed': return 'bg-green-100 text-green-800';
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'cancelled': return 'bg-red-100 text-red-800';
+      case 'approved': return 'bg-green-100 text-green-800';
+      case 'pending_review': return 'bg-yellow-100 text-yellow-800';
+      case 'rejected': return 'bg-red-100 text-red-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
 
-  const getAlertColor = (type: string) => {
-    switch (type) {
-      case 'critical': return 'border-red-200 bg-red-50';
-      case 'warning': return 'border-yellow-200 bg-yellow-50';
-      default: return 'border-blue-200 bg-blue-50';
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'approved': return <CheckCircle className="h-4 w-4" />;
+      case 'pending_review': return <Clock className="h-4 w-4" />;
+      case 'rejected': return <XCircle className="h-4 w-4" />;
+      default: return <Clock className="h-4 w-4" />;
     }
   };
 
@@ -123,79 +148,239 @@ const AdminDashboard = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
-              <p className="text-gray-600">Welcome back, {user?.fullName}</p>
-            </div>
-            <div className="flex items-center gap-4">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleRefresh}
-                disabled={refreshing}
-                className="gap-2"
-              >
-                <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
-                Refresh
-              </Button>
-              <Button variant="outline" size="sm" className="gap-2">
-                <Download className="h-4 w-4" />
-                Export
-              </Button>
-              <Link to="/admin/logout">
-                <Button variant="destructive" size="sm">Logout</Button>
-              </Link>
-            </div>
+        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+          <Link to="/" className="hover:opacity-80 transition-opacity">
+            <img 
+              src="/lovable-uploads/94fa41ec-96bd-400a-8fc5-4c52f8f19917.png" 
+              alt="Sanchaari Logo" 
+              className="h-8 w-auto"
+            />
+          </Link>
+          
+          <div className="flex items-center gap-4">
+            <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">
+              Admin Portal
+            </Badge>
+            <Button variant="ghost" size="sm">
+              <Bell className="h-4 w-4" />
+            </Button>
+            <Button variant="ghost" size="sm">
+              <Settings className="h-4 w-4" />
+            </Button>
+            <Button variant="ghost" size="sm" onClick={logout}>
+              <LogOut className="h-4 w-4" />
+            </Button>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8">
-        {/* Top Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 mb-8">
-          {metrics.map((metric, index) => (
-            <Card key={index}>
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">{metric.title}</p>
-                    <p className="text-2xl font-bold text-gray-900">{metric.value}</p>
-                    <div className="flex items-center mt-1">
-                      {metric.trend === 'up' ? 
-                        <TrendingUp className="h-4 w-4 text-green-600 mr-1" /> : 
-                        <TrendingDown className="h-4 w-4 text-red-600 mr-1" />
-                      }
-                      <span className={`text-sm ${metric.trend === 'up' ? 'text-green-600' : 'text-red-600'}`}>
-                        {metric.delta}
-                      </span>
-                    </div>
-                  </div>
-                  <metric.icon className={`h-8 w-8 ${metric.color}`} />
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+        {/* Welcome Section */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Admin Dashboard
+          </h1>
+          <p className="text-gray-600">System overview and management console</p>
         </div>
 
         {/* System Alerts */}
+        {systemAlerts.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-orange-500" />
+              System Alerts
+            </h2>
+            <div className="space-y-3">
+              {systemAlerts.map((alert) => (
+                <div key={alert.id} className={`p-4 rounded-lg border ${getAlertColor(alert.type)} flex items-center justify-between`}>
+                  <div className="flex items-center gap-3">
+                    <AlertTriangle className="h-5 w-5" />
+                    <div>
+                      <span className="font-medium">{alert.message}</span>
+                      <p className="text-sm opacity-80">{alert.timestamp}</p>
+                    </div>
+                  </div>
+                  <Button variant="outline" size="sm">
+                    {alert.action}
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Time Period Filter */}
+        <div className="mb-6">
+          <Select value={timePeriod} onValueChange={setTimePeriod}>
+            <SelectTrigger className="w-48">
+              <SelectValue placeholder="Select time period" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="today">Today</SelectItem>
+              <SelectItem value="week">This Week</SelectItem>
+              <SelectItem value="month">This Month</SelectItem>
+              <SelectItem value="quarter">This Quarter</SelectItem>
+              <SelectItem value="year">This Year</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Key System Metrics */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+              <Users className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{systemMetrics.totalUsers.toLocaleString()}</div>
+              <p className="text-xs text-muted-foreground">
+                <TrendingUp className="inline h-3 w-3 text-green-600 mr-1" />
+                {systemMetrics.activeUsers.toLocaleString()} active users
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Partners</CardTitle>
+              <Building2 className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{systemMetrics.totalPartners}</div>
+              <p className="text-xs text-muted-foreground">
+                {systemMetrics.activePartners} active partners
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+              <DollarSign className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">₹{(systemMetrics.totalRevenue / 1000000).toFixed(1)}M</div>
+              <p className="text-xs text-muted-foreground">
+                <TrendingUp className="inline h-3 w-3 text-green-600 mr-1" />
+                +{systemMetrics.monthlyGrowth}% this month
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">System Health</CardTitle>
+              <Activity className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{systemMetrics.systemUptime}%</div>
+              <p className="text-xs text-muted-foreground">
+                {systemMetrics.apiResponseTime}ms avg response
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+          {/* Recent User Activity */}
+          <div className="lg:col-span-2">
+            <Card>
+              <CardHeader>
+                <CardTitle>User Activity Overview</CardTitle>
+                <CardDescription>Real-time user engagement metrics</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {userActivity.map((activity, index) => (
+                    <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                      <div className="flex-1">
+                        <h4 className="font-medium capitalize">{activity.type.replace('_', ' ')}</h4>
+                        <p className="text-2xl font-bold mt-1">{activity.count.toLocaleString()}</p>
+                      </div>
+                      <div className="text-right">
+                        <div className={`flex items-center gap-1 ${activity.change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                          {activity.change >= 0 ? 
+                            <TrendingUp className="h-4 w-4" /> : 
+                            <TrendingDown className="h-4 w-4" />
+                          }
+                          <span className="text-sm font-medium">{Math.abs(activity.change)}%</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Partner Applications */}
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <div>
+                <CardTitle>Partner Applications</CardTitle>
+                <CardDescription>Pending partner reviews</CardDescription>
+              </div>
+              <Link to="/admin/partners/applications">
+                <Button variant="outline" size="sm">
+                  <Eye className="h-4 w-4 mr-2" />
+                  View All
+                </Button>
+              </Link>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {partnerApplications.map((application) => (
+                  <div key={application.id} className="p-3 bg-gray-50 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-medium text-sm">{application.company}</span>
+                      <Badge className={getStatusColor(application.status)} variant="secondary">
+                        <span className="flex items-center gap-1">
+                          {getStatusIcon(application.status)}
+                          {application.status.replace('_', ' ')}
+                        </span>
+                      </Badge>
+                    </div>
+                    <p className="text-xs text-gray-500 mb-1">{application.type}</p>
+                    <p className="text-xs text-gray-500">Submitted: {application.submitted}</p>
+                    <p className="text-xs text-gray-500">{application.documents} documents</p>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Top Performing Partners */}
         <Card className="mb-8">
           <CardHeader>
-            <CardTitle>System Alert Center</CardTitle>
-            <CardDescription>Real-time monitoring and notifications</CardDescription>
+            <CardTitle>Top Performing Partners</CardTitle>
+            <CardDescription>Highest revenue generating partners this month</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-3">
-              {systemAlerts.map((alert, index) => (
-                <div key={index} className={`p-4 rounded-lg border ${getAlertColor(alert.type)}`}>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <AlertTriangle className="h-5 w-5 text-current" />
-                      <span className="font-medium">{alert.message}</span>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {topPartners.map((partner, index) => (
+                <div key={index} className="p-4 border rounded-lg">
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="font-medium">{partner.name}</h4>
+                    <Badge variant="outline">#{index + 1}</Badge>
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Bookings:</span>
+                      <span className="font-medium">{partner.bookings}</span>
                     </div>
-                    <span className="text-sm text-gray-600">{alert.time}</span>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Revenue:</span>
+                      <span className="font-medium">₹{(partner.revenue / 1000).toFixed(0)}K</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Rating:</span>
+                      <span className="font-medium flex items-center gap-1">
+                        ⭐ {partner.rating}
+                      </span>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -203,124 +388,56 @@ const AdminDashboard = () => {
           </CardContent>
         </Card>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          {/* Recent Bookings */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Recent Bookings</CardTitle>
-              <CardDescription>Latest booking activities</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {recentBookings.map((booking, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <div>
-                      <p className="font-medium">{booking.id}</p>
-                      <p className="text-sm text-gray-600">{booking.user} • {booking.partner}</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-medium">{booking.amount}</p>
-                      <div className="flex items-center gap-2">
-                        <Badge className={getStatusColor(booking.status)}>
-                          {booking.status}
-                        </Badge>
-                        <span className="text-xs text-gray-500">{booking.method}</span>
-                      </div>
-                    </div>
+        {/* Quick Admin Actions */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Quick Admin Actions</CardTitle>
+            <CardDescription>Frequently used administrative functions</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <Link to="/admin/users/list">
+                <div className="p-6 rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all cursor-pointer">
+                  <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mb-4">
+                    <Users className="h-6 w-6 text-white" />
                   </div>
-                ))}
-              </div>
-              <div className="mt-4">
-                <Link to="/admin/bookings/list">
-                  <Button variant="outline" size="sm" className="w-full">
-                    <Eye className="h-4 w-4 mr-2" />
-                    View All Bookings
-                  </Button>
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
+                  <h3 className="font-semibold text-gray-900 mb-2">Manage Users</h3>
+                  <p className="text-sm text-gray-600">View, edit, and moderate user accounts</p>
+                </div>
+              </Link>
 
-          {/* Recent Signups */}
-          <Card>
-            <CardHeader>
-              <CardTitle>New User Signups</CardTitle>
-              <CardDescription>Latest user registrations</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {recentSignups.map((user, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <div>
-                      <p className="font-medium">{user.name}</p>
-                      <p className="text-sm text-gray-600">{user.id}</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-sm">{user.time}</p>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
-                          {user.device}
-                        </span>
-                        <span className="text-xs text-gray-500">{user.source}</span>
-                      </div>
-                    </div>
+              <Link to="/admin/partners/list">
+                <div className="p-6 rounded-lg border border-gray-200 hover:border-green-300 hover:shadow-lg transition-all cursor-pointer">
+                  <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mb-4">
+                    <Building2 className="h-6 w-6 text-white" />
                   </div>
-                ))}
-              </div>
-              <div className="mt-4">
-                <Link to="/admin/users/list">
-                  <Button variant="outline" size="sm" className="w-full">
-                    <Eye className="h-4 w-4 mr-2" />
-                    View All Users
-                  </Button>
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+                  <h3 className="font-semibold text-gray-900 mb-2">Partner Management</h3>
+                  <p className="text-sm text-gray-600">Review applications and manage partners</p>
+                </div>
+              </Link>
 
-        {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Link to="/admin/users/list">
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-              <CardContent className="p-6 text-center">
-                <Users className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-                <h3 className="font-semibold mb-2">User Management</h3>
-                <p className="text-sm text-gray-600">Manage users, KYC, and permissions</p>
-              </CardContent>
-            </Card>
-          </Link>
+              <Link to="/admin/content/destinations">
+                <div className="p-6 rounded-lg border border-gray-200 hover:border-purple-300 hover:shadow-lg transition-all cursor-pointer">
+                  <div className="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mb-4">
+                    <Globe className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="font-semibold text-gray-900 mb-2">Content Management</h3>
+                  <p className="text-sm text-gray-600">Manage destinations, blogs, and content</p>
+                </div>
+              </Link>
 
-          <Link to="/admin/partners/list">
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-              <CardContent className="p-6 text-center">
-                <Building2 className="h-12 w-12 text-green-600 mx-auto mb-4" />
-                <h3 className="font-semibold mb-2">Partner Management</h3>
-                <p className="text-sm text-gray-600">Manage partners and onboarding</p>
-              </CardContent>
-            </Card>
-          </Link>
-
-          <Link to="/admin/bookings/list">
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-              <CardContent className="p-6 text-center">
-                <Calendar className="h-12 w-12 text-purple-600 mx-auto mb-4" />
-                <h3 className="font-semibold mb-2">Booking Management</h3>
-                <p className="text-sm text-gray-600">View and manage all bookings</p>
-              </CardContent>
-            </Card>
-          </Link>
-
-          <Link to="/admin/users/feedback">
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-              <CardContent className="p-6 text-center">
-                <AlertTriangle className="h-12 w-12 text-orange-600 mx-auto mb-4" />
-                <h3 className="font-semibold mb-2">Support Center</h3>
-                <p className="text-sm text-gray-600">Handle support tickets and feedback</p>
-              </CardContent>
-            </Card>
-          </Link>
-        </div>
+              <Link to="/admin/reports/overview">
+                <div className="p-6 rounded-lg border border-gray-200 hover:border-orange-300 hover:shadow-lg transition-all cursor-pointer">
+                  <div className="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center mb-4">
+                    <BarChart3 className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="font-semibold text-gray-900 mb-2">Analytics & Reports</h3>
+                  <p className="text-sm text-gray-600">View detailed analytics and generate reports</p>
+                </div>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
