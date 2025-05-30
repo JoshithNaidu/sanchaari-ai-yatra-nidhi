@@ -5,7 +5,6 @@ import HeroSection from '@/components/HeroSection';
 import QuickStartSection from '@/components/QuickStartSection';
 import HowItWorksSection from '@/components/HowItWorksSection';
 import FeaturedCollections from '@/components/FeaturedCollections';
-import PartnerCTASection from '@/components/PartnerCTASection';
 import Footer from '@/components/Footer';
 
 const Index = () => {
@@ -16,7 +15,6 @@ const Index = () => {
       <QuickStartSection />
       <HowItWorksSection />
       <FeaturedCollections />
-      <PartnerCTASection />
       <Footer />
     </div>
   );
