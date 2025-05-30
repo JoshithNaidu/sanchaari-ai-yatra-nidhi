@@ -111,7 +111,7 @@ export const CentralizedAuthProvider: React.FC<{ children: React.ReactNode }> = 
     }
   }, [authState.sessionExpiry]);
 
-  const login = async (email: string, password: string, userType?: 'traveler' | 'partner' | 'admin') => => {
+  const login = async (email: string, password: string, userType?: 'traveler' | 'partner' | 'admin') => {
     try {
       setAuthState(prev => ({ ...prev, isLoading: true }));
       
