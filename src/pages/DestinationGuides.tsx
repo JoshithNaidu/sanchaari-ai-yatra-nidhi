@@ -57,9 +57,9 @@ const DestinationGuides = () => {
             {/* Breadcrumbs */}
             <nav className="mb-4 text-sm">
               <Link to="/" className="hover:underline">Home</Link>
-              <span className="mx-2">></span>
+              <span className="mx-2">&gt;</span>
               <Link to="/explore/destinations" className="hover:underline">Destinations</Link>
-              <span className="mx-2">></span>
+              <span className="mx-2">&gt;</span>
               <span>{cityData.name}</span>
             </nav>
             <h1 className="text-5xl font-bold mb-4">{cityData.name}</h1>
