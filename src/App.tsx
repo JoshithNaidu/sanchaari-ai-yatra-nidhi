@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -64,6 +63,12 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminLogout from "./pages/AdminLogout";
 import AdminForgotPassword from "./pages/AdminForgotPassword";
 import AdminUsers from "./pages/AdminUsers";
+import AdminUsersList from "./pages/AdminUsersList";
+import AdminUserProfile from "./pages/AdminUserProfile";
+import AdminUserFeedback from "./pages/AdminUserFeedback";
+import AdminUserPreferences from "./pages/AdminUserPreferences";
+import AdminUserBlacklist from "./pages/AdminUserBlacklist";
+import AdminUserKyc from "./pages/AdminUserKyc";
 import AdminTrips from "./pages/AdminTrips";
 import AdminDestinations from "./pages/AdminDestinations";
 import AdminChatbotAnalytics from "./pages/AdminChatbotAnalytics";
@@ -213,11 +218,45 @@ const App = () => (
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/logout" element={<AdminLogout />} />
             <Route path="/admin/forgot-password" element={<AdminForgotPassword />} />
+            
+            {/* Admin User Management Routes */}
             <Route path="/admin/users" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminUsers />
               </ProtectedRoute>
             } />
+            <Route path="/admin/users/list" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminUsersList />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/users/:userId" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminUserProfile />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/users/feedback" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminUserFeedback />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/users/preferences" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminUserPreferences />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/users/blacklist" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminUserBlacklist />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/users/kyc" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminUserKyc />
+              </ProtectedRoute>
+            } />
+            
+            {/* Other Admin Routes */}
             <Route path="/admin/trips" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminTrips />

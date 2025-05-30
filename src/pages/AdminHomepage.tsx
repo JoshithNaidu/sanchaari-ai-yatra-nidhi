@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCentralizedAuth } from '@/contexts/CentralizedAuthContext';
@@ -46,7 +45,7 @@ const AdminHomepage = () => {
       title: 'User Management',
       description: 'Manage registered users',
       icon: Users,
-      path: '/admin/users',
+      path: '/admin/users/list',
       color: 'bg-green-50 text-green-600 border-green-200'
     },
     {
