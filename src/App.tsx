@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -72,6 +73,11 @@ import AdminUserKyc from "./pages/AdminUserKyc";
 import AdminTrips from "./pages/AdminTrips";
 import AdminDestinations from "./pages/AdminDestinations";
 import AdminChatbotAnalytics from "./pages/AdminChatbotAnalytics";
+import AdminBookings from "./pages/AdminBookings";
+import AdminIntegrations from "./pages/AdminIntegrations";
+import AdminPricing from "./pages/AdminPricing";
+import AdminUGC from "./pages/AdminUGC";
+import AdminReports from "./pages/AdminReports";
 
 const queryClient = new QueryClient();
 

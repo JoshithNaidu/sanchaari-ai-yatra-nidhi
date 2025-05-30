@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -343,7 +342,7 @@ const AdminUGC = () => {
                         <div className="space-y-2">
                           <div className="flex justify-between items-start">
                             <h3 className="font-medium text-sm">{photo.caption}</h3>
-                            <Badge className={getStatusColor(photo.status)} size="sm">
+                            <Badge className={getStatusColor(photo.status)}>
                               {photo.status}
                             </Badge>
                           </div>
