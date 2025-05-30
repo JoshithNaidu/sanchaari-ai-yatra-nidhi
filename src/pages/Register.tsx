@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
-import { useAuth } from '@/contexts/AuthContext';
+import { useCentralizedAuth } from '@/contexts/CentralizedAuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { Eye, EyeOff } from 'lucide-react';
 
@@ -21,7 +21,7 @@ const Register = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
-  const { register } = useAuth();
+  const { register } = useCentralizedAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -63,23 +63,23 @@ const Register = () => {
     setIsLoading(true);
 
     try {
-      const success = await register({
+      const result = await register({
         fullName: formData.fullName,
         email: formData.email,
         password: formData.password,
         userType: formData.userType
       });
 
-      if (success) {
+      if (result.success) {
         toast({ 
           title: "Account created", 
-          description: "Please check your email to verify your account." 
+          description: result.message 
         });
         navigate('/auth/verify-email');
       } else {
         toast({ 
           title: "Registration failed", 
-          description: "Please try again.",
+          description: result.message,
           variant: "destructive"
         });
       }
