@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Plus, BarChart3, Download, Edit } from 'lucide-react';
+import { ArrowLeft, Plus, BarChart3, Download, Edit } from 'lucide-react';
 
 const AdminReportsCustom = () => {
   const customReports = [
@@ -38,7 +38,10 @@ const AdminReportsCustom = () => {
                 Create Report
               </Button>
               <Link to="/admin/reports/overview">
-                <Button variant="outline" size="sm">Back to Reports</Button>
+                <Button variant="outline" size="sm">
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Back to Reports
+                </Button>
               </Link>
             </div>
           </div>

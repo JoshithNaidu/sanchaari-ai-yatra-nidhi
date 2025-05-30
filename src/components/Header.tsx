@@ -21,6 +21,8 @@ const Header = () => {
     { label: 'Chat', href: '/chat' },
     { label: 'My Trips', href: '/trips/dashboard' },
     { label: 'Explore', href: '/explore/themes' },
+    { label: 'Blog', href: '/blog' },
+    { label: 'Community', href: '/community' },
   ];
 
   const getNavItems = () => {
@@ -29,6 +31,8 @@ const Header = () => {
         { label: 'Search', href: '/search' },
         { label: 'Chat', href: '/chat' },
         { label: 'Explore', href: '/explore/themes' },
+        { label: 'Blog', href: '/blog' },
+        { label: 'Community', href: '/community' },
       ];
     }
 

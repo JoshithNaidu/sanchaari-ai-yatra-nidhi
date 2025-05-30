@@ -10,8 +10,9 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Badge } from '@/components/ui/badge';
 import { Slider } from '@/components/ui/slider';
-import { CalendarIcon, MapPin, Users, DollarSign } from 'lucide-react';
+import { CalendarIcon, MapPin, Users, DollarSign, ArrowLeft } from 'lucide-react';
 import { format } from 'date-fns';
+import { Link } from 'react-router-dom';
 
 const CreateNewTrip = () => {
   const navigate = useNavigate();
@@ -49,6 +50,14 @@ const CreateNewTrip = () => {
       <Header />
       
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Back Navigation */}
+        <div className="mb-6">
+          <Link to="/trips/dashboard" className="inline-flex items-center text-gray-600 hover:text-gray-900">
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to My Trips
+          </Link>
+        </div>
+
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Create New Trip</h1>
           <p className="text-gray-600">Tell us about your travel preferences and we'll create a personalized itinerary</p>

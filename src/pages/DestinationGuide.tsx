@@ -6,7 +6,7 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Calendar, Thermometer, Users, Star, Camera, Utensils, Hotel, Navigation } from 'lucide-react';
+import { MapPin, Calendar, Thermometer, Users, Star, ArrowLeft, Navigation } from 'lucide-react';
 
 const DestinationGuide = () => {
   const { cityName } = useParams();
@@ -58,7 +58,7 @@ const DestinationGuide = () => {
             <nav className="mb-4 text-sm">
               <Link to="/" className="hover:underline">Home</Link>
               <span className="mx-2">&gt;</span>
-              <Link to="/explore/destinations" className="hover:underline">Destinations</Link>
+              <Link to="/explore/themes" className="hover:underline">Explore</Link>
               <span className="mx-2">&gt;</span>
               <span>{cityData.name}</span>
             </nav>
@@ -69,6 +69,14 @@ const DestinationGuide = () => {
       </section>
 
       <div className="max-w-7xl mx-auto px-4 py-12">
+        {/* Back Navigation */}
+        <div className="mb-8">
+          <Link to="/explore/themes" className="inline-flex items-center text-gray-600 hover:text-gray-900">
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Explore
+          </Link>
+        </div>
+
         {/* City Overview */}
         <section className="mb-16">
           <h2 className="text-3xl font-bold mb-8">City Overview</h2>
