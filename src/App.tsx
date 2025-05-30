@@ -34,6 +34,13 @@ import SavedTrips from "./pages/SavedTrips";
 import Notifications from "./pages/Notifications";
 import LoyaltyRewards from "./pages/LoyaltyRewards";
 import PaymentMethods from "./pages/PaymentMethods";
+import DestinationGuides from "./pages/DestinationGuides";
+import TravelThemes from "./pages/TravelThemes";
+import TravelBlog from "./pages/TravelBlog";
+import Community from "./pages/Community";
+import HelpCenter from "./pages/HelpCenter";
+import ContactUs from "./pages/ContactUs";
+import GrievanceRedressal from "./pages/GrievanceRedressal";
 
 const queryClient = new QueryClient();
 
@@ -93,6 +100,18 @@ const App = () => (
             <Route path="/profile/notifications" element={<Notifications />} />
             <Route path="/profile/rewards" element={<LoyaltyRewards />} />
             <Route path="/profile/payments" element={<PaymentMethods />} />
+            
+            {/* Content & Support Routes */}
+            <Route path="/explore/destinations/:cityName" element={<DestinationGuides />} />
+            <Route path="/explore/destinations" element={<DestinationGuides />} />
+            <Route path="/explore/themes" element={<TravelThemes />} />
+            <Route path="/blog" element={<TravelBlog />} />
+            <Route path="/blog/:slug" element={<TravelBlog />} />
+            <Route path="/community" element={<Community />} />
+            <Route path="/community/:slug" element={<Community />} />
+            <Route path="/help/center" element={<HelpCenter />} />
+            <Route path="/help/contact" element={<ContactUs />} />
+            <Route path="/help/grievance" element={<GrievanceRedressal />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
