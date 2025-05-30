@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -78,6 +77,17 @@ import AdminIntegrations from "./pages/AdminIntegrations";
 import AdminPricing from "./pages/AdminPricing";
 import AdminUGC from "./pages/AdminUGC";
 import AdminReports from "./pages/AdminReports";
+
+// New Admin Content Management Pages
+import AdminContentDestinations from "./pages/AdminContentDestinations";
+import AdminContentBlog from "./pages/AdminContentBlog";
+import AdminContentPromotions from "./pages/AdminContentPromotions";
+import AdminContentFlagged from "./pages/AdminContentFlagged";
+
+// New Admin Reporting Pages
+import AdminReportsOverview from "./pages/AdminReportsOverview";
+import AdminReportsRevenue from "./pages/AdminReportsRevenue";
+import AdminReportsMarketing from "./pages/AdminReportsMarketing";
 
 const queryClient = new QueryClient();
 
@@ -262,7 +272,7 @@ const App = () => (
               </ProtectedRoute>
             } />
             
-            {/* New Admin Management Routes */}
+            {/* Admin Management Routes */}
             <Route path="/admin/bookings" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminBookings />
@@ -286,6 +296,45 @@ const App = () => (
             <Route path="/admin/reports" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminReports />
+              </ProtectedRoute>
+            } />
+            
+            {/* New Admin Content Management Routes */}
+            <Route path="/admin/content/destinations" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminContentDestinations />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/content/blog" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminContentBlog />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/content/promotions" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminContentPromotions />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/content/flagged" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminContentFlagged />
+              </ProtectedRoute>
+            } />
+            
+            {/* New Admin Reporting Routes */}
+            <Route path="/admin/reports/overview" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminReportsOverview />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/reports/revenue" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminReportsRevenue />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/reports/marketing" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminReportsMarketing />
               </ProtectedRoute>
             } />
             

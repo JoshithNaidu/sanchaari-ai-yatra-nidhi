@@ -29,7 +29,14 @@ import {
   Activity,
   Clock,
   Zap,
-  Command
+  Command,
+  Flag,
+  Star,
+  TrendingUp,
+  Calendar,
+  Globe,
+  Target,
+  Edit
 } from 'lucide-react';
 
 const AdminHomepage = () => {
@@ -106,7 +113,7 @@ const AdminHomepage = () => {
       title: 'Analytics & Reports',
       description: 'Business intelligence insights',
       icon: BarChart3,
-      path: '/admin/reports',
+      path: '/admin/reports/overview',
       color: 'bg-indigo-50 text-indigo-600 border-indigo-200',
       notifications: 0
     },
@@ -117,6 +124,70 @@ const AdminHomepage = () => {
       path: '/admin/analytics/chatbot',
       color: 'bg-cyan-50 text-cyan-600 border-cyan-200',
       notifications: 1
+    }
+  ];
+
+  // New content management modules
+  const contentModules = [
+    {
+      title: 'Manage Destinations',
+      description: 'Add and edit travel destinations',
+      icon: Globe,
+      path: '/admin/content/destinations',
+      color: 'bg-blue-50 text-blue-600 border-blue-200'
+    },
+    {
+      title: 'Blog/Articles',
+      description: 'Curate and publish content',
+      icon: BookOpen,
+      path: '/admin/content/blog',
+      color: 'bg-green-50 text-green-600 border-green-200'
+    },
+    {
+      title: 'Promotional Content',
+      description: 'Manage banners and offers',
+      icon: Star,
+      path: '/admin/content/promotions',
+      color: 'bg-yellow-50 text-yellow-600 border-yellow-200'
+    },
+    {
+      title: 'Flagged Content',
+      description: 'Review flagged user content',
+      icon: Flag,
+      path: '/admin/content/flagged',
+      color: 'bg-red-50 text-red-600 border-red-200'
+    }
+  ];
+
+  // New reporting modules
+  const reportingModules = [
+    {
+      title: 'Revenue Reports',
+      description: 'Financial analytics and drilldowns',
+      icon: DollarSign,
+      path: '/admin/reports/revenue',
+      color: 'bg-green-50 text-green-600 border-green-200'
+    },
+    {
+      title: 'Marketing ROI',
+      description: 'Track marketing performance',
+      icon: TrendingUp,
+      path: '/admin/reports/marketing',
+      color: 'bg-purple-50 text-purple-600 border-purple-200'
+    },
+    {
+      title: 'User Behavior',
+      description: 'Understand user interactions',
+      icon: Users,
+      path: '/admin/reports/user-behavior',
+      color: 'bg-blue-50 text-blue-600 border-blue-200'
+    },
+    {
+      title: 'Conversion Funnel',
+      description: 'Track conversion drop-offs',
+      icon: Target,
+      path: '/admin/reports/funnel',
+      color: 'bg-orange-50 text-orange-600 border-orange-200'
     }
   ];
 
@@ -219,7 +290,7 @@ const AdminHomepage = () => {
       <header className="bg-white border-b border-gray-200 shadow-sm">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center gap-4">
-            <Link to="/" className="hover:opacity-80 transition-opacity">
+            <Link to="/admin" className="hover:opacity-80 transition-opacity">
               <img 
                 src="/lovable-uploads/94fa41ec-96bd-400a-8fc5-4c52f8f19917.png" 
                 alt="Sanchaari Logo" 
@@ -387,6 +458,70 @@ const AdminHomepage = () => {
                     </CardHeader>
                     <CardContent>
                       <CardDescription className="text-gray-600">
+                        {module.description}
+                      </CardDescription>
+                    </CardContent>
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg" />
+                  </Card>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Content Management Section */}
+        <div className="mb-8">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Content Management</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {contentModules.map((module) => {
+              const IconComponent = module.icon;
+              return (
+                <Link key={module.path} to={module.path}>
+                  <Card className={`hover:shadow-lg transition-all duration-200 cursor-pointer border-2 ${module.color} relative group`}>
+                    <CardHeader className="pb-3">
+                      <div className="flex items-center gap-3">
+                        <div className={`p-2 rounded-lg ${module.color.replace('border-', 'bg-').replace('text-', 'text-')}`}>
+                          <IconComponent className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <CardTitle className="text-base">{module.title}</CardTitle>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <CardDescription className="text-gray-600 text-sm">
+                        {module.description}
+                      </CardDescription>
+                    </CardContent>
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg" />
+                  </Card>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Reporting & Analytics Section */}
+        <div className="mb-8">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Reporting & Analytics</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {reportingModules.map((module) => {
+              const IconComponent = module.icon;
+              return (
+                <Link key={module.path} to={module.path}>
+                  <Card className={`hover:shadow-lg transition-all duration-200 cursor-pointer border-2 ${module.color} relative group`}>
+                    <CardHeader className="pb-3">
+                      <div className="flex items-center gap-3">
+                        <div className={`p-2 rounded-lg ${module.color.replace('border-', 'bg-').replace('text-', 'text-')}`}>
+                          <IconComponent className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <CardTitle className="text-base">{module.title}</CardTitle>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <CardDescription className="text-gray-600 text-sm">
                         {module.description}
                       </CardDescription>
                     </CardContent>
