@@ -2,8 +2,16 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { useCentralizedAuth } from '@/contexts/CentralizedAuthContext';
-import { Menu, X, User } from 'lucide-react';
+import { Menu, X, User, Settings, LogOut, Dashboard } from 'lucide-react';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -60,6 +68,51 @@ const Header = () => {
     }
   };
 
+  // Get dashboard path based on user type
+  const getDashboardPath = () => {
+    if (!user) return '/';
+    
+    switch (user.userType) {
+      case 'admin':
+        return '/admin/dashboard';
+      case 'partner':
+        return '/partner/dashboard';
+      case 'traveler':
+      default:
+        return '/trips/dashboard';
+    }
+  };
+
+  // Get profile path based on user type
+  const getProfilePath = () => {
+    if (!user) return '/';
+    
+    switch (user.userType) {
+      case 'admin':
+        return '/admin';
+      case 'partner':
+        return '/partner/dashboard';
+      case 'traveler':
+      default:
+        return '/profile/me';
+    }
+  };
+
+  // Get role display text
+  const getRoleText = () => {
+    if (!user) return '';
+    
+    switch (user.userType) {
+      case 'admin':
+        return 'Admin';
+      case 'partner':
+        return 'Partner';
+      case 'traveler':
+      default:
+        return 'User';
+    }
+  };
+
   const navItems = getNavItems();
 
   return (
@@ -92,30 +145,48 @@ const Header = () => {
         {/* Auth Section */}
         <div className="hidden md:flex items-center space-x-4">
           {isAuthenticated && user ? (
-            <div className="flex items-center space-x-4">
-              <Link 
-                to={user.userType === 'admin' ? '/admin' : '/profile/me'} 
-                className="flex items-center space-x-2 text-gray-700 hover:text-blue-600"
-              >
-                <User className="h-4 w-4" />
-                <span>{user.fullName?.split(' ')[0] || 'User'}</span>
-                {user.userType === 'admin' && (
-                  <span className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">Admin</span>
-                )}
-              </Link>
-              <Button onClick={handleLogout} variant="outline" size="sm">
-                Logout
-              </Button>
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="flex items-center space-x-2">
+                  <User className="h-4 w-4" />
+                  <span>{user.fullName?.split(' ')[0] || 'User'}</span>
+                  <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                    {getRoleText()}
+                  </span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link to={getDashboardPath()} className="flex items-center">
+                    <Dashboard className="mr-2 h-4 w-4" />
+                    Dashboard
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to={getProfilePath()} className="flex items-center">
+                    <User className="mr-2 h-4 w-4" />
+                    Profile
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/settings" className="flex items-center">
+                    <Settings className="mr-2 h-4 w-4" />
+                    Settings
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout} className="text-red-600">
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
-            <div className="flex items-center space-x-4">
-              <Link to="/auth/login">
-                <Button variant="ghost" size="sm">Login</Button>
-              </Link>
-              <Link to="/auth/register">
-                <Button size="sm">Sign Up</Button>
-              </Link>
-            </div>
+            <Link to="/auth/login">
+              <Button>Login</Button>
+            </Link>
           )}
         </div>
 
@@ -148,26 +219,42 @@ const Header = () => {
             <div className="pt-4 border-t">
               {isAuthenticated && user ? (
                 <div className="space-y-2">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <User className="h-4 w-4" />
+                    <span className="font-medium">{user.fullName?.split(' ')[0] || 'User'}</span>
+                    <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                      {getRoleText()}
+                    </span>
+                  </div>
                   <Link 
-                    to="/profile/me" 
-                    className="block text-gray-700 hover:text-blue-600"
+                    to={getDashboardPath()} 
+                    className="block text-gray-700 hover:text-blue-600 py-2"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Dashboard
+                  </Link>
+                  <Link 
+                    to={getProfilePath()} 
+                    className="block text-gray-700 hover:text-blue-600 py-2"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Profile
                   </Link>
-                  <Button onClick={handleLogout} variant="outline" size="sm" className="w-full">
+                  <Link 
+                    to="/settings" 
+                    className="block text-gray-700 hover:text-blue-600 py-2"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Settings
+                  </Link>
+                  <Button onClick={handleLogout} variant="outline" size="sm" className="w-full mt-2">
                     Logout
                   </Button>
                 </div>
               ) : (
-                <div className="space-y-2">
-                  <Link to="/auth/login" onClick={() => setIsMenuOpen(false)}>
-                    <Button variant="ghost" size="sm" className="w-full">Login</Button>
-                  </Link>
-                  <Link to="/auth/register" onClick={() => setIsMenuOpen(false)}>
-                    <Button size="sm" className="w-full">Sign Up</Button>
-                  </Link>
-                </div>
+                <Link to="/auth/login" onClick={() => setIsMenuOpen(false)}>
+                  <Button size="sm" className="w-full">Login</Button>
+                </Link>
               )}
             </div>
           </div>
