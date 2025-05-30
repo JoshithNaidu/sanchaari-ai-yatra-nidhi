@@ -89,6 +89,13 @@ import AdminReportsOverview from "./pages/AdminReportsOverview";
 import AdminReportsRevenue from "./pages/AdminReportsRevenue";
 import AdminReportsMarketing from "./pages/AdminReportsMarketing";
 
+// New Admin System Settings Pages
+import AdminSettingsApiKeys from "./pages/AdminSettingsApiKeys";
+import AdminSettingsSecurity from "./pages/AdminSettingsSecurity";
+
+// New Admin Report Pages
+import AdminReportsFunnel from "./pages/AdminReportsFunnel";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -299,7 +306,7 @@ const App = () => (
               </ProtectedRoute>
             } />
             
-            {/* New Admin Content Management Routes */}
+            {/* Admin Content Management Routes */}
             <Route path="/admin/content/destinations" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminContentDestinations />
@@ -321,7 +328,7 @@ const App = () => (
               </ProtectedRoute>
             } />
             
-            {/* New Admin Reporting Routes */}
+            {/* Admin Reporting Routes */}
             <Route path="/admin/reports/overview" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminReportsOverview />
@@ -335,6 +342,23 @@ const App = () => (
             <Route path="/admin/reports/marketing" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminReportsMarketing />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/reports/funnel" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminReportsFunnel />
+              </ProtectedRoute>
+            } />
+            
+            {/* Admin System Settings Routes */}
+            <Route path="/admin/settings/api-keys" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminSettingsApiKeys />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/settings/security" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminSettingsSecurity />
               </ProtectedRoute>
             } />
             
