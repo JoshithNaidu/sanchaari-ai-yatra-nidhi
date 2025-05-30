@@ -14,7 +14,6 @@ const Register = () => {
     email: '',
     password: '',
     confirmPassword: '',
-    userType: 'traveler' as 'traveler' | 'partner',
     agreeToTerms: false
   });
   const [showPassword, setShowPassword] = useState(false);
@@ -67,7 +66,7 @@ const Register = () => {
         fullName: formData.fullName,
         email: formData.email,
         password: formData.password,
-        userType: formData.userType
+        userType: 'traveler' // Default to traveler for all registrations
       });
 
       if (result.success) {
@@ -226,36 +225,6 @@ const Register = () => {
                     ) : (
                       <Eye className="h-4 w-4 text-gray-400" />
                     )}
-                  </button>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">
-                  I am a:
-                </label>
-                <div className="grid grid-cols-2 gap-4">
-                  <button
-                    type="button"
-                    className={`p-3 border rounded-lg text-sm font-medium ${
-                      formData.userType === 'traveler'
-                        ? 'border-blue-500 bg-blue-50 text-blue-700'
-                        : 'border-gray-300 text-gray-700 hover:border-gray-400'
-                    }`}
-                    onClick={() => setFormData({ ...formData, userType: 'traveler' })}
-                  >
-                    Traveler
-                  </button>
-                  <button
-                    type="button"
-                    className={`p-3 border rounded-lg text-sm font-medium ${
-                      formData.userType === 'partner'
-                        ? 'border-blue-500 bg-blue-50 text-blue-700'
-                        : 'border-gray-300 text-gray-700 hover:border-gray-400'
-                    }`}
-                    onClick={() => setFormData({ ...formData, userType: 'partner' })}
-                  >
-                    Partner
                   </button>
                 </div>
               </div>
