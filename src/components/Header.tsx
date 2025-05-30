@@ -44,13 +44,6 @@ const Header = () => {
         </div>
 
         <div className="flex items-center gap-4">
-          <Link to="/search">
-            <Button variant="ghost" size="sm" className="gap-2">
-              <Search className="h-4 w-4" />
-              <span className="hidden sm:inline">Search</span>
-            </Button>
-          </Link>
-          
           <Link to="/chat">
             <Button variant="outline" size="sm">
               Chat with AI
