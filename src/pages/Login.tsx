@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
-import { useAuth } from '@/contexts/AuthContext';
+import { useCentralizedAuth } from '@/contexts/CentralizedAuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { Eye, EyeOff, Loader2, Mail, Lock } from 'lucide-react';
 
@@ -13,43 +12,28 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuth();
+  const { login, isLoading } = useCentralizedAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-
-    try {
-      const success = await login(email, password);
-      if (success) {
-        toast({ 
-          title: "Welcome back!", 
-          description: "You've been successfully logged in." 
-        });
-        // Redirect based on user type
-        if (email.includes('partner')) {
-          navigate('/partner/dashboard');
-        } else {
-          navigate('/trips/dashboard');
-        }
-      } else {
-        toast({ 
-          title: "Login failed", 
-          description: "Invalid credentials. Please check your email and password.",
-          variant: "destructive"
-        });
-      }
-    } catch (error) {
+    
+    const result = await login(email, password);
+    if (result.success) {
       toast({ 
-        title: "Something went wrong", 
-        description: "Please try again or contact support if the problem persists.",
+        title: "Welcome back!", 
+        description: result.message 
+      });
+      if (result.redirectTo) {
+        navigate(result.redirectTo);
+      }
+    } else {
+      toast({ 
+        title: "Login failed", 
+        description: result.message,
         variant: "destructive"
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 

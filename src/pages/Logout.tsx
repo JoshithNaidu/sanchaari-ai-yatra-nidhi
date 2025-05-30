@@ -1,12 +1,11 @@
-
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
+import { useCentralizedAuth } from '@/contexts/CentralizedAuthContext';
 import { useToast } from '@/hooks/use-toast';
 import LoadingSpinner from '@/components/LoadingSpinner';
 
 const Logout = () => {
-  const { logout } = useAuth();
+  const { logout, user } = useCentralizedAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -15,16 +14,24 @@ const Logout = () => {
       // Add a small delay for better UX
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      logout();
+      await logout();
       toast({ 
         title: "Signed out successfully", 
         description: "Thank you for using Sanchaari. See you next time!" 
       });
-      navigate('/');
+      
+      // Redirect based on user type
+      if (user?.userType === 'admin') {
+        navigate('/admin/login');
+      } else if (user?.userType === 'partner') {
+        navigate('/partner/login');
+      } else {
+        navigate('/');
+      }
     };
 
     performLogout();
-  }, [logout, toast, navigate]);
+  }, [logout, toast, navigate, user]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center">

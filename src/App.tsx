@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -6,6 +5,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
+import { CentralizedAuthProvider } from "./contexts/CentralizedAuthContext";
+import { WorkflowProvider } from "./contexts/WorkflowContext";
+import WorkflowDashboard from "./pages/WorkflowDashboard";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import FloatingChatbot from "./components/FloatingChatbot";
@@ -118,120 +120,123 @@ const ChatRedirectHandler = () => {
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
-      <AuthProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/chat" element={<ChatRedirectHandler />} />
-            <Route path="/search" element={<Search />} />
-            <Route path="/search/flights" element={<FlightSearchResults />} />
-            <Route path="/search/hotels" element={<HotelSearchResults />} />
-            <Route path="/search/activities" element={<ActivitySearchResults />} />
-            <Route path="/search/packages" element={<PackageSearchResults />} />
-            <Route path="/checkout/:bookingId" element={<Checkout />} />
-            <Route path="/confirmation/:bookingId" element={<BookingConfirmation />} />
-            <Route path="/trips/dashboard" element={<TripsDashboard />} />
-            <Route path="/trips/new" element={<CreateNewTrip />} />
-            <Route path="/trips/:tripId" element={<ItineraryDetails />} />
-            <Route path="/trips/:tripId/collaborate" element={<CollaborativePlanning />} />
-            <Route path="/trips/:tripId/budget" element={<BudgetTracker />} />
-            <Route path="/trips/:tripId/packing" element={<PackingList />} />
-            
-            {/* Authentication Routes */}
-            <Route path="/auth/login" element={<Login />} />
-            <Route path="/auth/register" element={<Register />} />
-            <Route path="/auth/forgot-password" element={<ForgotPassword />} />
-            <Route path="/auth/reset-password" element={<ResetPassword />} />
-            <Route path="/auth/verify-email" element={<EmailVerification />} />
-            <Route path="/auth/logout" element={<Logout />} />
-            
-            {/* Partner Routes */}
-            <Route path="/partner/signup" element={<PartnerSignup />} />
-            <Route path="/partner/login" element={<PartnerLogin />} />
-            <Route path="/partner/logout" element={<PartnerLogout />} />
-            <Route path="/partner/forgot-password" element={<PartnerForgotPassword />} />
-            <Route path="/partner/dashboard" element={<PartnerDashboard />} />
-            <Route path="/partner/inventory/listings" element={<PartnerListings />} />
-            <Route path="/partner/inventory/availability" element={<PartnerAvailability />} />
-            <Route path="/partner/bookings/list" element={<PartnerBookings />} />
-            <Route path="/partner/payouts" element={<PartnerPayouts />} />
-            
-            {/* New Partner Routes */}
-            <Route path="/partner/reports/volume" element={<BookingVolumeReports />} />
-            <Route path="/partner/reports/feedback" element={<CustomerFeedbackReports />} />
-            <Route path="/partner/reports/revenue" element={<RevenueReports />} />
-            <Route path="/partner/profile/company" element={<CompanyProfile />} />
-            <Route path="/partner/profile/api-credentials" element={<ApiCredentials />} />
-            <Route path="/partner/profile/compliance" element={<TaxCompliance />} />
-            <Route path="/partner/help/center" element={<PartnerHelpCenter />} />
-            <Route path="/partner/help/contact" element={<PartnerContactSupport />} />
-            <Route path="/partner/messages" element={<PartnerMessages />} />
-            
-            {/* Admin Routes */}
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/admin/logout" element={<AdminLogout />} />
-            <Route path="/admin/forgot-password" element={<AdminForgotPassword />} />
-            <Route path="/admin/dashboard" element={<AdminDashboard />} />
-            <Route path="/admin/users/list" element={<AdminUserList />} />
-            <Route path="/admin/bookings/all" element={<AdminBookings />} />
-            <Route path="/admin/integrations" element={<AdminIntegrations />} />
-            <Route path="/admin/pricing" element={<AdminPricing />} />
-            <Route path="/admin/ai/analytics" element={<AdminAIAnalytics />} />
-            <Route path="/admin/ai/models" element={<AdminAIModels />} />
-            <Route path="/admin/ai/flows" element={<AdminAIFlows />} />
-            <Route path="/admin/ai/handoffs" element={<AdminAIHandoffs />} />
-            <Route path="/admin/ai/knowledge-base" element={<AdminAIKnowledgeBase />} />
-            <Route path="/admin/ai/training-data" element={<AdminAITrainingData />} />
-            
-            {/* Admin Content Management Routes */}
-            <Route path="/admin/content/destinations" element={<AdminDestinations />} />
-            <Route path="/admin/content/blog" element={<AdminBlog />} />
-            <Route path="/admin/content/promotions" element={<AdminPromotions />} />
-            <Route path="/admin/content/ugc" element={<AdminUGC />} />
-            <Route path="/admin/content/flagged" element={<AdminFlaggedContent />} />
-            
-            {/* Admin Reports Routes */}
-            <Route path="/admin/reports/overview" element={<AdminReports />} />
-            
-            {/* Profile Routes */}
-            <Route path="/profile/me" element={<UserProfile />} />
-            <Route path="/profile/preferences" element={<TravelPreferences />} />
-            <Route path="/profile/history" element={<TravelHistory />} />
-            <Route path="/profile/saved" element={<SavedTrips />} />
-            <Route path="/profile/notifications" element={<Notifications />} />
-            <Route path="/profile/rewards" element={<LoyaltyRewards />} />
-            <Route path="/profile/payments" element={<PaymentMethods />} />
-            
-            {/* Content & Support Routes */}
-            <Route path="/explore/destinations/:cityName" element={<DestinationGuides />} />
-            <Route path="/explore/destinations" element={<DestinationGuides />} />
-            <Route path="/explore/themes" element={<TravelThemes />} />
-            <Route path="/blog" element={<TravelBlog />} />
-            <Route path="/blog/:slug" element={<TravelBlog />} />
-            <Route path="/community" element={<Community />} />
-            <Route path="/community/:slug" element={<Community />} />
-            <Route path="/help/center" element={<HelpCenter />} />
-            <Route path="/help/contact" element={<ContactUs />} />
-            <Route path="/help/grievance" element={<GrievanceRedressal />} />
-            
-            {/* Legal & System Routes */}
-            <Route path="/safety" element={<Safety />} />
-            <Route path="/privacy" element={<Privacy />} />
-            <Route path="/terms" element={<Terms />} />
-            <Route path="/cookies" element={<Cookies />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/careers" element={<Careers />} />
-            <Route path="/500" element={<ServerError />} />
-            <Route path="/maintenance" element={<Maintenance />} />
-            
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <FloatingChatbot />
-        </TooltipProvider>
-      </AuthProvider>
+      <CentralizedAuthProvider>
+        <WorkflowProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/chat" element={<ChatRedirectHandler />} />
+              <Route path="/search" element={<Search />} />
+              <Route path="/search/flights" element={<FlightSearchResults />} />
+              <Route path="/search/hotels" element={<HotelSearchResults />} />
+              <Route path="/search/activities" element={<ActivitySearchResults />} />
+              <Route path="/search/packages" element={<PackageSearchResults />} />
+              <Route path="/checkout/:bookingId" element={<Checkout />} />
+              <Route path="/confirmation/:bookingId" element={<BookingConfirmation />} />
+              <Route path="/trips/dashboard" element={<TripsDashboard />} />
+              <Route path="/trips/new" element={<CreateNewTrip />} />
+              <Route path="/trips/:tripId" element={<ItineraryDetails />} />
+              <Route path="/trips/:tripId/collaborate" element={<CollaborativePlanning />} />
+              <Route path="/trips/:tripId/budget" element={<BudgetTracker />} />
+              <Route path="/trips/:tripId/packing" element={<PackingList />} />
+              
+              {/* Authentication Routes */}
+              <Route path="/auth/login" element={<Login />} />
+              <Route path="/auth/register" element={<Register />} />
+              <Route path="/auth/forgot-password" element={<ForgotPassword />} />
+              <Route path="/auth/reset-password" element={<ResetPassword />} />
+              <Route path="/auth/verify-email" element={<EmailVerification />} />
+              <Route path="/auth/logout" element={<Logout />} />
+              
+              {/* Partner Routes */}
+              <Route path="/partner/signup" element={<PartnerSignup />} />
+              <Route path="/partner/login" element={<PartnerLogin />} />
+              <Route path="/partner/logout" element={<PartnerLogout />} />
+              <Route path="/partner/forgot-password" element={<PartnerForgotPassword />} />
+              <Route path="/partner/dashboard" element={<PartnerDashboard />} />
+              <Route path="/partner/inventory/listings" element={<PartnerListings />} />
+              <Route path="/partner/inventory/availability" element={<PartnerAvailability />} />
+              <Route path="/partner/bookings/list" element={<PartnerBookings />} />
+              <Route path="/partner/payouts" element={<PartnerPayouts />} />
+              
+              {/* New Partner Routes */}
+              <Route path="/partner/reports/volume" element={<BookingVolumeReports />} />
+              <Route path="/partner/reports/feedback" element={<CustomerFeedbackReports />} />
+              <Route path="/partner/reports/revenue" element={<RevenueReports />} />
+              <Route path="/partner/profile/company" element={<CompanyProfile />} />
+              <Route path="/partner/profile/api-credentials" element={<ApiCredentials />} />
+              <Route path="/partner/profile/compliance" element={<TaxCompliance />} />
+              <Route path="/partner/help/center" element={<PartnerHelpCenter />} />
+              <Route path="/partner/help/contact" element={<PartnerContactSupport />} />
+              <Route path="/partner/messages" element={<PartnerMessages />} />
+              
+              {/* Admin Routes */}
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin/logout" element={<AdminLogout />} />
+              <Route path="/admin/forgot-password" element={<AdminForgotPassword />} />
+              <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              <Route path="/admin/users/list" element={<AdminUserList />} />
+              <Route path="/admin/bookings/all" element={<AdminBookings />} />
+              <Route path="/admin/integrations" element={<AdminIntegrations />} />
+              <Route path="/admin/pricing" element={<AdminPricing />} />
+              <Route path="/admin/ai/analytics" element={<AdminAIAnalytics />} />
+              <Route path="/admin/ai/models" element={<AdminAIModels />} />
+              <Route path="/admin/ai/flows" element={<AdminAIFlows />} />
+              <Route path="/admin/ai/handoffs" element={<AdminAIHandoffs />} />
+              <Route path="/admin/ai/knowledge-base" element={<AdminAIKnowledgeBase />} />
+              <Route path="/admin/ai/training-data" element={<AdminAITrainingData />} />
+              
+              {/* Admin Content Management Routes */}
+              <Route path="/admin/content/destinations" element={<AdminDestinations />} />
+              <Route path="/admin/content/blog" element={<AdminBlog />} />
+              <Route path="/admin/content/promotions" element={<AdminPromotions />} />
+              <Route path="/admin/content/ugc" element={<AdminUGC />} />
+              <Route path="/admin/content/flagged" element={<AdminFlaggedContent />} />
+              
+              {/* Admin Reports Routes */}
+              <Route path="/admin/reports/overview" element={<AdminReports />} />
+              
+              {/* Profile Routes */}
+              <Route path="/profile/me" element={<UserProfile />} />
+              <Route path="/profile/preferences" element={<TravelPreferences />} />
+              <Route path="/profile/history" element={<TravelHistory />} />
+              <Route path="/profile/saved" element={<SavedTrips />} />
+              <Route path="/profile/notifications" element={<Notifications />} />
+              <Route path="/profile/rewards" element={<LoyaltyRewards />} />
+              <Route path="/profile/payments" element={<PaymentMethods />} />
+              
+              {/* Content & Support Routes */}
+              <Route path="/explore/destinations/:cityName" element={<DestinationGuides />} />
+              <Route path="/explore/destinations" element={<DestinationGuides />} />
+              <Route path="/explore/themes" element={<TravelThemes />} />
+              <Route path="/blog" element={<TravelBlog />} />
+              <Route path="/blog/:slug" element={<TravelBlog />} />
+              <Route path="/community" element={<Community />} />
+              <Route path="/community/:slug" element={<Community />} />
+              <Route path="/help/center" element={<HelpCenter />} />
+              <Route path="/help/contact" element={<ContactUs />} />
+              <Route path="/help/grievance" element={<GrievanceRedressal />} />
+              
+              {/* Legal & System Routes */}
+              <Route path="/safety" element={<Safety />} />
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/cookies" element={<Cookies />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/careers" element={<Careers />} />
+              <Route path="/500" element={<ServerError />} />
+              <Route path="/maintenance" element={<Maintenance />} />
+              
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="/workflows" element={<WorkflowDashboard />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            <FloatingChatbot />
+          </TooltipProvider>
+        </WorkflowProvider>
+      </CentralizedAuthProvider>
     </BrowserRouter>
   </QueryClientProvider>
 );
