@@ -39,10 +39,10 @@ export const useAuth = () => {
 };
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = React.useState<User | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     // Check for existing session on app load
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
@@ -140,5 +140,5 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     resendVerification
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return React.createElement(AuthContext.Provider, { value }, children);
 };
