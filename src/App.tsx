@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -79,6 +78,11 @@ import AdminLogout from "./pages/AdminLogout";
 import AdminForgotPassword from "./pages/AdminForgotPassword";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminUserList from "./pages/AdminUserList";
+import AdminBookings from "./pages/AdminBookings";
+import AdminIntegrations from "./pages/AdminIntegrations";
+import AdminPricing from "./pages/AdminPricing";
+import AdminAIAnalytics from "./pages/AdminAIAnalytics";
+import AdminAIModels from "./pages/AdminAIModels";
 
 const queryClient = new QueryClient();
 
@@ -158,6 +162,11 @@ const App = () => (
             <Route path="/admin/forgot-password" element={<AdminForgotPassword />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/admin/users/list" element={<AdminUserList />} />
+            <Route path="/admin/bookings/all" element={<AdminBookings />} />
+            <Route path="/admin/integrations" element={<AdminIntegrations />} />
+            <Route path="/admin/pricing" element={<AdminPricing />} />
+            <Route path="/admin/ai/analytics" element={<AdminAIAnalytics />} />
+            <Route path="/admin/ai/models" element={<AdminAIModels />} />
             
             {/* Profile Routes */}
             <Route path="/profile/me" element={<UserProfile />} />
