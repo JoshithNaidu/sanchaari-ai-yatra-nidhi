@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -88,7 +89,7 @@ import AdminAIHandoffs from "./pages/AdminAIHandoffs";
 import AdminAIKnowledgeBase from "./pages/AdminAIKnowledgeBase";
 import AdminAITrainingData from "./pages/AdminAITrainingData";
 
-// New Admin Content & Reports Pages
+// Admin Content & Reports Pages
 import AdminDestinations from "./pages/AdminDestinations";
 import AdminBlog from "./pages/AdminBlog";
 import AdminPromotions from "./pages/AdminPromotions";
@@ -183,6 +184,16 @@ const App = () => (
             <Route path="/admin/ai/handoffs" element={<AdminAIHandoffs />} />
             <Route path="/admin/ai/knowledge-base" element={<AdminAIKnowledgeBase />} />
             <Route path="/admin/ai/training-data" element={<AdminAITrainingData />} />
+            
+            {/* Admin Content Management Routes */}
+            <Route path="/admin/content/destinations" element={<AdminDestinations />} />
+            <Route path="/admin/content/blog" element={<AdminBlog />} />
+            <Route path="/admin/content/promotions" element={<AdminPromotions />} />
+            <Route path="/admin/content/ugc" element={<AdminUGC />} />
+            <Route path="/admin/content/flagged" element={<AdminFlaggedContent />} />
+            
+            {/* Admin Reports Routes */}
+            <Route path="/admin/reports/overview" element={<AdminReports />} />
             
             {/* Profile Routes */}
             <Route path="/profile/me" element={<UserProfile />} />
