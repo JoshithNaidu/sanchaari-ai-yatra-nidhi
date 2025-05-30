@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useAuth } from '@/contexts/AuthContext';
+import { useCentralizedAuth } from '@/contexts/CentralizedAuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { Eye, EyeOff } from 'lucide-react';
 
@@ -15,7 +15,7 @@ const ResetPassword = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isValidToken, setIsValidToken] = useState(true);
   const [searchParams] = useSearchParams();
-  const { resetPassword } = useAuth();
+  const { resetPassword } = useCentralizedAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -51,17 +51,17 @@ const ResetPassword = () => {
     setIsLoading(true);
 
     try {
-      const success = await resetPassword(token, password);
-      if (success) {
+      const result = await resetPassword(token, password);
+      if (result.success) {
         toast({ 
           title: "Password reset successful", 
-          description: "Your password has been updated. Please log in with your new password." 
+          description: result.message 
         });
         navigate('/auth/login');
       } else {
         toast({ 
           title: "Reset failed", 
-          description: "Invalid or expired token. Please request a new reset link.",
+          description: result.message,
           variant: "destructive"
         });
       }
