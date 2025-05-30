@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -56,6 +55,11 @@ import PartnerSignup from "./pages/PartnerSignup";
 import PartnerLogin from "./pages/PartnerLogin";
 import PartnerLogout from "./pages/PartnerLogout";
 import PartnerForgotPassword from "./pages/PartnerForgotPassword";
+import PartnerDashboard from "./pages/PartnerDashboard";
+import PartnerListings from "./pages/PartnerListings";
+import PartnerAvailability from "./pages/PartnerAvailability";
+import PartnerBookings from "./pages/PartnerBookings";
+import PartnerPayouts from "./pages/PartnerPayouts";
 
 const queryClient = new QueryClient();
 
@@ -112,6 +116,11 @@ const App = () => (
             <Route path="/partner/login" element={<PartnerLogin />} />
             <Route path="/partner/logout" element={<PartnerLogout />} />
             <Route path="/partner/forgot-password" element={<PartnerForgotPassword />} />
+            <Route path="/partner/dashboard" element={<PartnerDashboard />} />
+            <Route path="/partner/inventory/listings" element={<PartnerListings />} />
+            <Route path="/partner/inventory/availability" element={<PartnerAvailability />} />
+            <Route path="/partner/bookings/list" element={<PartnerBookings />} />
+            <Route path="/partner/payouts" element={<PartnerPayouts />} />
             
             {/* Profile Routes */}
             <Route path="/profile/me" element={<UserProfile />} />
