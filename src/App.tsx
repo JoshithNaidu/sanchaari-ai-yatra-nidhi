@@ -79,23 +79,39 @@ import AdminPricing from "./pages/AdminPricing";
 import AdminUGC from "./pages/AdminUGC";
 import AdminReports from "./pages/AdminReports";
 
-// New Admin Content Management Pages
+// New Admin Pages
+import AdminBookingsAll from "./pages/AdminBookingsAll";
+import AdminAIAnalytics from "./pages/AdminAIAnalytics";
+import AdminAIModels from "./pages/AdminAIModels";
+import AdminAIFlows from "./pages/AdminAIFlows";
+import AdminAIHandoffs from "./pages/AdminAIHandoffs";
+import AdminAIKnowledgeBase from "./pages/AdminAIKnowledgeBase";
+import AdminAITrainingData from "./pages/AdminAITrainingData";
+
+// Admin Content Management Pages
 import AdminContentDestinations from "./pages/AdminContentDestinations";
 import AdminContentBlog from "./pages/AdminContentBlog";
 import AdminContentPromotions from "./pages/AdminContentPromotions";
 import AdminContentFlagged from "./pages/AdminContentFlagged";
 
-// New Admin Reporting Pages
+// Admin Reporting Pages
 import AdminReportsOverview from "./pages/AdminReportsOverview";
 import AdminReportsRevenue from "./pages/AdminReportsRevenue";
 import AdminReportsMarketing from "./pages/AdminReportsMarketing";
+import AdminReportsUserBehavior from "./pages/AdminReportsUserBehavior";
+import AdminReportsRetention from "./pages/AdminReportsRetention";
+import AdminReportsFunnel from "./pages/AdminReportsFunnel";
+import AdminReportsGroupCollaboration from "./pages/AdminReportsGroupCollaboration";
+import AdminReportsCustom from "./pages/AdminReportsCustom";
 
-// New Admin System Settings Pages
+// Admin System Settings Pages
 import AdminSettingsApiKeys from "./pages/AdminSettingsApiKeys";
 import AdminSettingsSecurity from "./pages/AdminSettingsSecurity";
-
-// New Admin Report Pages
-import AdminReportsFunnel from "./pages/AdminReportsFunnel";
+import AdminSettingsPrivacy from "./pages/AdminSettingsPrivacy";
+import AdminSettingsRoles from "./pages/AdminSettingsRoles";
+import AdminSettingsSystem from "./pages/AdminSettingsSystem";
+import AdminSettingsNotifications from "./pages/AdminSettingsNotifications";
+import AdminSettingsLocalization from "./pages/AdminSettingsLocalization";
 
 const queryClient = new QueryClient();
 
@@ -283,12 +299,19 @@ const App = () => (
               </ProtectedRoute>
             } />
             
-            {/* Admin Management Routes */}
+            {/* Admin Booking Management */}
             <Route path="/admin/bookings" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminBookings />
               </ProtectedRoute>
             } />
+            <Route path="/admin/bookings/all" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminBookingsAll />
+              </ProtectedRoute>
+            } />
+            
+            {/* Admin System Management */}
             <Route path="/admin/integrations" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminIntegrations />
@@ -310,6 +333,38 @@ const App = () => (
               </ProtectedRoute>
             } />
             
+            {/* Admin AI Management Routes */}
+            <Route path="/admin/ai/analytics" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminAIAnalytics />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/ai/models" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminAIModels />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/ai/flows" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminAIFlows />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/ai/handoffs" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminAIHandoffs />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/ai/knowledge-base" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminAIKnowledgeBase />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/ai/training-data" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminAITrainingData />
+              </ProtectedRoute>
+            } />
+            
             {/* Admin Content Management Routes */}
             <Route path="/admin/content/destinations" element={
               <ProtectedRoute allowedRoles={['admin']}>
@@ -324,6 +379,11 @@ const App = () => (
             <Route path="/admin/content/promotions" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminContentPromotions />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/content/ugc" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminUGC />
               </ProtectedRoute>
             } />
             <Route path="/admin/content/flagged" element={
@@ -348,9 +408,29 @@ const App = () => (
                 <AdminReportsMarketing />
               </ProtectedRoute>
             } />
+            <Route path="/admin/reports/user-behavior" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminReportsUserBehavior />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/reports/retention" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminReportsRetention />
+              </ProtectedRoute>
+            } />
             <Route path="/admin/reports/funnel" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminReportsFunnel />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/reports/group-collaboration" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminReportsGroupCollaboration />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/reports/custom" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminReportsCustom />
               </ProtectedRoute>
             } />
             
@@ -363,6 +443,31 @@ const App = () => (
             <Route path="/admin/settings/security" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminSettingsSecurity />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/settings/privacy" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminSettingsPrivacy />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/settings/roles" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminSettingsRoles />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/settings/system" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminSettingsSystem />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/settings/notifications" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminSettingsNotifications />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/settings/localization" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminSettingsLocalization />
               </ProtectedRoute>
             } />
             

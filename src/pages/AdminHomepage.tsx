@@ -10,7 +10,8 @@ import {
   Settings, BarChart3, TrendingUp, Calendar, Bell,
   Search, Command, AlertTriangle, CheckCircle, Clock,
   Database, Globe, Shield, Key, FileText, Flag,
-  DollarSign, Target, UserCog, Mail, Languages
+  DollarSign, Target, UserCog, Mail, Languages,
+  Brain, Zap, Book
 } from 'lucide-react';
 
 const AdminHomepage = () => {
@@ -90,6 +91,51 @@ const AdminHomepage = () => {
     }
   ];
 
+  const aiManagementCards = [
+    {
+      title: "AI Analytics",
+      description: "Monitor AI performance and insights",
+      icon: Brain,
+      href: "/admin/ai/analytics",
+      stats: "94.2% accuracy"
+    },
+    {
+      title: "AI Models",
+      description: "Manage AI models and configurations",
+      icon: Settings,
+      href: "/admin/ai/models",
+      stats: "3 active models"
+    },
+    {
+      title: "Conversation Flows",
+      description: "Design and manage chat flows",
+      icon: Zap,
+      href: "/admin/ai/flows",
+      stats: "8 active flows"
+    },
+    {
+      title: "Human Handoffs",
+      description: "Manage AI-to-human escalations",
+      icon: Users,
+      href: "/admin/ai/handoffs",
+      stats: "12 pending"
+    },
+    {
+      title: "Knowledge Base",
+      description: "Manage AI training content",
+      icon: Book,
+      href: "/admin/ai/knowledge-base",
+      stats: "150 articles"
+    },
+    {
+      title: "Training Data",
+      description: "Manage AI training datasets",
+      icon: Database,
+      href: "/admin/ai/training-data",
+      stats: "248K records"
+    }
+  ];
+
   const contentManagementCards = [
     {
       title: "Destinations",
@@ -122,7 +168,7 @@ const AdminHomepage = () => {
     }
   ];
 
-  const reportsAnalyticsCards = [
+  const extendedReportsAnalyticsCards = [
     {
       title: "Overview Dashboard",
       description: "KPIs and performance metrics",
@@ -145,15 +191,43 @@ const AdminHomepage = () => {
       stats: "15.2% avg ROAS"
     },
     {
+      title: "User Behavior",
+      description: "User interaction analytics",
+      icon: Users,
+      href: "/admin/reports/user-behavior",
+      stats: "125K page views"
+    },
+    {
+      title: "Retention Analysis",
+      description: "User retention and churn metrics",
+      icon: TrendingUp,
+      href: "/admin/reports/retention",
+      stats: "78.5% retention"
+    },
+    {
       title: "Conversion Funnel",
       description: "User journey drop-off analysis",
       icon: Target,
       href: "/admin/reports/funnel",
       stats: "15.2% conversion"
+    },
+    {
+      title: "Group Collaboration",
+      description: "Group trip planning analytics",
+      icon: Users,
+      href: "/admin/reports/group-collaboration",
+      stats: "1,234 group trips"
+    },
+    {
+      title: "Custom Reports",
+      description: "Create and manage custom reports",
+      icon: FileText,
+      href: "/admin/reports/custom",
+      stats: "5 saved reports"
     }
   ];
 
-  const systemSettingsCards = [
+  const completeSystemSettingsCards = [
     {
       title: "API Keys",
       description: "Manage internal and third-party keys",
@@ -169,20 +243,39 @@ const AdminHomepage = () => {
       stats: "1,247 actions logged"
     },
     {
+      title: "Data Privacy",
+      description: "Manage data protection settings",
+      icon: Shield,
+      href: "/admin/settings/privacy",
+      stats: "GDPR compliant"
+    },
+    {
       title: "User Roles",
       description: "Manage permissions and access",
       icon: UserCog,
       href: "/admin/settings/roles",
-      stats: "8 roles defined",
-      disabled: true
+      stats: "8 roles defined"
+    },
+    {
+      title: "System Config",
+      description: "Global system settings",
+      icon: Settings,
+      href: "/admin/settings/system",
+      stats: "All systems operational"
     },
     {
       title: "Notifications",
       description: "Email and SMS templates",
       icon: Mail,
       href: "/admin/settings/notifications",
-      stats: "24 templates",
-      disabled: true
+      stats: "24 templates"
+    },
+    {
+      title: "Localization",
+      description: "Multi-language management",
+      icon: Languages,
+      href: "/admin/settings/localization",
+      stats: "4 languages supported"
     }
   ];
 
@@ -340,14 +433,17 @@ const AdminHomepage = () => {
           </CardContent>
         </Card>
 
+        {/* AI Management Section */}
+        {renderSectionCards(aiManagementCards, "AI Management")}
+
         {/* Content Management Section */}
         {renderSectionCards(contentManagementCards, "Content Management")}
 
         {/* Reports & Analytics Section */}
-        {renderSectionCards(reportsAnalyticsCards, "Reports & Analytics")}
+        {renderSectionCards(extendedReportsAnalyticsCards, "Reports & Analytics")}
 
         {/* System Settings Section */}
-        {renderSectionCards(systemSettingsCards, "System Settings")}
+        {renderSectionCards(completeSystemSettingsCards, "System Settings")}
 
         {/* Existing Management Sections */}
         <div className="space-y-4">

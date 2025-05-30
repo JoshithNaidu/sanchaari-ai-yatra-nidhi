@@ -4,334 +4,231 @@ import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { 
-  ArrowLeft,
-  Clock,
-  User,
-  MessageSquare,
-  AlertTriangle,
-  CheckCircle,
-  RefreshCw,
-  Settings,
-  Download
-} from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useCentralizedAuth } from '@/contexts/CentralizedAuthContext';
+import { Users, MessageSquare, Clock, ArrowRight, User } from 'lucide-react';
 
 const AdminAIHandoffs = () => {
-  const [selectedQueue, setSelectedQueue] = useState('all');
-
-  const handoffQueue = [
+  const [filter, setFilter] = useState('all');
+  
+  const handoffs = [
     {
-      id: "HO001",
-      topic: "Payment Failed",
-      userID: "USR12345",
-      waitTime: "12m 30s",
-      assignedAgent: "Sarah Kumar",
-      team: "Billing",
-      status: "Active",
-      priority: "High",
-      startTime: "14:25:00"
+      id: 'HO001',
+      sessionId: 'CS-2024-001',
+      customerName: 'John Doe',
+      reason: 'Complex booking modification',
+      priority: 'high',
+      status: 'pending',
+      timestamp: '2024-05-23 14:30',
+      agent: null,
+      waitTime: '5 min'
     },
     {
-      id: "HO002", 
-      topic: "Booking Cancellation",
-      userID: "USR67890",
-      waitTime: "8m 15s",
-      assignedAgent: "Raj Patel",
-      team: "Support",
-      status: "Active",
-      priority: "Medium",
-      startTime: "14:35:00"
+      id: 'HO002',
+      sessionId: 'CS-2024-002',
+      customerName: 'Jane Smith',
+      reason: 'Payment dispute',
+      priority: 'urgent',
+      status: 'assigned',
+      timestamp: '2024-05-23 14:25',
+      agent: 'Sarah Wilson',
+      waitTime: '2 min'
     },
     {
-      id: "HO003",
-      topic: "Refund Status",
-      userID: "USR11111",
-      waitTime: "45m 20s",
-      assignedAgent: "Unassigned",
-      team: "Billing",
-      status: "Escalated",
-      priority: "High",
-      startTime: "13:58:00"
+      id: 'HO003',
+      sessionId: 'CS-2024-003',
+      customerName: 'Mike Johnson',
+      reason: 'Cancellation policy clarification',
+      priority: 'medium',
+      status: 'resolved',
+      timestamp: '2024-05-23 14:15',
+      agent: 'David Chen',
+      waitTime: '8 min'
     }
   ];
 
-  const routingRules = [
-    {
-      condition: "payment failed",
-      team: "Billing",
-      sla: "15 minutes",
-      active: true
-    },
-    {
-      condition: "booking issues",
-      team: "Support",
-      sla: "30 minutes", 
-      active: true
-    },
-    {
-      condition: "refund request",
-      team: "Billing",
-      sla: "60 minutes",
-      active: true
-    }
-  ];
-
-  const analytics = {
-    medianResponseTime: "18m 45s",
-    resolutionRatio: "94.2%",
-    firstContactResolution: "87.5%",
-    activeHandoffs: 3,
-    todayHandoffs: 47,
-    escalatedTickets: 1
-  };
-
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'High': return 'bg-red-100 text-red-800';
-      case 'Medium': return 'bg-yellow-100 text-yellow-800';
-      case 'Low': return 'bg-green-100 text-green-800';
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'pending': return 'bg-yellow-100 text-yellow-800';
+      case 'assigned': return 'bg-blue-100 text-blue-800';
+      case 'resolved': return 'bg-green-100 text-green-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'Active': return 'bg-blue-100 text-blue-800';
-      case 'Escalated': return 'bg-red-100 text-red-800';
-      case 'Resolved': return 'bg-green-100 text-green-800';
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'urgent': return 'bg-red-100 text-red-800';
+      case 'high': return 'bg-orange-100 text-orange-800';
+      case 'medium': return 'bg-blue-100 text-blue-800';
+      case 'low': return 'bg-gray-100 text-gray-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <header className="bg-white border-b border-gray-200 shadow-sm">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Link to="/admin/dashboard" className="flex items-center text-gray-600 hover:text-blue-600">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Dashboard
-              </Link>
-              <h1 className="text-2xl font-bold text-gray-900">Human Handoff Management</h1>
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">Human Handoffs</h1>
+              <p className="text-sm text-gray-600">Manage AI-to-human escalations</p>
             </div>
             <div className="flex items-center gap-4">
-              <Button variant="outline" size="sm" className="gap-2">
-                <Download className="h-4 w-4" />
-                Export Analytics
-              </Button>
-              <Link to="/admin/logout">
-                <Button variant="destructive" size="sm">Logout</Button>
+              <Select value={filter} onValueChange={setFilter}>
+                <SelectTrigger className="w-32">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Status</SelectItem>
+                  <SelectItem value="pending">Pending</SelectItem>
+                  <SelectItem value="assigned">Assigned</SelectItem>
+                  <SelectItem value="resolved">Resolved</SelectItem>
+                </SelectContent>
+              </Select>
+              <Link to="/admin/ai/analytics">
+                <Button variant="outline" size="sm">Back to AI Analytics</Button>
               </Link>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
-        
-        {/* Analytics Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-6 gap-6 mb-8">
+      <div className="container mx-auto px-4 py-6 space-y-6">
+        {/* Quick Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Active Handoffs</p>
-                  <p className="text-2xl font-bold text-blue-600">{analytics.activeHandoffs}</p>
-                </div>
-                <MessageSquare className="h-8 w-8 text-blue-600" />
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Pending Handoffs</CardTitle>
+              <Clock className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {handoffs.filter(h => h.status === 'pending').length}
               </div>
             </CardContent>
           </Card>
+
           <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Today's Handoffs</p>
-                  <p className="text-2xl font-bold text-purple-600">{analytics.todayHandoffs}</p>
-                </div>
-                <RefreshCw className="h-8 w-8 text-purple-600" />
-              </div>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Avg Wait Time</CardTitle>
+              <Clock className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">4.2 min</div>
             </CardContent>
           </Card>
+
           <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Median Response</p>
-                  <p className="text-2xl font-bold text-green-600">{analytics.medianResponseTime}</p>
-                </div>
-                <Clock className="h-8 w-8 text-green-600" />
-              </div>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Today</CardTitle>
+              <Users className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">15</div>
             </CardContent>
           </Card>
+
           <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Resolution Rate</p>
-                  <p className="text-2xl font-bold text-blue-600">{analytics.resolutionRatio}</p>
-                </div>
-                <CheckCircle className="h-8 w-8 text-blue-600" />
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">First Contact</p>
-                  <p className="text-2xl font-bold text-green-600">{analytics.firstContactResolution}</p>
-                </div>
-                <User className="h-8 w-8 text-green-600" />
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Escalated</p>
-                  <p className="text-2xl font-bold text-red-600">{analytics.escalatedTickets}</p>
-                </div>
-                <AlertTriangle className="h-8 w-8 text-red-600" />
-              </div>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Resolution Rate</CardTitle>
+              <MessageSquare className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">87%</div>
             </CardContent>
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          
-          {/* Live Handoff Queue */}
-          <div className="lg:col-span-2">
-            <Card>
-              <CardHeader>
-                <CardTitle>Live Handoff Queue</CardTitle>
-                <CardDescription>Real-time monitoring of bot escalations to human agents</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="border rounded-lg">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Topic</TableHead>
-                        <TableHead>User</TableHead>
-                        <TableHead>Wait Time</TableHead>
-                        <TableHead>Agent</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {handoffQueue.map((item) => (
-                        <TableRow key={item.id}>
-                          <TableCell>
-                            <div>
-                              <p className="font-medium">{item.topic}</p>
-                              <p className="text-xs text-gray-500">{item.id}</p>
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <div>
-                              <p className="text-sm">{item.userID}</p>
-                              <p className="text-xs text-gray-500">Started: {item.startTime}</p>
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <Badge className={item.waitTime.includes('45m') ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'}>
-                              {item.waitTime}
-                            </Badge>
-                          </TableCell>
-                          <TableCell>
-                            <div>
-                              <p className="text-sm font-medium">{item.assignedAgent}</p>
-                              <p className="text-xs text-gray-500">{item.team} Team</p>
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <Badge className={getStatusColor(item.status)}>
-                              {item.status}
-                            </Badge>
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex gap-2">
-                              <Button variant="outline" size="sm">View</Button>
-                              <Button variant="outline" size="sm">Reassign</Button>
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Routing Rules */}
-          <div>
-            <Card>
-              <CardHeader>
-                <CardTitle>Routing Rules</CardTitle>
-                <CardDescription>Configure automatic agent assignment</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {routingRules.map((rule, index) => (
-                    <div key={index} className="border rounded-lg p-3">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="font-medium text-sm">"{rule.condition}"</span>
-                        <Badge variant={rule.active ? "default" : "secondary"}>
-                          {rule.active ? "Active" : "Inactive"}
-                        </Badge>
-                      </div>
-                      <div className="text-xs text-gray-600 space-y-1">
-                        <p>→ {rule.team} Team</p>
-                        <p>SLA: {rule.sla}</p>
-                      </div>
+        {/* Handoffs List */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Active Handoffs</CardTitle>
+            <CardDescription>Current AI-to-human escalations</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {handoffs.map((handoff) => (
+                <div key={handoff.id} className="border rounded-lg p-4 hover:bg-gray-50">
+                  <div className="grid grid-cols-1 md:grid-cols-6 gap-4 items-center">
+                    <div>
+                      <div className="font-medium">{handoff.id}</div>
+                      <div className="text-sm text-gray-600">{handoff.sessionId}</div>
                     </div>
-                  ))}
-                  <Button size="sm" className="w-full">
-                    <Settings className="h-3 w-3 mr-1" />
-                    Edit Rules
-                  </Button>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <User className="h-4 w-4 text-gray-400" />
+                        <span className="font-medium">{handoff.customerName}</span>
+                      </div>
+                      <div className="text-sm text-gray-600">{handoff.timestamp}</div>
+                    </div>
+                    <div>
+                      <div className="text-sm font-medium">{handoff.reason}</div>
+                      <div className="text-xs text-gray-500">Wait: {handoff.waitTime}</div>
+                    </div>
+                    <div>
+                      <Badge className={getPriorityColor(handoff.priority)}>
+                        {handoff.priority}
+                      </Badge>
+                    </div>
+                    <div>
+                      <Badge className={getStatusColor(handoff.status)}>
+                        {handoff.status}
+                      </Badge>
+                      {handoff.agent && (
+                        <div className="text-xs text-gray-600 mt-1">
+                          Agent: {handoff.agent}
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex gap-2">
+                      {handoff.status === 'pending' && (
+                        <Button size="sm">Assign</Button>
+                      )}
+                      <Button size="sm" variant="outline">
+                        <MessageSquare className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
 
-            <Card className="mt-6">
-              <CardHeader>
-                <CardTitle>SLA Monitoring</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm">15min SLA</span>
-                    <Badge className="bg-green-100 text-green-800">2 tickets</Badge>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm">30min SLA</span>
-                    <Badge className="bg-yellow-100 text-yellow-800">1 ticket</Badge>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm">60min+ Breach</span>
-                    <Badge className="bg-red-100 text-red-800">1 ticket</Badge>
-                  </div>
+        {/* Handoff Rules */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Handoff Rules</CardTitle>
+            <CardDescription>Configure when AI should escalate to humans</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between p-3 border rounded">
+                <div>
+                  <div className="font-medium">Confidence threshold</div>
+                  <div className="text-sm text-gray-600">Escalate when AI confidence < 70%</div>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
+                <Button size="sm" variant="outline">Edit</Button>
+              </div>
+              <div className="flex items-center justify-between p-3 border rounded">
+                <div>
+                  <div className="font-medium">Keywords trigger</div>
+                  <div className="text-sm text-gray-600">Escalate on "complaint", "refund", "legal"</div>
+                </div>
+                <Button size="sm" variant="outline">Edit</Button>
+              </div>
+              <div className="flex items-center justify-between p-3 border rounded">
+                <div>
+                  <div className="font-medium">Response loops</div>
+                  <div className="text-sm text-gray-600">Escalate after 3 failed resolution attempts</div>
+                </div>
+                <Button size="sm" variant="outline">Edit</Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
