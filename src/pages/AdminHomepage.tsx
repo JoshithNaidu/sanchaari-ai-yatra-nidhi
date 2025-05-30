@@ -1,588 +1,433 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useCentralizedAuth } from '@/contexts/CentralizedAuthContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { useCentralizedAuth } from '@/contexts/CentralizedAuthContext';
 import { 
-  Users, 
-  MapPin, 
-  MessageSquare, 
-  BarChart3, 
-  Shield, 
-  AlertTriangle, 
-  Search,
-  Database,
-  RefreshCw,
-  FileText,
-  Bell,
-  LogOut,
-  CheckCircle,
-  DollarSign,
-  Settings,
-  CreditCard,
-  Image,
-  BookOpen,
-  Activity,
-  Clock,
-  Zap,
-  Command,
-  Flag,
-  Star,
-  TrendingUp,
-  Calendar,
-  Globe,
-  Target,
-  Edit
+  Users, UserCheck, MapPin, MessageSquare, CreditCard, 
+  Settings, BarChart3, TrendingUp, Calendar, Bell,
+  Search, Command, AlertTriangle, CheckCircle, Clock,
+  Database, Globe, Shield, Key, FileText, Flag,
+  DollarSign, Target, UserCog, Mail, Languages
 } from 'lucide-react';
 
 const AdminHomepage = () => {
-  const { user, logout } = useCentralizedAuth();
+  const { user } = useCentralizedAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [showCommandPalette, setShowCommandPalette] = useState(false);
 
-  const getGreeting = () => {
-    const hour = new Date().getHours();
-    if (hour < 12) return 'Good Morning';
-    if (hour < 18) return 'Good Afternoon';
-    return 'Good Evening';
-  };
-
-  // Enhanced primary modules with new pages
-  const primaryModules = [
-    {
-      title: 'Dashboard',
-      description: 'System overview and analytics',
-      icon: BarChart3,
-      path: '/admin/dashboard',
-      color: 'bg-blue-50 text-blue-600 border-blue-200',
-      notifications: 0
-    },
-    {
-      title: 'User Management',
-      description: 'Manage registered users',
-      icon: Users,
-      path: '/admin/users/list',
-      color: 'bg-green-50 text-green-600 border-green-200',
-      notifications: 3
-    },
-    {
-      title: 'Booking Management',
-      description: 'View and manage all bookings',
-      icon: CreditCard,
-      path: '/admin/bookings',
-      color: 'bg-purple-50 text-purple-600 border-purple-200',
-      notifications: 12
-    },
-    {
-      title: 'Trip Oversight',
-      description: 'Monitor all travel plans',
-      icon: MapPin,
-      path: '/admin/trips',
-      color: 'bg-orange-50 text-orange-600 border-orange-200',
-      notifications: 0
-    },
-    {
-      title: 'Integration Management',
-      description: 'Monitor third-party integrations',
-      icon: Database,
-      path: '/admin/integrations',
-      color: 'bg-red-50 text-red-600 border-red-200',
-      notifications: 2
-    },
-    {
-      title: 'Pricing & Commission',
-      description: 'Configure pricing rules',
-      icon: DollarSign,
-      path: '/admin/pricing',
-      color: 'bg-emerald-50 text-emerald-600 border-emerald-200',
-      notifications: 0
-    },
-    {
-      title: 'User Generated Content',
-      description: 'Moderate reviews and photos',
-      icon: Image,
-      path: '/admin/ugc',
-      color: 'bg-pink-50 text-pink-600 border-pink-200',
-      notifications: 8
-    },
-    {
-      title: 'Analytics & Reports',
-      description: 'Business intelligence insights',
-      icon: BarChart3,
-      path: '/admin/reports/overview',
-      color: 'bg-indigo-50 text-indigo-600 border-indigo-200',
-      notifications: 0
-    },
-    {
-      title: 'Chatbot Insights',
-      description: 'AI performance analytics',
-      icon: MessageSquare,
-      path: '/admin/analytics/chatbot',
-      color: 'bg-cyan-50 text-cyan-600 border-cyan-200',
-      notifications: 1
-    }
+  const stats = [
+    { title: "Total Users", value: "12,345", change: "+12%", icon: Users },
+    { title: "Active Trips", value: "1,234", change: "+5%", icon: MapPin },
+    { title: "Bookings Today", value: "89", change: "+15%", icon: CreditCard },
+    { title: "Chat Sessions", value: "456", change: "+8%", icon: MessageSquare },
   ];
 
-  // New content management modules
-  const contentModules = [
-    {
-      title: 'Manage Destinations',
-      description: 'Add and edit travel destinations',
-      icon: Globe,
-      path: '/admin/content/destinations',
-      color: 'bg-blue-50 text-blue-600 border-blue-200'
+  const alerts = [
+    { 
+      id: 1, 
+      title: "System Maintenance", 
+      description: "Scheduled downtime on June 15, 2024 at 02:00 IST", 
+      type: "info", 
+      icon: Clock,
+      time: "2 hours ago"
     },
-    {
-      title: 'Blog/Articles',
-      description: 'Curate and publish content',
-      icon: BookOpen,
-      path: '/admin/content/blog',
-      color: 'bg-green-50 text-green-600 border-green-200'
+    { 
+      id: 2, 
+      title: "Payment Gateway Error", 
+      description: "Intermittent failures with Razorpay integration", 
+      type: "error", 
+      icon: AlertTriangle,
+      time: "15 mins ago"
     },
-    {
-      title: 'Promotional Content',
-      description: 'Manage banners and offers',
-      icon: Star,
-      path: '/admin/content/promotions',
-      color: 'bg-yellow-50 text-yellow-600 border-yellow-200'
-    },
-    {
-      title: 'Flagged Content',
-      description: 'Review flagged user content',
-      icon: Flag,
-      path: '/admin/content/flagged',
-      color: 'bg-red-50 text-red-600 border-red-200'
-    }
-  ];
-
-  // New reporting modules
-  const reportingModules = [
-    {
-      title: 'Revenue Reports',
-      description: 'Financial analytics and drilldowns',
-      icon: DollarSign,
-      path: '/admin/reports/revenue',
-      color: 'bg-green-50 text-green-600 border-green-200'
-    },
-    {
-      title: 'Marketing ROI',
-      description: 'Track marketing performance',
-      icon: TrendingUp,
-      path: '/admin/reports/marketing',
-      color: 'bg-purple-50 text-purple-600 border-purple-200'
-    },
-    {
-      title: 'User Behavior',
-      description: 'Understand user interactions',
-      icon: Users,
-      path: '/admin/reports/user-behavior',
-      color: 'bg-blue-50 text-blue-600 border-blue-200'
-    },
-    {
-      title: 'Conversion Funnel',
-      description: 'Track conversion drop-offs',
-      icon: Target,
-      path: '/admin/reports/funnel',
-      color: 'bg-orange-50 text-orange-600 border-orange-200'
-    }
-  ];
-
-  // Enhanced system health status
-  const systemHealth = {
-    overall: 'operational',
-    services: [
-      { name: 'Chatbot API', status: 'operational', uptime: '99.9%' },
-      { name: 'Booking API', status: 'operational', uptime: '100%' },
-      { name: 'Payment Gateway', status: 'degraded', uptime: '97.2%' },
-      { name: 'External Integrations', status: 'operational', uptime: '98.8%' }
-    ]
-  };
-
-  const pendingAlerts = [
-    {
-      id: 1,
-      message: 'Payment gateway experiencing intermittent issues',
-      type: 'warning',
-      action: 'Monitor',
-      priority: 'high'
-    },
-    {
-      id: 2,
-      message: '12 bookings pending manual review',
-      type: 'info',
-      action: 'Review',
-      priority: 'medium'
-    },
-    {
-      id: 3,
-      message: '8 user-generated content items flagged',
-      type: 'warning',
-      action: 'Moderate',
-      priority: 'medium'
-    },
-    {
-      id: 4,
-      message: 'Airbnb integration sync failed',
-      type: 'error',
-      action: 'Fix Now',
-      priority: 'high'
+    { 
+      id: 3, 
+      title: "New User Spike", 
+      description: "300+ new registrations in the last hour", 
+      type: "success", 
+      icon: CheckCircle,
+      time: "Just now"
     }
   ];
 
   const quickTools = [
-    { name: 'Refresh Chatbot Training', icon: RefreshCw, action: 'chatbot-refresh' },
-    { name: 'Flush Redis Cache', icon: Database, action: 'cache-flush' },
-    { name: 'Re-index Destination Search', icon: Search, action: 'reindex-search' },
-    { name: 'Generate System Report', icon: FileText, action: 'system-report' }
+    { name: "User Lookup", icon: Users, action: () => {} },
+    { name: "System Status", icon: Shield, action: () => {} },
+    { name: "Clear Cache", icon: RefreshCw, action: () => {} },
+    { name: "Send Notification", icon: Bell, action: () => {} },
   ];
 
-  const quickSearchSuggestions = [
-    'User: john@example.com',
-    'Booking: BK12345',
-    'Integration: MakeMyTrip',
-    'Destination: Goa',
-    'Report: Revenue Analytics'
+  const managementCards = [
+    {
+      title: "User Management",
+      description: "Manage users, permissions and profiles",
+      icon: Users,
+      href: "/admin/users",
+      stats: "12,345 users"
+    },
+    {
+      title: "Trip Management",
+      description: "Monitor and manage user trips",
+      icon: MapPin,
+      href: "/admin/trips",
+      stats: "1,234 active trips"
+    },
+    {
+      title: "Booking Management",
+      description: "Track reservations and payments",
+      icon: CreditCard,
+      href: "/admin/bookings",
+      stats: "89 today"
+    },
+    {
+      title: "Chatbot Analytics",
+      description: "Monitor AI assistant performance",
+      icon: MessageSquare,
+      href: "/admin/analytics/chatbot",
+      stats: "456 sessions today"
+    }
   ];
 
-  const handleQuickTool = (action: string) => {
-    console.log(`Executing quick tool: ${action}`);
-    // In real implementation, this would trigger actual system operations
-  };
-
-  // Command palette functionality (Cmd+K)
-  React.useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault();
-        setShowCommandPalette(true);
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, []);
-
-  const getHealthStatusColor = (status: string) => {
-    switch (status) {
-      case 'operational': return 'text-green-600';
-      case 'degraded': return 'text-yellow-600';
-      case 'down': return 'text-red-600';
-      default: return 'text-gray-600';
+  const contentManagementCards = [
+    {
+      title: "Destinations",
+      description: "Manage travel destinations and metadata",
+      icon: MapPin,
+      href: "/admin/content/destinations",
+      stats: "245 destinations"
+    },
+    {
+      title: "Blog & Articles",
+      description: "Curate and publish travel content",
+      icon: FileText,
+      href: "/admin/content/blog",
+      stats: "89 articles"
+    },
+    {
+      title: "Promotions",
+      description: "Manage promotional banners and offers",
+      icon: Target,
+      href: "/admin/content/promotions",
+      stats: "12 active"
+    },
+    {
+      title: "Flagged Content",
+      description: "Review user-reported content",
+      icon: Flag,
+      href: "/admin/content/flagged",
+      stats: "3 pending",
+      badge: "3"
     }
+  ];
+
+  const reportsAnalyticsCards = [
+    {
+      title: "Overview Dashboard",
+      description: "KPIs and performance metrics",
+      icon: BarChart3,
+      href: "/admin/reports/overview",
+      stats: "Real-time data"
+    },
+    {
+      title: "Revenue Reports",
+      description: "Financial analytics and insights",
+      icon: DollarSign,
+      href: "/admin/reports/revenue",
+      stats: "₹2.4M this month"
+    },
+    {
+      title: "Marketing ROI",
+      description: "Campaign performance tracking",
+      icon: TrendingUp,
+      href: "/admin/reports/marketing",
+      stats: "15.2% avg ROAS"
+    },
+    {
+      title: "Conversion Funnel",
+      description: "User journey drop-off analysis",
+      icon: Target,
+      href: "/admin/reports/funnel",
+      stats: "15.2% conversion"
+    }
+  ];
+
+  const systemSettingsCards = [
+    {
+      title: "API Keys",
+      description: "Manage internal and third-party keys",
+      icon: Key,
+      href: "/admin/settings/api-keys",
+      stats: "5 active keys"
+    },
+    {
+      title: "Security & Audit",
+      description: "Monitor system activities",
+      icon: Shield,
+      href: "/admin/settings/security",
+      stats: "1,247 actions logged"
+    },
+    {
+      title: "User Roles",
+      description: "Manage permissions and access",
+      icon: UserCog,
+      href: "/admin/settings/roles",
+      stats: "8 roles defined",
+      disabled: true
+    },
+    {
+      title: "Notifications",
+      description: "Email and SMS templates",
+      icon: Mail,
+      href: "/admin/settings/notifications",
+      stats: "24 templates",
+      disabled: true
+    }
+  ];
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Searching for:", searchQuery);
   };
 
-  const getAlertColor = (priority: string) => {
-    switch (priority) {
-      case 'high': return 'border-red-200 bg-red-50';
-      case 'medium': return 'border-orange-200 bg-orange-50';
-      case 'low': return 'border-blue-200 bg-blue-50';
-      default: return 'border-gray-200 bg-gray-50';
-    }
+  const renderStatsCards = () => (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {stats.map((stat, index) => {
+        const IconComponent = stat.icon;
+        return (
+          <Card key={index}>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
+              <IconComponent className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{stat.value}</div>
+              <p className="text-xs text-muted-foreground">
+                {stat.change} from last month
+              </p>
+            </CardContent>
+          </Card>
+        );
+      })}
+    </div>
+  );
+
+  const handleQuickTool = (tool: any) => {
+    tool.action();
   };
+
+  const renderSectionCards = (cards: any[], sectionTitle: string) => (
+    <div className="space-y-4">
+      <h3 className="text-lg font-semibold text-gray-900">{sectionTitle}</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {cards.map((card) => {
+          const IconComponent = card.icon;
+          return (
+            <Card key={card.href} className={`hover:shadow-md transition-shadow ${card.disabled ? 'opacity-50' : ''}`}>
+              <CardContent className="p-4">
+                <div className="flex items-start justify-between mb-3">
+                  <div className={`p-2 rounded-lg ${card.disabled ? 'bg-gray-100' : 'bg-blue-50'}`}>
+                    <IconComponent className={`h-5 w-5 ${card.disabled ? 'text-gray-400' : 'text-blue-600'}`} />
+                  </div>
+                  {card.badge && (
+                    <Badge variant="destructive" className="text-xs">{card.badge}</Badge>
+                  )}
+                </div>
+                <h4 className="font-medium text-gray-900 mb-1">{card.title}</h4>
+                <p className="text-sm text-gray-600 mb-2">{card.description}</p>
+                <p className="text-xs text-gray-500">{card.stats}</p>
+                <div className="mt-3">
+                  {card.disabled ? (
+                    <Button size="sm" variant="outline" disabled className="w-full">
+                      Coming Soon
+                    </Button>
+                  ) : (
+                    <Link to={card.href}>
+                      <Button size="sm" variant="outline" className="w-full">
+                        Manage
+                      </Button>
+                    </Link>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <header className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <Link to="/admin" className="hover:opacity-80 transition-opacity">
-              <img 
-                src="/lovable-uploads/94fa41ec-96bd-400a-8fc5-4c52f8f19917.png" 
-                alt="Sanchaari Logo" 
-                className="h-8 w-auto"
-              />
-            </Link>
-            <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200 font-semibold">
-              ADMIN PANEL
-            </Badge>
-          </div>
-          
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" size="sm" className="relative">
-              <Bell className="h-4 w-4" />
-              {pendingAlerts.length > 0 && (
-                <Badge className="ml-1 h-4 w-4 p-0 text-xs bg-red-500">{pendingAlerts.length}</Badge>
-              )}
-            </Button>
-            <Button variant="ghost" size="sm" onClick={logout}>
-              <LogOut className="h-4 w-4" />
-            </Button>
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
+              <p className="text-sm text-gray-600">Welcome back, {user?.fullName || 'Admin'}</p>
+            </div>
+            <div className="flex items-center gap-4">
+              <form onSubmit={handleSearch} className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Input
+                  placeholder="Search..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 w-64"
+                />
+              </form>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="flex items-center gap-2"
+                onClick={() => setShowCommandPalette(true)}
+              >
+                <Command className="h-4 w-4" />
+                <span>Command</span>
+                <kbd className="bg-gray-100 px-2 py-0.5 text-xs rounded">⌘K</kbd>
+              </Button>
+              <Link to="/admin/logout">
+                <Button variant="ghost" size="sm">Logout</Button>
+              </Link>
+            </div>
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
-        {/* Welcome Banner with Health Status */}
-        <div className="mb-8">
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-2xl font-bold mb-2">
-                  {getGreeting()}, {user?.fullName?.split(' ')[0] || 'Admin'}!
-                </h1>
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-green-300" />
-                    <span className="text-blue-100">System Status: All Operational</span>
-                  </div>
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button variant="ghost" size="sm" className="text-blue-100 hover:text-white">
-                        <Activity className="h-4 w-4 mr-2" />
-                        Service Details
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>System Health Status</DialogTitle>
-                        <DialogDescription>Real-time status of all platform services</DialogDescription>
-                      </DialogHeader>
-                      <div className="space-y-3">
-                        {systemHealth.services.map((service, index) => (
-                          <div key={index} className="flex items-center justify-between p-3 border rounded">
-                            <div>
-                              <div className="font-medium">{service.name}</div>
-                              <div className="text-sm text-gray-500">Uptime: {service.uptime}</div>
-                            </div>
-                            <Badge className={`${getHealthStatusColor(service.status)} bg-white border`}>
-                              {service.status}
-                            </Badge>
-                          </div>
-                        ))}
-                      </div>
-                    </DialogContent>
-                  </Dialog>
-                </div>
-              </div>
-              <div className="text-right">
-                <div className="text-sm text-blue-200">Last login</div>
-                <div className="text-blue-100">{new Date().toLocaleDateString()}</div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className="container mx-auto px-4 py-6 space-y-8">
+        {/* Stats Overview */}
+        {renderStatsCards()}
 
-        {/* Enhanced Search Component with Command Palette */}
-        <div className="mb-8">
-          <div className="relative max-w-md">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-            <Input
-              placeholder="Search users, bookings, integrations... (⌘K)"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onFocus={() => setShowCommandPalette(true)}
-              className="pl-10 pr-16"
-            />
-            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center gap-1">
-              <kbd className="px-1.5 py-0.5 text-xs bg-gray-100 rounded">⌘</kbd>
-              <kbd className="px-1.5 py-0.5 text-xs bg-gray-100 rounded">K</kbd>
-            </div>
-          </div>
-          
-          {/* Command Palette Modal */}
-          <Dialog open={showCommandPalette} onOpenChange={setShowCommandPalette}>
-            <DialogContent className="max-w-2xl">
-              <DialogHeader>
-                <DialogTitle className="flex items-center gap-2">
-                  <Command className="h-5 w-5" />
-                  Quick Navigation
-                </DialogTitle>
-              </DialogHeader>
-              <div className="space-y-2">
-                {quickSearchSuggestions.map((suggestion, index) => (
-                  <div key={index} className="p-2 hover:bg-gray-50 rounded cursor-pointer">
-                    {suggestion}
-                  </div>
-                ))}
-              </div>
-            </DialogContent>
-          </Dialog>
-        </div>
-
-        {/* Enhanced Alerts & Notices */}
-        {pendingAlerts.length > 0 && (
-          <div className="mb-8 space-y-3">
-            <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-              <AlertTriangle className="h-5 w-5 text-orange-600" />
-              System Alerts ({pendingAlerts.length})
-            </h2>
-            {pendingAlerts.map((alert) => (
-              <Alert key={alert.id} className={getAlertColor(alert.priority)}>
-                <AlertTriangle className="h-4 w-4" />
-                <AlertDescription className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <span>{alert.message}</span>
-                    <Badge className="text-xs">
-                      {alert.priority}
-                    </Badge>
-                  </div>
-                  <Button size="sm" variant="outline">
-                    {alert.action}
-                  </Button>
-                </AlertDescription>
-              </Alert>
-            ))}
-          </div>
-        )}
-
-        {/* Enhanced Primary Navigation Cards */}
-        <div className="mb-8">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Admin Modules</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {primaryModules.map((module) => {
-              const IconComponent = module.icon;
-              return (
-                <Link key={module.path} to={module.path}>
-                  <Card className={`hover:shadow-lg transition-all duration-200 cursor-pointer border-2 ${module.color} relative group`}>
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className={`p-2 rounded-lg ${module.color.replace('border-', 'bg-').replace('text-', 'text-')}`}>
-                            <IconComponent className="h-6 w-6" />
-                          </div>
-                          <div>
-                            <CardTitle className="text-lg">{module.title}</CardTitle>
-                          </div>
-                        </div>
-                        {module.notifications > 0 && (
-                          <Badge className="bg-red-500 text-white text-xs">
-                            {module.notifications}
-                          </Badge>
-                        )}
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <CardDescription className="text-gray-600">
-                        {module.description}
-                      </CardDescription>
-                    </CardContent>
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg" />
-                  </Card>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Content Management Section */}
-        <div className="mb-8">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Content Management</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {contentModules.map((module) => {
-              const IconComponent = module.icon;
-              return (
-                <Link key={module.path} to={module.path}>
-                  <Card className={`hover:shadow-lg transition-all duration-200 cursor-pointer border-2 ${module.color} relative group`}>
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center gap-3">
-                        <div className={`p-2 rounded-lg ${module.color.replace('border-', 'bg-').replace('text-', 'text-')}`}>
-                          <IconComponent className="h-5 w-5" />
-                        </div>
-                        <div>
-                          <CardTitle className="text-base">{module.title}</CardTitle>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <CardDescription className="text-gray-600 text-sm">
-                        {module.description}
-                      </CardDescription>
-                    </CardContent>
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg" />
-                  </Card>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Reporting & Analytics Section */}
-        <div className="mb-8">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Reporting & Analytics</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {reportingModules.map((module) => {
-              const IconComponent = module.icon;
-              return (
-                <Link key={module.path} to={module.path}>
-                  <Card className={`hover:shadow-lg transition-all duration-200 cursor-pointer border-2 ${module.color} relative group`}>
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center gap-3">
-                        <div className={`p-2 rounded-lg ${module.color.replace('border-', 'bg-').replace('text-', 'text-')}`}>
-                          <IconComponent className="h-5 w-5" />
-                        </div>
-                        <div>
-                          <CardTitle className="text-base">{module.title}</CardTitle>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <CardDescription className="text-gray-600 text-sm">
-                        {module.description}
-                      </CardDescription>
-                    </CardContent>
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg" />
-                  </Card>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Enhanced Quick Tools Panel */}
-        <Card className="mb-8">
+        {/* Alerts */}
+        <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Shield className="h-5 w-5" />
-              Quick Administrative Tools
-            </CardTitle>
-            <CardDescription>One-click system operations (Super Admin only)</CardDescription>
+            <CardTitle>System Alerts</CardTitle>
+            <CardDescription>Recent notifications and system status</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {quickTools.map((tool) => {
-                const IconComponent = tool.icon;
+            <div className="space-y-4">
+              {alerts.map((alert) => {
+                const IconComponent = alert.icon;
                 return (
-                  <Button 
-                    key={tool.action} 
-                    variant="outline" 
-                    size="sm" 
-                    className="flex flex-col items-center gap-2 h-auto py-3"
-                    onClick={() => handleQuickTool(tool.action)}
+                  <div 
+                    key={alert.id} 
+                    className={`flex items-start p-3 rounded-lg ${
+                      alert.type === 'error' ? 'bg-red-50' : 
+                      alert.type === 'success' ? 'bg-green-50' : 'bg-blue-50'
+                    }`}
                   >
-                    <IconComponent className="h-5 w-5" />
-                    <span className="text-xs text-center">{tool.name}</span>
-                  </Button>
+                    <div className={`p-2 rounded-full ${
+                      alert.type === 'error' ? 'bg-red-100' : 
+                      alert.type === 'success' ? 'bg-green-100' : 'bg-blue-100'
+                    }`}>
+                      <IconComponent className={`h-4 w-4 ${
+                        alert.type === 'error' ? 'text-red-600' : 
+                        alert.type === 'success' ? 'text-green-600' : 'text-blue-600'
+                      }`} />
+                    </div>
+                    <div className="ml-3 flex-1">
+                      <div className="flex items-center justify-between">
+                        <h4 className="font-medium text-gray-900">{alert.title}</h4>
+                        <span className="text-xs text-gray-500">{alert.time}</span>
+                      </div>
+                      <p className="text-sm text-gray-600">{alert.description}</p>
+                    </div>
+                  </div>
                 );
               })}
             </div>
           </CardContent>
         </Card>
 
-        {/* Footer with Enhanced Shortcuts */}
-        <div className="text-center text-sm text-gray-500 space-x-4">
-          <span>Support: admin@sanchaari.com</span>
-          <span>•</span>
-          <Button variant="link" size="sm" className="text-gray-500 p-0 h-auto">
-            <FileText className="h-3 w-3 mr-1" />
-            Admin Guide
-          </Button>
-          <span>•</span>
-          <Button variant="link" size="sm" className="text-gray-500 p-0 h-auto">
-            <Clock className="h-3 w-3 mr-1" />
-            Release Notes
-          </Button>
-          <span>•</span>
-          <Button variant="link" size="sm" className="text-gray-500 p-0 h-auto">
-            <Zap className="h-3 w-3 mr-1" />
-            System Status
-          </Button>
+        {/* Content Management Section */}
+        {renderSectionCards(contentManagementCards, "Content Management")}
+
+        {/* Reports & Analytics Section */}
+        {renderSectionCards(reportsAnalyticsCards, "Reports & Analytics")}
+
+        {/* System Settings Section */}
+        {renderSectionCards(systemSettingsCards, "System Settings")}
+
+        {/* Existing Management Sections */}
+        <div className="space-y-4">
+          <h3 className="text-lg font-semibold text-gray-900">Core Management</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {managementCards.map((card) => {
+              const IconComponent = card.icon;
+              return (
+                <Card key={card.href} className="hover:shadow-md transition-shadow">
+                  <CardContent className="p-4">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="p-2 rounded-lg bg-blue-50">
+                        <IconComponent className="h-5 w-5 text-blue-600" />
+                      </div>
+                    </div>
+                    <h4 className="font-medium text-gray-900 mb-1">{card.title}</h4>
+                    <p className="text-sm text-gray-600 mb-2">{card.description}</p>
+                    <p className="text-xs text-gray-500">{card.stats}</p>
+                    <div className="mt-3">
+                      <Link to={card.href}>
+                        <Button size="sm" variant="outline" className="w-full">
+                          Manage
+                        </Button>
+                      </Link>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
         </div>
+
+        {/* Quick Tools */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Quick Tools</CardTitle>
+            <CardDescription>Frequently used admin utilities</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-2">
+              {quickTools.map((tool, index) => {
+                const IconComponent = tool.icon;
+                return (
+                  <Button 
+                    key={index} 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => handleQuickTool(tool)}
+                  >
+                    <IconComponent className="h-4 w-4 mr-2" />
+                    {tool.name}
+                  </Button>
+                );
+              })}
+            </div>
+          </CardContent>
+        </Card>
       </div>
+
+      {/* Command Palette */}
+      {showCommandPalette && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowCommandPalette(false)}>
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-4" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center border-b pb-2 mb-2">
+              <Command className="h-4 w-4 mr-2 text-gray-400" />
+              <Input 
+                placeholder="Search commands..." 
+                className="border-none shadow-none focus-visible:ring-0"
+                autoFocus
+              />
+            </div>
+            <div className="space-y-1 py-2">
+              {/* Command options would go here */}
+              <div className="px-2 py-1 hover:bg-gray-100 rounded cursor-pointer">Go to User Management</div>
+              <div className="px-2 py-1 hover:bg-gray-100 rounded cursor-pointer">View System Status</div>
+              <div className="px-2 py-1 hover:bg-gray-100 rounded cursor-pointer">Generate Reports</div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

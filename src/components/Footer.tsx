@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Compass, Instagram, Linkedin, Youtube } from 'lucide-react';
+import { Instagram, Linkedin, Youtube } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
@@ -19,13 +19,13 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div>
-            <div className="flex items-center space-x-2 mb-4">
+            <Link to="/" className="flex items-center space-x-2 mb-4">
               <img 
                 src="/lovable-uploads/94fa41ec-96bd-400a-8fc5-4c52f8f19917.png" 
                 alt="Sanchaari Logo" 
                 className="h-8 w-auto"
               />
-            </div>
+            </Link>
             <p className="text-blue-200 mb-4">
               Your AI-powered companion for exploring the incredible diversity of India.
             </p>

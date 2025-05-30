@@ -20,11 +20,15 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowedRoles 
   }
 
   if (!isAuthenticated || !user) {
-    return <Navigate to="/login" replace />;
+    // Redirect to appropriate login page based on intended access
+    const isAdminRoute = allowedRoles.includes('admin');
+    return <Navigate to={isAdminRoute ? "/admin/login" : "/auth/login"} replace />;
   }
 
   if (!allowedRoles.includes(user.userType)) {
-    return <Navigate to="/" replace />;
+    // Redirect to user's appropriate homepage
+    const homePath = user.userType === 'admin' ? '/admin' : '/';
+    return <Navigate to={homePath} replace />;
   }
 
   return <>{children}</>;
