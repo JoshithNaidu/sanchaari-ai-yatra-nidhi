@@ -14,7 +14,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 160 84% 39%;
+    --primary: 207 90% 35%; /* Ocean Blue */
     --primary-foreground: 0 0% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -23,7 +23,7 @@
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 158 64% 52%;
+    --accent: 199 89% 48%; /* Sky Blue */
     --accent-foreground: 0 0% 98%;
 
     --destructive: 0 84.2% 60.2%;
@@ -31,32 +31,32 @@
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 158 64% 52%;
+    --ring: 199 89% 48%; /* Sky Blue */
 
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 160 84% 39%;
+    --sidebar-primary: 207 90% 35%; /* Ocean Blue */
     --sidebar-primary-foreground: 0 0% 98%;
     --sidebar-accent: 240 4.8% 95.9%;
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 158 64% 52%;
+    --sidebar-ring: 199 89% 48%; /* Sky Blue */
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 220 26% 14%; /* Navy Blue */
     --foreground: 210 40% 98%;
 
-    --card: 222.2 84% 4.9%;
+    --card: 220 26% 14%; /* Navy Blue */
     --card-foreground: 210 40% 98%;
 
-    --popover: 222.2 84% 4.9%;
+    --popover: 220 26% 14%; /* Navy Blue */
     --popover-foreground: 210 40% 98%;
 
-    --primary: 158 64% 52%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 180 100% 50%; /* Turquoise */
+    --primary-foreground: 220 26% 14%;
 
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
@@ -64,7 +64,7 @@
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 160 84% 39%;
+    --accent: 207 90% 35%; /* Ocean Blue */
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 30.6%;
@@ -72,15 +72,15 @@
 
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 158 64% 52%;
+    --ring: 180 100% 50%; /* Turquoise */
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 158 64% 52%;
-    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-primary: 180 100% 50%; /* Turquoise */
+    --sidebar-primary-foreground: 220 26% 14%;
     --sidebar-accent: 240 3.7% 15.9%;
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 158 64% 52%;
+    --sidebar-ring: 180 100% 50%; /* Turquoise */
   }
 }
 

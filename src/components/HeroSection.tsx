@@ -17,7 +17,7 @@ const HeroSection = () => {
             backgroundImage: "url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=2000&q=80')"
           }}
         />
-        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-900/60 to-blue-900/40" />
       </div>
 
       {/* Content */}
@@ -25,7 +25,7 @@ const HeroSection = () => {
         <h1 className="text-5xl md:text-7xl font-bold mb-6">
           Travel Plans, Made Simple by AI.
         </h1>
-        <h2 className="text-xl md:text-2xl mb-8 text-gray-200">
+        <h2 className="text-xl md:text-2xl mb-8 text-blue-100">
           Tell us your preferences. We build your itinerary.
         </h2>
 
@@ -42,7 +42,7 @@ const HeroSection = () => {
           <Button 
             size="lg" 
             variant="ghost" 
-            className="text-white hover:bg-white/20 px-6 py-4 text-lg rounded-full"
+            className="text-white hover:bg-white/20 px-6 py-4 text-lg rounded-full border border-white/30"
             onClick={() => setShowVideoModal(true)}
           >
             <Play className="h-5 w-5 mr-2" />

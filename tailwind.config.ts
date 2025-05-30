@@ -26,7 +26,7 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
-					DEFAULT: 'hsl(160 84% 39%)', // Emerald 600
+					DEFAULT: 'hsl(207 90% 35%)', // Ocean Blue
 					foreground: 'hsl(0 0% 98%)'
 				},
 				secondary: {
@@ -42,7 +42,7 @@ export default {
 					foreground: 'hsl(var(--muted-foreground))'
 				},
 				accent: {
-					DEFAULT: 'hsl(158 64% 52%)', // Emerald 500
+					DEFAULT: 'hsl(199 89% 48%)', // Sky Blue
 					foreground: 'hsl(0 0% 98%)'
 				},
 				popover: {
@@ -56,12 +56,12 @@ export default {
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
-					primary: 'hsl(160 84% 39%)', // Emerald 600
+					primary: 'hsl(207 90% 35%)', // Ocean Blue
 					'primary-foreground': 'hsl(0 0% 98%)',
 					accent: 'hsl(var(--sidebar-accent))',
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
-					ring: 'hsl(158 64% 52%)' // Emerald 500
+					ring: 'hsl(199 89% 48%)' // Sky Blue
 				}
 			},
 			borderRadius: {
