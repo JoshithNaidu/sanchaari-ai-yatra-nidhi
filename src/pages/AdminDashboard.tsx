@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { 
   Users, 
   Building2, 
@@ -17,155 +18,159 @@ import {
   CheckCircle,
   XCircle,
   Clock,
-  BarChart3,
+  Database,
+  Server,
   Activity,
-  Globe,
-  Zap,
   Shield,
   Settings,
   Bell,
   LogOut,
   Eye,
-  Plus,
-  Filter,
-  Calendar
+  Ban,
+  RefreshCw,
+  MonitorSpeaker,
+  FileText,
+  BarChart3,
+  Zap
 } from 'lucide-react';
 
 const AdminDashboard = () => {
   const { user, logout } = useCentralizedAuth();
-  const [timePeriod, setTimePeriod] = useState('month');
+  const [selectedPeriod, setSelectedPeriod] = useState('today');
 
-  // System metrics
-  const systemMetrics = {
-    totalUsers: 15847,
-    activeUsers: 12563,
-    totalPartners: 342,
-    activePartners: 287,
-    totalBookings: 8439,
-    pendingBookings: 156,
-    totalRevenue: 45678900,
-    monthlyGrowth: 12.5,
-    systemUptime: 99.9,
-    apiResponseTime: 145
+  // System Health Metrics
+  const systemHealth = {
+    uptime: 99.97,
+    activeConnections: 2847,
+    dbConnections: 145,
+    memoryUsage: 72,
+    cpuUsage: 45,
+    diskUsage: 68,
+    responseTime: 142,
+    errorRate: 0.08,
+    throughput: 1250
   };
 
-  // User activity data
-  const userActivity = [
-    { type: 'new_registrations', count: 145, change: +12 },
-    { type: 'active_sessions', count: 3247, change: +8 },
-    { type: 'bookings_completed', count: 89, change: -3 },
-    { type: 'support_tickets', count: 23, change: +5 }
-  ];
-
-  // Recent alerts
-  const systemAlerts = [
+  // Critical System Alerts
+  const criticalAlerts = [
     { 
       id: 1, 
-      type: 'critical', 
-      message: 'High API response time detected on payment gateway', 
-      timestamp: '2 minutes ago',
-      action: 'Investigate'
+      severity: 'critical', 
+      message: 'Payment gateway response time >3s', 
+      timestamp: '3 mins ago',
+      affected: 'Payment Processing',
+      status: 'investigating'
     },
     { 
       id: 2, 
-      type: 'warning', 
-      message: 'Unusual spike in failed login attempts', 
-      timestamp: '15 minutes ago',
-      action: 'Review Logs'
+      severity: 'warning', 
+      message: 'Database connection pool at 85% capacity', 
+      timestamp: '12 mins ago',
+      affected: 'Database Layer',
+      status: 'monitoring'
     },
     { 
       id: 3, 
-      type: 'info', 
-      message: 'Scheduled maintenance window approaching', 
-      timestamp: '1 hour ago',
-      action: 'Prepare'
+      severity: 'high', 
+      message: 'Suspicious login patterns detected - Account: user@domain.com', 
+      timestamp: '25 mins ago',
+      affected: 'Security',
+      status: 'action_required'
     }
   ];
 
-  // Recent partner applications
-  const partnerApplications = [
-    { 
-      id: 'PA2024001', 
-      company: 'Mountain View Resorts', 
-      type: 'Hotels', 
-      status: 'pending_review',
-      submitted: '2024-01-15',
-      documents: 8
-    },
-    { 
-      id: 'PA2024002', 
-      company: 'Adventure Tours India', 
-      type: 'Activities', 
-      status: 'approved',
-      submitted: '2024-01-14',
-      documents: 12
-    },
-    { 
-      id: 'PA2024003', 
-      company: 'Sky Airlines', 
-      type: 'Flights', 
-      status: 'rejected',
-      submitted: '2024-01-13',
-      documents: 5
-    }
+  // Business Intelligence
+  const businessMetrics = {
+    totalRevenue: 15680000,
+    revenueGrowth: 18.5,
+    activeUsers: 45670,
+    userGrowth: 12.3,
+    totalBookings: 8934,
+    bookingGrowth: 15.8,
+    partnerCount: 892,
+    partnerGrowth: 8.2,
+    conversionRate: 3.4,
+    avgBookingValue: 8750,
+    supportTickets: 89,
+    pendingApprovals: 23
+  };
+
+  // Real-time Activity Feed
+  const realtimeActivity = [
+    { action: 'User Registration', user: 'john.doe@email.com', timestamp: '2 mins ago', status: 'completed' },
+    { action: 'Partner Application', partner: 'Luxury Resorts Ltd', timestamp: '5 mins ago', status: 'pending' },
+    { action: 'High-Value Booking', amount: '₹125,000', timestamp: '8 mins ago', status: 'confirmed' },
+    { action: 'Security Alert', detail: 'Failed login attempts', timestamp: '12 mins ago', status: 'blocked' },
+    { action: 'System Backup', detail: 'Database backup completed', timestamp: '15 mins ago', status: 'success' }
   ];
 
-  // Top performing partners
-  const topPartners = [
-    { name: 'Luxury Hotels Group', bookings: 234, revenue: 1250000, rating: 4.8 },
-    { name: 'Adventure Seekers', bookings: 189, revenue: 890000, rating: 4.7 },
-    { name: 'City Break Hotels', bookings: 156, revenue: 675000, rating: 4.6 },
-    { name: 'Mountain Escapes', bookings: 142, revenue: 598000, rating: 4.9 }
+  // Geographic Revenue Distribution
+  const geoRevenue = [
+    { region: 'Mumbai', revenue: 4250000, percentage: 27.1 },
+    { region: 'Delhi', revenue: 3890000, percentage: 24.8 },
+    { region: 'Bangalore', revenue: 2760000, percentage: 17.6 },
+    { region: 'Chennai', revenue: 2140000, percentage: 13.6 },
+    { region: 'Others', revenue: 2640000, percentage: 16.9 }
   ];
 
-  const getAlertColor = (type: string) => {
-    switch (type) {
-      case 'critical': return 'border-red-200 bg-red-50 text-red-800';
-      case 'warning': return 'border-yellow-200 bg-yellow-50 text-yellow-800';
-      default: return 'border-blue-200 bg-blue-50 text-blue-800';
+  const getAlertSeverityColor = (severity: string) => {
+    switch (severity) {
+      case 'critical': return 'border-red-500 bg-red-50 text-red-900';
+      case 'high': return 'border-orange-500 bg-orange-50 text-orange-900';
+      case 'warning': return 'border-yellow-500 bg-yellow-50 text-yellow-900';
+      default: return 'border-blue-500 bg-blue-50 text-blue-900';
     }
+  };
+
+  const getHealthStatus = (value: number, type: string) => {
+    if (type === 'uptime') return value > 99.5 ? 'excellent' : value > 99 ? 'good' : 'poor';
+    if (type === 'usage') return value < 70 ? 'good' : value < 85 ? 'warning' : 'critical';
+    if (type === 'response') return value < 200 ? 'good' : value < 500 ? 'warning' : 'poor';
+    return 'good';
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'approved': return 'bg-green-100 text-green-800';
-      case 'pending_review': return 'bg-yellow-100 text-yellow-800';
-      case 'rejected': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'approved': return <CheckCircle className="h-4 w-4" />;
-      case 'pending_review': return <Clock className="h-4 w-4" />;
-      case 'rejected': return <XCircle className="h-4 w-4" />;
-      default: return <Clock className="h-4 w-4" />;
+      case 'excellent': case 'good': case 'success': case 'completed': return 'text-green-600';
+      case 'warning': case 'monitoring': case 'pending': return 'text-yellow-600';
+      case 'critical': case 'poor': case 'blocked': return 'text-red-600';
+      default: return 'text-gray-600';
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
+      {/* Admin Header */}
       <header className="bg-white border-b border-gray-200 shadow-sm">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <Link to="/" className="hover:opacity-80 transition-opacity">
-            <img 
-              src="/lovable-uploads/94fa41ec-96bd-400a-8fc5-4c52f8f19917.png" 
-              alt="Sanchaari Logo" 
-              className="h-8 w-auto"
-            />
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link to="/" className="hover:opacity-80 transition-opacity">
+              <img 
+                src="/lovable-uploads/94fa41ec-96bd-400a-8fc5-4c52f8f19917.png" 
+                alt="Sanchaari Logo" 
+                className="h-8 w-auto"
+              />
+            </Link>
+            <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200 font-semibold">
+              ADMIN CONTROL PANEL
+            </Badge>
+          </div>
           
           <div className="flex items-center gap-4">
-            <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">
-              Admin Portal
-            </Badge>
+            <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
+              <SelectTrigger className="w-32">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="today">Today</SelectItem>
+                <SelectItem value="week">This Week</SelectItem>
+                <SelectItem value="month">This Month</SelectItem>
+                <SelectItem value="quarter">Quarter</SelectItem>
+              </SelectContent>
+            </Select>
             <Button variant="ghost" size="sm">
               <Bell className="h-4 w-4" />
-            </Button>
-            <Button variant="ghost" size="sm">
-              <Settings className="h-4 w-4" />
+              <Badge className="ml-1 h-4 w-4 p-0 text-xs">3</Badge>
             </Button>
             <Button variant="ghost" size="sm" onClick={logout}>
               <LogOut className="h-4 w-4" />
@@ -174,177 +179,207 @@ const AdminDashboard = () => {
         </div>
       </header>
 
-      {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
-        {/* Welcome Section */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Admin Dashboard
+      <div className="container mx-auto px-4 py-6">
+        {/* Welcome & Critical Alerts */}
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">
+            System Administration Dashboard
           </h1>
-          <p className="text-gray-600">System overview and management console</p>
-        </div>
-
-        {/* System Alerts */}
-        {systemAlerts.length > 0 && (
-          <div className="mb-8">
-            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-              <AlertTriangle className="h-5 w-5 text-orange-500" />
-              System Alerts
-            </h2>
-            <div className="space-y-3">
-              {systemAlerts.map((alert) => (
-                <div key={alert.id} className={`p-4 rounded-lg border ${getAlertColor(alert.type)} flex items-center justify-between`}>
-                  <div className="flex items-center gap-3">
-                    <AlertTriangle className="h-5 w-5" />
+          
+          {criticalAlerts.length > 0 && (
+            <div className="space-y-2 mb-6">
+              {criticalAlerts.map((alert) => (
+                <Alert key={alert.id} className={getAlertSeverityColor(alert.severity)}>
+                  <AlertTriangle className="h-4 w-4" />
+                  <AlertDescription className="flex items-center justify-between">
                     <div>
                       <span className="font-medium">{alert.message}</span>
-                      <p className="text-sm opacity-80">{alert.timestamp}</p>
+                      <span className="text-sm ml-2">({alert.affected})</span>
                     </div>
-                  </div>
-                  <Button variant="outline" size="sm">
-                    {alert.action}
-                  </Button>
-                </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs">{alert.timestamp}</span>
+                      <Button size="sm" variant="outline">Investigate</Button>
+                    </div>
+                  </AlertDescription>
+                </Alert>
               ))}
             </div>
-          </div>
-        )}
-
-        {/* Time Period Filter */}
-        <div className="mb-6">
-          <Select value={timePeriod} onValueChange={setTimePeriod}>
-            <SelectTrigger className="w-48">
-              <SelectValue placeholder="Select time period" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="today">Today</SelectItem>
-              <SelectItem value="week">This Week</SelectItem>
-              <SelectItem value="month">This Month</SelectItem>
-              <SelectItem value="quarter">This Quarter</SelectItem>
-              <SelectItem value="year">This Year</SelectItem>
-            </SelectContent>
-          </Select>
+          )}
         </div>
 
-        {/* Key System Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {/* System Health Monitoring */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Users</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm">System Uptime</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{systemMetrics.totalUsers.toLocaleString()}</div>
-              <p className="text-xs text-muted-foreground">
-                <TrendingUp className="inline h-3 w-3 text-green-600 mr-1" />
-                {systemMetrics.activeUsers.toLocaleString()} active users
-              </p>
+              <div className="text-2xl font-bold">{systemHealth.uptime}%</div>
+              <div className={`text-xs ${getStatusColor(getHealthStatus(systemHealth.uptime, 'uptime'))}`}>
+                {getHealthStatus(systemHealth.uptime, 'uptime').toUpperCase()}
+              </div>
             </CardContent>
           </Card>
 
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Partners</CardTitle>
-              <Building2 className="h-4 w-4 text-muted-foreground" />
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm">Active Connections</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{systemMetrics.totalPartners}</div>
-              <p className="text-xs text-muted-foreground">
-                {systemMetrics.activePartners} active partners
-              </p>
+              <div className="text-2xl font-bold">{systemHealth.activeConnections}</div>
+              <div className="text-xs text-gray-600">DB: {systemHealth.dbConnections}</div>
             </CardContent>
           </Card>
 
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-              <DollarSign className="h-4 w-4 text-muted-foreground" />
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm">Response Time</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">₹{(systemMetrics.totalRevenue / 1000000).toFixed(1)}M</div>
-              <p className="text-xs text-muted-foreground">
-                <TrendingUp className="inline h-3 w-3 text-green-600 mr-1" />
-                +{systemMetrics.monthlyGrowth}% this month
-              </p>
+              <div className="text-2xl font-bold">{systemHealth.responseTime}ms</div>
+              <div className={`text-xs ${getStatusColor(getHealthStatus(systemHealth.responseTime, 'response'))}`}>
+                Avg API Response
+              </div>
             </CardContent>
           </Card>
 
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">System Health</CardTitle>
-              <Activity className="h-4 w-4 text-muted-foreground" />
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm">Error Rate</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{systemMetrics.systemUptime}%</div>
-              <p className="text-xs text-muted-foreground">
-                {systemMetrics.apiResponseTime}ms avg response
-              </p>
+              <div className="text-2xl font-bold">{systemHealth.errorRate}%</div>
+              <div className="text-xs text-green-600">WITHIN LIMITS</div>
             </CardContent>
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-          {/* Recent User Activity */}
+        {/* Resource Usage */}
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Server className="h-5 w-5" />
+              Resource Usage Monitoring
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <div className="flex justify-between mb-2">
+                  <span className="text-sm font-medium">Memory Usage</span>
+                  <span className="text-sm">{systemHealth.memoryUsage}%</span>
+                </div>
+                <Progress value={systemHealth.memoryUsage} className="h-2" />
+              </div>
+              <div>
+                <div className="flex justify-between mb-2">
+                  <span className="text-sm font-medium">CPU Usage</span>
+                  <span className="text-sm">{systemHealth.cpuUsage}%</span>
+                </div>
+                <Progress value={systemHealth.cpuUsage} className="h-2" />
+              </div>
+              <div>
+                <div className="flex justify-between mb-2">
+                  <span className="text-sm font-medium">Disk Usage</span>
+                  <span className="text-sm">{systemHealth.diskUsage}%</span>
+                </div>
+                <Progress value={systemHealth.diskUsage} className="h-2" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          {/* Business Intelligence */}
           <div className="lg:col-span-2">
             <Card>
               <CardHeader>
-                <CardTitle>User Activity Overview</CardTitle>
-                <CardDescription>Real-time user engagement metrics</CardDescription>
+                <CardTitle className="flex items-center gap-2">
+                  <BarChart3 className="h-5 w-5" />
+                  Business Intelligence
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  {userActivity.map((activity, index) => (
-                    <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                      <div className="flex-1">
-                        <h4 className="font-medium capitalize">{activity.type.replace('_', ' ')}</h4>
-                        <p className="text-2xl font-bold mt-1">{activity.count.toLocaleString()}</p>
-                      </div>
-                      <div className="text-right">
-                        <div className={`flex items-center gap-1 ${activity.change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                          {activity.change >= 0 ? 
-                            <TrendingUp className="h-4 w-4" /> : 
-                            <TrendingDown className="h-4 w-4" />
-                          }
-                          <span className="text-sm font-medium">{Math.abs(activity.change)}%</span>
-                        </div>
-                      </div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-blue-600">₹{(businessMetrics.totalRevenue / 1000000).toFixed(1)}M</div>
+                    <div className="text-xs text-gray-600">Total Revenue</div>
+                    <div className="text-xs text-green-600 flex items-center justify-center gap-1">
+                      <TrendingUp className="h-3 w-3" />
+                      +{businessMetrics.revenueGrowth}%
                     </div>
-                  ))}
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-green-600">{(businessMetrics.activeUsers / 1000).toFixed(1)}K</div>
+                    <div className="text-xs text-gray-600">Active Users</div>
+                    <div className="text-xs text-green-600 flex items-center justify-center gap-1">
+                      <TrendingUp className="h-3 w-3" />
+                      +{businessMetrics.userGrowth}%
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-purple-600">{(businessMetrics.totalBookings / 1000).toFixed(1)}K</div>
+                    <div className="text-xs text-gray-600">Total Bookings</div>
+                    <div className="text-xs text-green-600 flex items-center justify-center gap-1">
+                      <TrendingUp className="h-3 w-3" />
+                      +{businessMetrics.bookingGrowth}%
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-orange-600">{businessMetrics.partnerCount}</div>
+                    <div className="text-xs text-gray-600">Active Partners</div>
+                    <div className="text-xs text-green-600 flex items-center justify-center gap-1">
+                      <TrendingUp className="h-3 w-3" />
+                      +{businessMetrics.partnerGrowth}%
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6 pt-4 border-t">
+                  <div className="grid grid-cols-3 gap-4 text-center">
+                    <div>
+                      <div className="text-lg font-semibold">{businessMetrics.conversionRate}%</div>
+                      <div className="text-xs text-gray-600">Conversion Rate</div>
+                    </div>
+                    <div>
+                      <div className="text-lg font-semibold">₹{businessMetrics.avgBookingValue.toLocaleString()}</div>
+                      <div className="text-xs text-gray-600">Avg Booking Value</div>
+                    </div>
+                    <div>
+                      <div className="text-lg font-semibold text-red-600">{businessMetrics.supportTickets}</div>
+                      <div className="text-xs text-gray-600">Open Tickets</div>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
           </div>
 
-          {/* Partner Applications */}
+          {/* Real-time Activity */}
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <div>
-                <CardTitle>Partner Applications</CardTitle>
-                <CardDescription>Pending partner reviews</CardDescription>
-              </div>
-              <Link to="/admin/partners/applications">
-                <Button variant="outline" size="sm">
-                  <Eye className="h-4 w-4 mr-2" />
-                  View All
-                </Button>
-              </Link>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Activity className="h-5 w-5" />
+                Real-time Activity
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {partnerApplications.map((application) => (
-                  <div key={application.id} className="p-3 bg-gray-50 rounded-lg">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-medium text-sm">{application.company}</span>
-                      <Badge className={getStatusColor(application.status)} variant="secondary">
-                        <span className="flex items-center gap-1">
-                          {getStatusIcon(application.status)}
-                          {application.status.replace('_', ' ')}
-                        </span>
-                      </Badge>
+              <div className="space-y-3">
+                {realtimeActivity.map((activity, index) => (
+                  <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                    <div className="flex-1">
+                      <div className="text-sm font-medium">{activity.action}</div>
+                      <div className="text-xs text-gray-600">
+                        {activity.user || activity.partner || activity.amount || activity.detail}
+                      </div>
+                      <div className="text-xs text-gray-500">{activity.timestamp}</div>
                     </div>
-                    <p className="text-xs text-gray-500 mb-1">{application.type}</p>
-                    <p className="text-xs text-gray-500">Submitted: {application.submitted}</p>
-                    <p className="text-xs text-gray-500">{application.documents} documents</p>
+                    <Badge 
+                      variant="outline" 
+                      className={`text-xs ${getStatusColor(activity.status)}`}
+                    >
+                      {activity.status}
+                    </Badge>
                   </div>
                 ))}
               </div>
@@ -352,92 +387,75 @@ const AdminDashboard = () => {
           </Card>
         </div>
 
-        {/* Top Performing Partners */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Top Performing Partners</CardTitle>
-            <CardDescription>Highest revenue generating partners this month</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {topPartners.map((partner, index) => (
-                <div key={index} className="p-4 border rounded-lg">
-                  <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-medium">{partner.name}</h4>
-                    <Badge variant="outline">#{index + 1}</Badge>
-                  </div>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Bookings:</span>
-                      <span className="font-medium">{partner.bookings}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Revenue:</span>
-                      <span className="font-medium">₹{(partner.revenue / 1000).toFixed(0)}K</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Rating:</span>
-                      <span className="font-medium flex items-center gap-1">
-                        ⭐ {partner.rating}
-                      </span>
+        {/* Geographic Revenue & Admin Actions */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Revenue by Region</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {geoRevenue.map((region, index) => (
+                  <div key={index} className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <div className="flex justify-between mb-1">
+                        <span className="text-sm font-medium">{region.region}</span>
+                        <span className="text-sm">₹{(region.revenue / 1000000).toFixed(1)}M ({region.percentage}%)</span>
+                      </div>
+                      <Progress value={region.percentage} className="h-2" />
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
 
-        {/* Quick Admin Actions */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Quick Admin Actions</CardTitle>
-            <CardDescription>Frequently used administrative functions</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <Link to="/admin/users/list">
-                <div className="p-6 rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all cursor-pointer">
-                  <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mb-4">
-                    <Users className="h-6 w-6 text-white" />
-                  </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Manage Users</h3>
-                  <p className="text-sm text-gray-600">View, edit, and moderate user accounts</p>
-                </div>
-              </Link>
-
-              <Link to="/admin/partners/list">
-                <div className="p-6 rounded-lg border border-gray-200 hover:border-green-300 hover:shadow-lg transition-all cursor-pointer">
-                  <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mb-4">
-                    <Building2 className="h-6 w-6 text-white" />
-                  </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Partner Management</h3>
-                  <p className="text-sm text-gray-600">Review applications and manage partners</p>
-                </div>
-              </Link>
-
-              <Link to="/admin/content/destinations">
-                <div className="p-6 rounded-lg border border-gray-200 hover:border-purple-300 hover:shadow-lg transition-all cursor-pointer">
-                  <div className="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mb-4">
-                    <Globe className="h-6 w-6 text-white" />
-                  </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Content Management</h3>
-                  <p className="text-sm text-gray-600">Manage destinations, blogs, and content</p>
-                </div>
-              </Link>
-
-              <Link to="/admin/reports/overview">
-                <div className="p-6 rounded-lg border border-gray-200 hover:border-orange-300 hover:shadow-lg transition-all cursor-pointer">
-                  <div className="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center mb-4">
-                    <BarChart3 className="h-6 w-6 text-white" />
-                  </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Analytics & Reports</h3>
-                  <p className="text-sm text-gray-600">View detailed analytics and generate reports</p>
-                </div>
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Quick Admin Actions</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 gap-3">
+                <Link to="/admin/users/list">
+                  <Button variant="outline" className="w-full h-16 flex-col gap-1">
+                    <Users className="h-5 w-5" />
+                    <span className="text-xs">User Management</span>
+                  </Button>
+                </Link>
+                <Link to="/admin/bookings/all">
+                  <Button variant="outline" className="w-full h-16 flex-col gap-1">
+                    <FileText className="h-5 w-5" />
+                    <span className="text-xs">Booking Management</span>
+                  </Button>
+                </Link>
+                <Link to="/admin/content/destinations">
+                  <Button variant="outline" className="w-full h-16 flex-col gap-1">
+                    <Database className="h-5 w-5" />
+                    <span className="text-xs">Content Management</span>
+                  </Button>
+                </Link>
+                <Link to="/admin/ai/analytics">
+                  <Button variant="outline" className="w-full h-16 flex-col gap-1">
+                    <Zap className="h-5 w-5" />
+                    <span className="text-xs">AI Management</span>
+                  </Button>
+                </Link>
+                <Link to="/admin/integrations">
+                  <Button variant="outline" className="w-full h-16 flex-col gap-1">
+                    <Settings className="h-5 w-5" />
+                    <span className="text-xs">System Config</span>
+                  </Button>
+                </Link>
+                <Link to="/admin/reports/overview">
+                  <Button variant="outline" className="w-full h-16 flex-col gap-1">
+                    <BarChart3 className="h-5 w-5" />
+                    <span className="text-xs">Analytics</span>
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

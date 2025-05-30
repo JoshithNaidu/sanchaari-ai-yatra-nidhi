@@ -4,167 +4,202 @@ import { Link } from 'react-router-dom';
 import { useCentralizedAuth } from '@/contexts/CentralizedAuthContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { 
-  Building2, 
-  Calendar, 
-  DollarSign, 
-  Star, 
+  Building2,
   TrendingUp,
   TrendingDown,
+  DollarSign,
+  Calendar,
   Users,
-  Bell,
-  Settings,
-  LogOut,
-  Package,
-  BookOpen,
-  AlertTriangle,
-  Eye,
-  Plus,
-  BarChart3,
-  CheckCircle,
-  Clock,
-  XCircle,
-  MessageSquare,
+  Star,
   MapPin,
-  Plane,
-  Hotel,
-  Camera
+  Phone,
+  Mail,
+  Clock,
+  CheckCircle,
+  AlertCircle,
+  FileText,
+  BarChart3,
+  Settings,
+  Bell,
+  LogOut,
+  Plus,
+  Eye,
+  Edit
 } from 'lucide-react';
 
 const PartnerDashboard = () => {
   const { user, logout } = useCentralizedAuth();
-  const [timePeriod, setTimePeriod] = useState('week');
+  const [selectedPeriod, setSelectedPeriod] = useState('month');
 
-  // Partner-specific metrics
+  // Business Performance Metrics
   const businessMetrics = {
-    totalListings: 24,
-    activeListings: 18,
-    pendingBookings: 12,
-    confirmedBookings: 87,
-    monthlyRevenue: 2456780,
+    totalRevenue: 1250000,
+    monthlyGrowth: 18.5,
+    totalBookings: 234,
+    bookingGrowth: 12.3,
+    averageRating: 4.7,
+    totalReviews: 189,
     occupancyRate: 78,
-    avgRating: 4.6,
-    reviewCount: 342,
-    responseRate: 94,
-    cancellationRate: 2.1
+    conversionRate: 8.4,
+    repeatCustomers: 45,
+    pendingPayouts: 85000
   };
 
-  // Recent bookings with partner-specific data
+  // Property Performance
+  const propertyPerformance = [
+    {
+      id: 'PROP001',
+      name: 'Mountain View Resort',
+      type: 'Hotel',
+      location: 'Manali, HP',
+      bookings: 89,
+      revenue: 680000,
+      rating: 4.8,
+      occupancy: 82,
+      status: 'active'
+    },
+    {
+      id: 'PROP002',
+      name: 'Valley Side Cottages',
+      type: 'Cottage',
+      location: 'Kasol, HP',
+      bookings: 67,
+      revenue: 345000,
+      rating: 4.6,
+      occupancy: 75,
+      status: 'active'
+    },
+    {
+      id: 'PROP003',
+      name: 'Alpine Adventure Camp',
+      type: 'Camp',
+      location: 'Solang Valley, HP',
+      bookings: 78,
+      revenue: 225000,
+      rating: 4.7,
+      occupancy: 68,
+      status: 'maintenance'
+    }
+  ];
+
+  // Recent Bookings
   const recentBookings = [
-    { 
-      id: "BK2024001", 
-      guest: "Arjun Mehta", 
-      property: "Sea View Villa", 
-      checkIn: "2024-01-15", 
-      checkOut: "2024-01-18",
-      amount: 45000, 
-      status: "confirmed",
-      nights: 3,
+    {
+      id: 'BK001',
+      guestName: 'Rajesh Kumar',
+      property: 'Mountain View Resort',
+      checkIn: '2024-06-05',
+      checkOut: '2024-06-08',
+      amount: 12500,
+      status: 'confirmed',
       guests: 4
     },
-    { 
-      id: "BK2024002", 
-      guest: "Priya Sharma", 
-      property: "Mountain Cottage", 
-      checkIn: "2024-01-20", 
-      checkOut: "2024-01-23",
-      amount: 28500, 
-      status: "pending",
-      nights: 3,
+    {
+      id: 'BK002',
+      guestName: 'Priya Sharma',
+      property: 'Valley Side Cottages',
+      checkIn: '2024-06-10',
+      checkOut: '2024-06-15',
+      amount: 8900,
+      status: 'pending',
       guests: 2
     },
-    { 
-      id: "BK2024003", 
-      guest: "Rajesh Kumar", 
-      property: "City Apartment", 
-      checkIn: "2024-01-18", 
-      checkOut: "2024-01-20",
-      amount: 18000, 
-      status: "cancelled",
-      nights: 2,
+    {
+      id: 'BK003',
+      guestName: 'Amit Patel',
+      property: 'Alpine Adventure Camp',
+      checkIn: '2024-06-12',
+      checkOut: '2024-06-14',
+      amount: 3600,
+      status: 'checked_in',
       guests: 3
     }
   ];
 
-  // Property performance data
-  const topPerformingProperties = [
-    { name: "Sea View Villa", bookings: 23, revenue: 892000, rating: 4.8, occupancy: 85 },
-    { name: "Mountain Cottage", bookings: 18, revenue: 624000, rating: 4.7, occupancy: 72 },
-    { name: "City Apartment", bookings: 31, revenue: 485000, rating: 4.5, occupancy: 90 },
-    { name: "Beach House", bookings: 15, revenue: 745000, rating: 4.9, occupancy: 68 }
-  ];
-
-  // Recent guest messages/inquiries
+  // Guest Messages
   const guestMessages = [
-    { guest: "Sanya Patel", property: "Sea View Villa", message: "What time is check-in?", time: "2 hours ago", unread: true },
-    { guest: "Vikram Singh", property: "Mountain Cottage", message: "Can we get early check-in?", time: "4 hours ago", unread: true },
-    { guest: "Meera Joshi", property: "City Apartment", message: "Thank you for the excellent stay!", time: "1 day ago", unread: false }
-  ];
-
-  // Business alerts
-  const businessAlerts = [
-    { type: "urgent", message: "Payment pending for booking BK2024001", action: "Review Payment" },
-    { type: "warning", message: "Mountain Cottage has low availability next month", action: "Update Calendar" },
-    { type: "info", message: "New review received for Sea View Villa", action: "View Review" }
+    {
+      id: 'MSG001',
+      from: 'Rajesh Kumar',
+      property: 'Mountain View Resort',
+      message: 'Can we arrange early check-in for tomorrow?',
+      timestamp: '2 hours ago',
+      urgent: false
+    },
+    {
+      id: 'MSG002',
+      from: 'Priya Sharma',
+      property: 'Valley Side Cottages',
+      message: 'Is airport pickup available for our booking?',
+      timestamp: '4 hours ago',
+      urgent: false
+    },
+    {
+      id: 'MSG003',
+      from: 'System Alert',
+      property: 'Alpine Adventure Camp',
+      message: 'Equipment maintenance scheduled for tomorrow',
+      timestamp: '6 hours ago',
+      urgent: true
+    }
   ];
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'confirmed': return 'bg-green-100 text-green-800';
+      case 'confirmed': case 'active': return 'bg-green-100 text-green-800';
       case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'cancelled': return 'bg-red-100 text-red-800';
+      case 'checked_in': return 'bg-blue-100 text-blue-800';
+      case 'maintenance': return 'bg-orange-100 text-orange-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'confirmed': return <CheckCircle className="h-4 w-4" />;
+      case 'confirmed': case 'active': return <CheckCircle className="h-4 w-4" />;
       case 'pending': return <Clock className="h-4 w-4" />;
-      case 'cancelled': return <XCircle className="h-4 w-4" />;
+      case 'maintenance': return <AlertCircle className="h-4 w-4" />;
       default: return <Clock className="h-4 w-4" />;
-    }
-  };
-
-  const getAlertColor = (type: string) => {
-    switch (type) {
-      case 'urgent': return 'border-red-200 bg-red-50 text-red-800';
-      case 'warning': return 'border-yellow-200 bg-yellow-50 text-yellow-800';
-      default: return 'border-blue-200 bg-blue-50 text-blue-800';
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
+      {/* Partner Header */}
       <header className="bg-white border-b border-gray-200 shadow-sm">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <Link to="/" className="hover:opacity-80 transition-opacity">
-            <img 
-              src="/lovable-uploads/94fa41ec-96bd-400a-8fc5-4c52f8f19917.png" 
-              alt="Sanchaari Logo" 
-              className="h-8 w-auto"
-            />
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link to="/" className="hover:opacity-80 transition-opacity">
+              <img 
+                src="/lovable-uploads/94fa41ec-96bd-400a-8fc5-4c52f8f19917.png" 
+                alt="Sanchaari Logo" 
+                className="h-8 w-auto"
+              />
+            </Link>
+            <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200 font-semibold">
+              PARTNER PORTAL
+            </Badge>
+          </div>
           
           <div className="flex items-center gap-4">
-            <Link to="/partner/help/center" className="text-gray-600 hover:text-blue-600 transition-colors">
-              Help Center
-            </Link>
-            <Link to="/partner/messages" className="text-gray-600 hover:text-blue-600 transition-colors relative">
-              Messages
-              <span className="absolute -top-1 -right-1 h-4 w-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
-                2
-              </span>
-            </Link>
+            <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
+              <SelectTrigger className="w-32">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="week">This Week</SelectItem>
+                <SelectItem value="month">This Month</SelectItem>
+                <SelectItem value="quarter">Quarter</SelectItem>
+                <SelectItem value="year">This Year</SelectItem>
+              </SelectContent>
+            </Select>
             <Button variant="ghost" size="sm">
               <Bell className="h-4 w-4" />
-            </Button>
-            <Button variant="ghost" size="sm">
-              <Settings className="h-4 w-4" />
+              <Badge className="ml-1 h-4 w-4 p-0 text-xs">2</Badge>
             </Button>
             <Button variant="ghost" size="sm" onClick={logout}>
               <LogOut className="h-4 w-4" />
@@ -173,146 +208,143 @@ const PartnerDashboard = () => {
         </div>
       </header>
 
-      {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-6">
         {/* Welcome Section */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Welcome back, {user?.companyName || user?.fullName || 'Partner'}!
-          </h1>
-          <p className="text-gray-600">Here's how your business is performing today.</p>
-        </div>
-
-        {/* Business Alerts */}
-        {businessAlerts.length > 0 && (
-          <div className="mb-8">
-            <h2 className="text-lg font-semibold mb-4">Business Alerts</h2>
-            <div className="space-y-3">
-              {businessAlerts.map((alert, index) => (
-                <div key={index} className={`p-4 rounded-lg border ${getAlertColor(alert.type)} flex items-center justify-between`}>
-                  <div className="flex items-center gap-3">
-                    <AlertTriangle className="h-5 w-5" />
-                    <span className="font-medium">{alert.message}</span>
-                  </div>
-                  <Button variant="outline" size="sm">
-                    {alert.action}
-                  </Button>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Time Period Filter */}
         <div className="mb-6">
-          <Select value={timePeriod} onValueChange={setTimePeriod}>
-            <SelectTrigger className="w-48">
-              <SelectValue placeholder="Select time period" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="today">Today</SelectItem>
-              <SelectItem value="week">This Week</SelectItem>
-              <SelectItem value="month">This Month</SelectItem>
-              <SelectItem value="quarter">This Quarter</SelectItem>
-            </SelectContent>
-          </Select>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            Welcome back, {user?.companyName || 'Partner'}! 🏨
+          </h1>
+          <p className="text-gray-600">Manage your properties, bookings, and grow your business with Sanchaari</p>
         </div>
 
         {/* Key Business Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Monthly Revenue</CardTitle>
-              <DollarSign className="h-4 w-4 text-muted-foreground" />
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm flex items-center gap-2">
+                <DollarSign className="h-4 w-4" />
+                Total Revenue
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">₹{businessMetrics.monthlyRevenue.toLocaleString()}</div>
-              <p className="text-xs text-muted-foreground">
-                <TrendingUp className="inline h-3 w-3 text-green-600 mr-1" />
-                +15.3% from last month
-              </p>
+              <div className="text-2xl font-bold text-green-600">₹{(businessMetrics.totalRevenue / 1000).toFixed(0)}K</div>
+              <div className="text-xs text-green-600 flex items-center gap-1">
+                <TrendingUp className="h-3 w-3" />
+                +{businessMetrics.monthlyGrowth}% this month
+              </div>
             </CardContent>
           </Card>
 
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Occupancy Rate</CardTitle>
-              <BarChart3 className="h-4 w-4 text-muted-foreground" />
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm">Total Bookings</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{businessMetrics.occupancyRate}%</div>
-              <Progress value={businessMetrics.occupancyRate} className="mt-2" />
-              <p className="text-xs text-muted-foreground mt-1">
-                Target: 85%
-              </p>
+              <div className="text-2xl font-bold text-blue-600">{businessMetrics.totalBookings}</div>
+              <div className="text-xs text-green-600 flex items-center gap-1">
+                <TrendingUp className="h-3 w-3" />
+                +{businessMetrics.bookingGrowth}%
+              </div>
             </CardContent>
           </Card>
 
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Average Rating</CardTitle>
-              <Star className="h-4 w-4 text-muted-foreground" />
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm">Average Rating</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{businessMetrics.avgRating}</div>
-              <p className="text-xs text-muted-foreground">
-                Based on {businessMetrics.reviewCount} reviews
-              </p>
+              <div className="text-2xl font-bold text-yellow-600 flex items-center gap-1">
+                <Star className="h-5 w-5 fill-current" />
+                {businessMetrics.averageRating}
+              </div>
+              <div className="text-xs text-gray-600">{businessMetrics.totalReviews} reviews</div>
             </CardContent>
           </Card>
 
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active Listings</CardTitle>
-              <Building2 className="h-4 w-4 text-muted-foreground" />
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm">Occupancy Rate</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{businessMetrics.activeListings}</div>
-              <p className="text-xs text-muted-foreground">
-                {businessMetrics.totalListings} total properties
-              </p>
+              <div className="text-2xl font-bold text-purple-600">{businessMetrics.occupancyRate}%</div>
+              <Progress value={businessMetrics.occupancyRate} className="h-2 mt-1" />
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm">Pending Payouts</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-orange-600">₹{(businessMetrics.pendingPayouts / 1000).toFixed(0)}K</div>
+              <div className="text-xs text-gray-600">Next payout: June 15</div>
             </CardContent>
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-          {/* Recent Bookings */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          {/* Property Performance */}
           <div className="lg:col-span-2">
             <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <div>
-                  <CardTitle>Recent Bookings</CardTitle>
-                  <CardDescription>Latest reservations and their status</CardDescription>
-                </div>
-                <Link to="/partner/bookings/list">
-                  <Button variant="outline" size="sm">
-                    <Eye className="h-4 w-4 mr-2" />
-                    View All
-                  </Button>
-                </Link>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Building2 className="h-5 w-5" />
+                  Property Performance
+                </CardTitle>
+                <CardDescription>Monitor individual property metrics and occupancy</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {recentBookings.map((booking, index) => (
-                    <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="font-medium">{booking.id}</span>
-                          <Badge className={getStatusColor(booking.status)} variant="secondary">
-                            <span className="flex items-center gap-1">
-                              {getStatusIcon(booking.status)}
-                              {booking.status}
-                            </span>
-                          </Badge>
+                  {propertyPerformance.map((property) => (
+                    <div key={property.id} className="p-4 border rounded-lg">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-3">
+                          <div>
+                            <h4 className="font-semibold">{property.name}</h4>
+                            <div className="flex items-center gap-2 text-sm text-gray-600">
+                              <MapPin className="h-3 w-3" />
+                              {property.location}
+                              <Badge variant="outline">{property.type}</Badge>
+                            </div>
+                          </div>
                         </div>
-                        <p className="text-sm text-gray-600">{booking.guest} • {booking.property}</p>
-                        <p className="text-xs text-gray-500">
-                          {booking.checkIn} to {booking.checkOut} • {booking.nights} nights • {booking.guests} guests
-                        </p>
+                        <Badge className={getStatusColor(property.status)}>
+                          <span className="flex items-center gap-1">
+                            {getStatusIcon(property.status)}
+                            {property.status}
+                          </span>
+                        </Badge>
                       </div>
-                      <div className="text-right">
-                        <p className="font-semibold">₹{booking.amount.toLocaleString()}</p>
-                        <Button variant="ghost" size="sm" className="mt-1">
+                      
+                      <div className="grid grid-cols-4 gap-4 text-sm">
+                        <div>
+                          <span className="text-gray-600">Bookings</span>
+                          <div className="font-semibold">{property.bookings}</div>
+                        </div>
+                        <div>
+                          <span className="text-gray-600">Revenue</span>
+                          <div className="font-semibold">₹{(property.revenue / 1000).toFixed(0)}K</div>
+                        </div>
+                        <div>
+                          <span className="text-gray-600">Rating</span>
+                          <div className="font-semibold flex items-center gap-1">
+                            <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                            {property.rating}
+                          </div>
+                        </div>
+                        <div>
+                          <span className="text-gray-600">Occupancy</span>
+                          <div className="font-semibold">{property.occupancy}%</div>
+                        </div>
+                      </div>
+                      
+                      <div className="flex gap-2 mt-3">
+                        <Button size="sm" variant="outline">
+                          <Eye className="h-3 w-3 mr-1" />
+                          View Details
+                        </Button>
+                        <Button size="sm" variant="outline">
+                          <Edit className="h-3 w-3 mr-1" />
                           Manage
                         </Button>
                       </div>
@@ -323,125 +355,113 @@ const PartnerDashboard = () => {
             </Card>
           </div>
 
-          {/* Guest Messages */}
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <div>
-                <CardTitle>Guest Messages</CardTitle>
-                <CardDescription>Recent inquiries and communications</CardDescription>
-              </div>
-              <Link to="/partner/messages">
-                <Button variant="outline" size="sm">
-                  <MessageSquare className="h-4 w-4 mr-2" />
-                  View All
-                </Button>
-              </Link>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {guestMessages.map((message, index) => (
-                  <div key={index} className="p-3 bg-gray-50 rounded-lg">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-medium text-sm">{message.guest}</span>
-                      {message.unread && (
-                        <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                      )}
+          {/* Guest Messages & Quick Actions */}
+          <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Mail className="h-5 w-5" />
+                  Guest Messages
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {guestMessages.map((message) => (
+                    <div key={message.id} className={`p-3 rounded-lg ${message.urgent ? 'bg-red-50 border border-red-200' : 'bg-gray-50'}`}>
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="font-medium text-sm">{message.from}</span>
+                        <span className="text-xs text-gray-500">{message.timestamp}</span>
+                      </div>
+                      <p className="text-sm text-gray-600 mb-1">{message.message}</p>
+                      <div className="text-xs text-gray-500">{message.property}</div>
                     </div>
-                    <p className="text-xs text-gray-500 mb-1">{message.property}</p>
-                    <p className="text-sm text-gray-700 mb-2">{message.message}</p>
-                    <p className="text-xs text-gray-400">{message.time}</p>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+                  ))}
+                  <Button variant="outline" size="sm" className="w-full">
+                    View All Messages
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Quick Actions</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  <Link to="/partner/inventory/listings">
+                    <Button variant="outline" className="w-full justify-start gap-2">
+                      <Building2 className="h-4 w-4" />
+                      Manage Properties
+                    </Button>
+                  </Link>
+                  <Link to="/partner/bookings/list">
+                    <Button variant="outline" className="w-full justify-start gap-2">
+                      <Calendar className="h-4 w-4" />
+                      View Bookings
+                    </Button>
+                  </Link>
+                  <Link to="/partner/reports/revenue">
+                    <Button variant="outline" className="w-full justify-start gap-2">
+                      <BarChart3 className="h-4 w-4" />
+                      Revenue Reports
+                    </Button>
+                  </Link>
+                  <Link to="/partner/payouts">
+                    <Button variant="outline" className="w-full justify-start gap-2">
+                      <DollarSign className="h-4 w-4" />
+                      Payouts
+                    </Button>
+                  </Link>
+                  <Link to="/partner/profile/company">
+                    <Button variant="outline" className="w-full justify-start gap-2">
+                      <Settings className="h-4 w-4" />
+                      Settings
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
 
-        {/* Property Performance */}
-        <Card className="mb-8">
+        {/* Recent Bookings */}
+        <Card>
           <CardHeader>
-            <CardTitle>Property Performance</CardTitle>
-            <CardDescription>How your listings are performing this month</CardDescription>
+            <CardTitle className="flex items-center justify-between">
+              <span className="flex items-center gap-2">
+                <FileText className="h-5 w-5" />
+                Recent Bookings
+              </span>
+              <Link to="/partner/bookings/list">
+                <Button variant="outline" size="sm">View All</Button>
+              </Link>
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {topPerformingProperties.map((property, index) => (
-                <div key={index} className="p-4 border rounded-lg">
-                  <h4 className="font-medium mb-2">{property.name}</h4>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Bookings:</span>
-                      <span className="font-medium">{property.bookings}</span>
+            <div className="space-y-3">
+              {recentBookings.map((booking) => (
+                <div key={booking.id} className="flex items-center justify-between p-4 border rounded-lg">
+                  <div className="flex items-center gap-4">
+                    <div>
+                      <div className="font-semibold">{booking.guestName}</div>
+                      <div className="text-sm text-gray-600">{booking.property}</div>
+                      <div className="text-xs text-gray-500">
+                        {booking.checkIn} to {booking.checkOut} • {booking.guests} guests
+                      </div>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Revenue:</span>
-                      <span className="font-medium">₹{property.revenue.toLocaleString()}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Rating:</span>
-                      <span className="font-medium flex items-center gap-1">
-                        <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                        {property.rating}
+                  </div>
+                  <div className="text-right">
+                    <div className="font-semibold">₹{booking.amount.toLocaleString()}</div>
+                    <Badge className={getStatusColor(booking.status)}>
+                      <span className="flex items-center gap-1">
+                        {getStatusIcon(booking.status)}
+                        {booking.status.replace('_', ' ')}
                       </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Occupancy:</span>
-                      <span className="font-medium">{property.occupancy}%</span>
-                    </div>
+                    </Badge>
                   </div>
                 </div>
               ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Quick Actions for Partners */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Quick Actions</CardTitle>
-            <CardDescription>Manage your business efficiently</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <Link to="/partner/inventory/listings">
-                <div className="p-6 rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all cursor-pointer">
-                  <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mb-4">
-                    <Building2 className="h-6 w-6 text-white" />
-                  </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Manage Properties</h3>
-                  <p className="text-sm text-gray-600">Add, edit, or update your property listings</p>
-                </div>
-              </Link>
-
-              <Link to="/partner/bookings/list">
-                <div className="p-6 rounded-lg border border-gray-200 hover:border-green-300 hover:shadow-lg transition-all cursor-pointer">
-                  <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mb-4">
-                    <BookOpen className="h-6 w-6 text-white" />
-                  </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">View Bookings</h3>
-                  <p className="text-sm text-gray-600">Manage reservations and guest requests</p>
-                </div>
-              </Link>
-
-              <Link to="/partner/inventory/availability">
-                <div className="p-6 rounded-lg border border-gray-200 hover:border-purple-300 hover:shadow-lg transition-all cursor-pointer">
-                  <div className="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mb-4">
-                    <Calendar className="h-6 w-6 text-white" />
-                  </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Update Calendar</h3>
-                  <p className="text-sm text-gray-600">Manage availability and pricing</p>
-                </div>
-              </Link>
-
-              <Link to="/partner/payouts">
-                <div className="p-6 rounded-lg border border-gray-200 hover:border-yellow-300 hover:shadow-lg transition-all cursor-pointer">
-                  <div className="w-12 h-12 bg-yellow-500 rounded-lg flex items-center justify-center mb-4">
-                    <DollarSign className="h-6 w-6 text-white" />
-                  </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">View Earnings</h3>
-                  <p className="text-sm text-gray-600">Track payments and payouts</p>
-                </div>
-              </Link>
             </div>
           </CardContent>
         </Card>
