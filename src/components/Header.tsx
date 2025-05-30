@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { LogIn, UserPlus, User, LogOut, Menu, X } from 'lucide-react';
+import { LogIn, UserPlus, User, LogOut, Menu, X, Settings, Shield, Building2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCentralizedAuth } from '@/contexts/CentralizedAuthContext';
 import {
@@ -9,6 +9,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import { useState } from 'react';
 
@@ -39,6 +40,10 @@ const Header = () => {
             </Link>
             <Link to="/search" className="text-gray-700 hover:text-blue-600 transition-colors relative group">
               Search
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all group-hover:w-full"></span>
+            </Link>
+            <Link to="/workflows" className="text-gray-700 hover:text-blue-600 transition-colors relative group">
+              Workflows
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all group-hover:w-full"></span>
             </Link>
           </nav>
@@ -88,12 +93,47 @@ const Header = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Link to="/auth/login">
-              <Button size="sm" className="gap-2 bg-blue-600 hover:bg-blue-700 transition-colors shadow-sm">
-                <LogIn className="h-4 w-4" />
-                <span className="hidden sm:inline">Get Started</span>
-              </Button>
-            </Link>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button size="sm" className="gap-2 bg-blue-600 hover:bg-blue-700 transition-colors shadow-sm">
+                  <LogIn className="h-4 w-4" />
+                  <span className="hidden sm:inline">Sign In</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56 bg-white shadow-lg border">
+                <DropdownMenuItem asChild>
+                  <Link to="/auth/login" className="flex items-center w-full">
+                    <User className="h-4 w-4 mr-2" />
+                    Traveler Login
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/partner/login" className="flex items-center w-full">
+                    <Building2 className="h-4 w-4 mr-2" />
+                    Partner Login
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/admin/login" className="flex items-center w-full">
+                    <Shield className="h-4 w-4 mr-2" />
+                    Admin Login
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link to="/auth/register" className="flex items-center w-full">
+                    <UserPlus className="h-4 w-4 mr-2" />
+                    Create Account
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/partner/signup" className="flex items-center w-full">
+                    <Building2 className="h-4 w-4 mr-2" />
+                    Partner Signup
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           )}
           
           <Button 
@@ -120,9 +160,45 @@ const Header = () => {
             <Link to="/search" className="px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors">
               Search
             </Link>
+            <Link to="/workflows" className="px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors">
+              Workflows
+            </Link>
             <Link to="/chat" className="px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors">
               Chat with AI
             </Link>
+            
+            {!isAuthenticated && (
+              <>
+                <div className="border-t my-2"></div>
+                <div className="px-3 py-1 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  Sign In
+                </div>
+                <Link to="/auth/login" className="px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors flex items-center">
+                  <User className="h-4 w-4 mr-2" />
+                  Traveler Login
+                </Link>
+                <Link to="/partner/login" className="px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors flex items-center">
+                  <Building2 className="h-4 w-4 mr-2" />
+                  Partner Login
+                </Link>
+                <Link to="/admin/login" className="px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors flex items-center">
+                  <Shield className="h-4 w-4 mr-2" />
+                  Admin Login
+                </Link>
+                <div className="border-t my-2"></div>
+                <div className="px-3 py-1 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  Sign Up
+                </div>
+                <Link to="/auth/register" className="px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors flex items-center">
+                  <UserPlus className="h-4 w-4 mr-2" />
+                  Create Account
+                </Link>
+                <Link to="/partner/signup" className="px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors flex items-center">
+                  <Building2 className="h-4 w-4 mr-2" />
+                  Partner Signup
+                </Link>
+              </>
+            )}
           </nav>
         </div>
       )}
