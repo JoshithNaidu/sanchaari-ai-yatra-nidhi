@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { User, Bell, LogOut, Search } from 'lucide-react';
+import { Plane, MapPin, Calendar, Users, User, Search, Settings, BarChart3, Building2, DollarSign, Bell, LogOut } from 'lucide-react';
 import { useCentralizedAuth } from '@/contexts/CentralizedAuthContext';
 import {
   DropdownMenu,
@@ -13,49 +12,18 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { NavigationMenu, MobileNavigationMenu } from '@/components/NavigationMenu';
-import { 
-  travelerNavigation, 
-  travelerProfileNavigation,
-  partnerNavigation, 
-  partnerProfileNavigation,
-  adminNavigation,
-  getNotificationPath
-} from '@/config/navigation';
 
 const Header = () => {
   const navigate = useNavigate();
   const { isAuthenticated, user, logout } = useCentralizedAuth();
-  const isMobile = useIsMobile();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchCategory, setSearchCategory] = useState('flights');
 
   const handleLogout = () => {
     logout();
     navigate('/');
   };
 
-  const handleNotificationClick = () => {
-    const notificationPath = getNotificationPath(user?.userType || 'traveler');
-    navigate(notificationPath);
-  };
-
-  const handleSearch = () => {
-    if (!searchQuery.trim()) return;
-    
-    const searchParams = new URLSearchParams({
-      q: searchQuery,
-      category: searchCategory
-    });
-    
-    navigate(`/search/${searchCategory}?${searchParams}`);
-  };
-
-  const handleSearchKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleSearch();
-    }
+  const handleSearchNavigation = (path: string) => {
+    navigate(path);
   };
 
   const getLogoRedirect = () => {
@@ -70,37 +38,49 @@ const Header = () => {
     }
   };
 
-  const getUserDisplayName = () => {
-    if (!user) return 'User';
-    return user.companyName || user.fullName || user.email || 'User';
-  };
-
   const renderAdminHeader = () => (
     <header className="bg-white shadow-sm border-b sticky top-0 z-50">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16 lg:h-20">
+        <div className="flex items-center justify-between h-20">
           {/* Admin Logo */}
-          <Link to={getLogoRedirect()} className="flex items-center space-x-2 lg:space-x-3">
+          <Link to={getLogoRedirect()} className="flex items-center space-x-3">
             <img 
               src="/lovable-uploads/3cf89503-eca7-4713-bdd0-55ba1176c477.png" 
               alt="Sanchaari Admin" 
-              className="h-10 lg:h-12 w-auto"
+              className="h-16 w-auto"
             />
-            {!isMobile && (
-              <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200 font-semibold text-xs lg:text-sm">
-                ADMIN
-              </Badge>
-            )}
+            <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200 font-semibold">
+              ADMIN PORTAL
+            </Badge>
           </Link>
 
-          {/* Admin Navigation - Desktop */}
-          {!isMobile && (
-            <NavigationMenu items={adminNavigation} className="hidden lg:flex" />
-          )}
+          {/* Admin Navigation */}
+          <nav className="hidden lg:flex items-center space-x-6">
+            <Link to="/admin/dashboard" className="flex items-center space-x-1 text-gray-600 hover:text-red-600">
+              <BarChart3 className="h-4 w-4" />
+              <span>Dashboard</span>
+            </Link>
+            <Link to="/admin/users" className="flex items-center space-x-1 text-gray-600 hover:text-red-600">
+              <Users className="h-4 w-4" />
+              <span>Users</span>
+            </Link>
+            <Link to="/admin/bookings" className="flex items-center space-x-1 text-gray-600 hover:text-red-600">
+              <Calendar className="h-4 w-4" />
+              <span>Bookings</span>
+            </Link>
+            <Link to="/admin/reports" className="flex items-center space-x-1 text-gray-600 hover:text-red-600">
+              <BarChart3 className="h-4 w-4" />
+              <span>Reports</span>
+            </Link>
+            <Link to="/admin/settings/system" className="flex items-center space-x-1 text-gray-600 hover:text-red-600">
+              <Settings className="h-4 w-4" />
+              <span>Settings</span>
+            </Link>
+          </nav>
 
           {/* Admin User Menu */}
-          <div className="flex items-center space-x-2">
-            <Button variant="ghost" size="sm" onClick={handleNotificationClick}>
+          <div className="flex items-center space-x-4">
+            <Button variant="ghost" size="sm">
               <Bell className="h-4 w-4" />
             </Button>
             {isAuthenticated ? (
@@ -108,18 +88,25 @@ const Header = () => {
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="flex items-center space-x-1">
                     <User className="h-4 w-4" />
-                    {!isMobile && <span className="hidden sm:inline text-sm">{getUserDisplayName()}</span>}
+                    <span>{user?.fullName || user?.email || 'Admin'}</span>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-72 max-h-96 overflow-y-auto bg-white border shadow-lg z-50">
+                <DropdownMenuContent className="w-56 bg-white border shadow-lg z-50">
                   <DropdownMenuLabel>Admin Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  {isMobile && (
-                    <>
-                      <MobileNavigationMenu items={adminNavigation} />
-                      <DropdownMenuSeparator />
-                    </>
-                  )}
+                  <DropdownMenuItem asChild>
+                    <Link to="/admin/dashboard" className="flex items-center">
+                      <BarChart3 className="mr-2 h-4 w-4" />
+                      <span>Dashboard</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/admin/settings/system" className="flex items-center">
+                      <Settings className="mr-2 h-4 w-4" />
+                      <span>Settings</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLogout}>
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Logout</span>
@@ -128,7 +115,7 @@ const Header = () => {
               </DropdownMenu>
             ) : (
               <Link to="/admin/login">
-                <Button size={isMobile ? "sm" : "default"}>Login</Button>
+                <Button>Login</Button>
               </Link>
             )}
           </div>
@@ -140,29 +127,46 @@ const Header = () => {
   const renderPartnerHeader = () => (
     <header className="bg-white shadow-sm border-b sticky top-0 z-50">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16 lg:h-20">
+        <div className="flex items-center justify-between h-20">
           {/* Partner Logo */}
-          <Link to={getLogoRedirect()} className="flex items-center space-x-2 lg:space-x-3">
+          <Link to={getLogoRedirect()} className="flex items-center space-x-3">
             <img 
               src="/lovable-uploads/3cf89503-eca7-4713-bdd0-55ba1176c477.png" 
               alt="Sanchaari Partner" 
-              className="h-10 lg:h-12 w-auto"
+              className="h-16 w-auto"
             />
-            {!isMobile && (
-              <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 font-semibold text-xs lg:text-sm">
-                PARTNER
-              </Badge>
-            )}
+            <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 font-semibold">
+              PARTNER PORTAL
+            </Badge>
           </Link>
 
-          {/* Partner Navigation - Desktop */}
-          {!isMobile && (
-            <NavigationMenu items={partnerNavigation} className="hidden lg:flex" />
-          )}
+          {/* Partner Navigation */}
+          <nav className="hidden lg:flex items-center space-x-6">
+            <Link to="/partner/dashboard" className="flex items-center space-x-1 text-gray-600 hover:text-blue-600">
+              <BarChart3 className="h-4 w-4" />
+              <span>Dashboard</span>
+            </Link>
+            <Link to="/partner/inventory/listings" className="flex items-center space-x-1 text-gray-600 hover:text-blue-600">
+              <Building2 className="h-4 w-4" />
+              <span>Properties</span>
+            </Link>
+            <Link to="/partner/bookings/list" className="flex items-center space-x-1 text-gray-600 hover:text-blue-600">
+              <Calendar className="h-4 w-4" />
+              <span>Bookings</span>
+            </Link>
+            <Link to="/partner/payouts" className="flex items-center space-x-1 text-gray-600 hover:text-blue-600">
+              <DollarSign className="h-4 w-4" />
+              <span>Payouts</span>
+            </Link>
+            <Link to="/partner/reports/revenue" className="flex items-center space-x-1 text-gray-600 hover:text-blue-600">
+              <BarChart3 className="h-4 w-4" />
+              <span>Reports</span>
+            </Link>
+          </nav>
 
           {/* Partner User Menu */}
-          <div className="flex items-center space-x-2">
-            <Button variant="ghost" size="sm" onClick={handleNotificationClick}>
+          <div className="flex items-center space-x-4">
+            <Button variant="ghost" size="sm">
               <Bell className="h-4 w-4" />
             </Button>
             {isAuthenticated ? (
@@ -170,27 +174,30 @@ const Header = () => {
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="flex items-center space-x-1">
                     <User className="h-4 w-4" />
-                    {!isMobile && <span className="hidden sm:inline text-sm">{getUserDisplayName()}</span>}
+                    <span>{user?.companyName || user?.fullName || user?.email || 'Partner'}</span>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-72 max-h-96 overflow-y-auto bg-white border shadow-lg z-50">
+                <DropdownMenuContent className="w-56 bg-white border shadow-lg z-50">
                   <DropdownMenuLabel>Partner Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  {isMobile && (
-                    <>
-                      <MobileNavigationMenu items={partnerNavigation} />
-                      <DropdownMenuSeparator />
-                      <DropdownMenuLabel>Account</DropdownMenuLabel>
-                      <MobileNavigationMenu items={partnerProfileNavigation} />
-                      <DropdownMenuSeparator />
-                    </>
-                  )}
-                  {!isMobile && (
-                    <>
-                      <MobileNavigationMenu items={partnerProfileNavigation} />
-                      <DropdownMenuSeparator />
-                    </>
-                  )}
+                  <DropdownMenuItem asChild>
+                    <Link to="/partner/dashboard" className="flex items-center">
+                      <BarChart3 className="mr-2 h-4 w-4" />
+                      <span>Dashboard</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/partner/profile/company" className="flex items-center">
+                      <User className="mr-2 h-4 w-4" />
+                      <span>Profile</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/partner/help" className="flex items-center">
+                      <span>Help Center</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLogout}>
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Logout</span>
@@ -199,7 +206,7 @@ const Header = () => {
               </DropdownMenu>
             ) : (
               <Link to="/partner/login">
-                <Button size={isMobile ? "sm" : "default"}>Login</Button>
+                <Button>Login</Button>
               </Link>
             )}
           </div>
@@ -211,126 +218,110 @@ const Header = () => {
   const renderTravelerHeader = () => (
     <header className="bg-white shadow-sm border-b sticky top-0 z-50">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16 lg:h-20">
-          {/* Logo */}
+        <div className="flex items-center justify-between h-20">
+          {/* Logo - Enlarged */}
           <Link to="/" className="flex items-center space-x-2">
             <img 
               src="/lovable-uploads/3cf89503-eca7-4713-bdd0-55ba1176c477.png" 
               alt="Sanchaari" 
-              className="h-12 lg:h-14 w-auto"
+              className="h-20 w-auto"
             />
           </Link>
 
-          {/* Search Bar - Desktop */}
-          {!isMobile && (
-            <div className="flex-1 max-w-md mx-8">
-              <div className="flex items-center space-x-2">
-                <select 
-                  value={searchCategory}
-                  onChange={(e) => setSearchCategory(e.target.value)}
-                  className="border rounded-l-md px-3 py-2 text-sm bg-white min-w-[100px]"
-                >
-                  <option value="flights">Flights</option>
-                  <option value="hotels">Hotels</option>
-                  <option value="activities">Activities</option>
-                  <option value="packages">Packages</option>
-                </select>
-                <Input
-                  placeholder={`Search ${searchCategory}...`}
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyPress={handleSearchKeyPress}
-                  className="flex-1 rounded-none border-l-0"
-                />
-                <Button 
-                  onClick={handleSearch}
-                  className="rounded-l-none"
-                  size="sm"
-                >
+          {/* Navigation */}
+          <nav className="hidden lg:flex items-center space-x-6">
+            <Link to="/search/flights" className="flex items-center space-x-1 text-gray-600 hover:text-blue-600">
+              <Plane className="h-4 w-4" />
+              <span>Flights</span>
+            </Link>
+            <Link to="/search/hotels" className="flex items-center space-x-1 text-gray-600 hover:text-blue-600">
+              <MapPin className="h-4 w-4" />
+              <span>Hotels</span>
+            </Link>
+            <Link to="/search/activities" className="flex items-center space-x-1 text-gray-600 hover:text-blue-600">
+              <Calendar className="h-4 w-4" />
+              <span>Activities</span>
+            </Link>
+            <Link to="/community" className="flex items-center space-x-1 text-gray-600 hover:text-blue-600">
+              <Users className="h-4 w-4" />
+              <span>Community</span>
+            </Link>
+            
+            {/* Search Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="flex items-center space-x-1 text-gray-600 hover:text-blue-600">
                   <Search className="h-4 w-4" />
+                  <span>Search</span>
                 </Button>
-              </div>
-            </div>
-          )}
-
-          {/* Navigation - Desktop */}
-          {!isMobile && (
-            <NavigationMenu items={travelerNavigation} className="hidden lg:flex" />
-          )}
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56 bg-white border shadow-lg z-50">
+                <DropdownMenuLabel>Quick Search</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => handleSearchNavigation('/search/flights')}>
+                  <Plane className="mr-2 h-4 w-4" />
+                  <span>Search Flights</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleSearchNavigation('/search/hotels')}>
+                  <MapPin className="mr-2 h-4 w-4" />
+                  <span>Search Hotels</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleSearchNavigation('/search/activities')}>
+                  <Calendar className="mr-2 h-4 w-4" />
+                  <span>Search Activities</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleSearchNavigation('/search/packages')}>
+                  <Users className="mr-2 h-4 w-4" />
+                  <span>Search Packages</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </nav>
 
           {/* User Menu */}
-          <div className="flex items-center space-x-2">
-            {/* Mobile Search Button */}
-            {isMobile && (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm">
-                    <Search className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-80 p-4 bg-white border shadow-lg z-50">
-                  <div className="space-y-3">
-                    <select 
-                      value={searchCategory}
-                      onChange={(e) => setSearchCategory(e.target.value)}
-                      className="w-full border rounded-md px-3 py-2 text-sm"
-                    >
-                      <option value="flights">Flights</option>
-                      <option value="hotels">Hotels</option>
-                      <option value="activities">Activities</option>
-                      <option value="packages">Packages</option>
-                    </select>
-                    <div className="flex space-x-2">
-                      <Input
-                        placeholder={`Search ${searchCategory}...`}
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        onKeyPress={handleSearchKeyPress}
-                        className="flex-1"
-                      />
-                      <Button onClick={handleSearch} size="sm">
-                        <Search className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            )}
-
-            {isAuthenticated && (
-              <Button variant="ghost" size="sm" onClick={handleNotificationClick}>
-                <Bell className="h-4 w-4" />
-              </Button>
-            )}
+          <div className="flex items-center space-x-4">
             {isAuthenticated ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="flex items-center space-x-1">
                     <User className="h-4 w-4" />
-                    {!isMobile && <span className="hidden sm:inline text-sm">{getUserDisplayName()}</span>}
+                    <span>{user?.fullName || user?.email || 'User'}</span>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-72 max-h-96 overflow-y-auto bg-white border shadow-lg z-50">
+                <DropdownMenuContent className="w-56 bg-white border shadow-lg z-50">
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  {isMobile && (
-                    <>
-                      <MobileNavigationMenu items={travelerNavigation} />
-                      <DropdownMenuSeparator />
-                      <DropdownMenuLabel>Profile</DropdownMenuLabel>
-                    </>
-                  )}
-                  <MobileNavigationMenu items={travelerProfileNavigation} />
+                  <DropdownMenuItem asChild>
+                    <Link to="/profile/me" className="flex items-center">
+                      <User className="mr-2 h-4 w-4" />
+                      <span>Profile</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/trips/dashboard" className="flex items-center">
+                      <Calendar className="mr-2 h-4 w-4" />
+                      <span>My Trips</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/profile/rewards" className="flex items-center">
+                      <span>Rewards</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/profile/payments" className="flex items-center">
+                      <span>Payment Methods</span>
+                    </Link>
+                  </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLogout}>
-                    <LogOut className="mr-2 h-4 w-4" />
                     <span>Logout</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
               <Link to="/auth/login">
-                <Button size={isMobile ? "sm" : "default"}>Login</Button>
+                <Button>Login</Button>
               </Link>
             )}
           </div>

@@ -7,7 +7,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Calendar, Users, Mic, MapPin, Plane, Building, Camera, Package, Clock, Star } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
-import { getPlaceholderImage } from '@/utils/imagePlaceholders';
 
 const Search = () => {
   const navigate = useNavigate();
@@ -24,25 +23,25 @@ const Search = () => {
     { 
       destination: 'Goa', 
       type: 'Beach Paradise', 
-      image: getPlaceholderImage('beach', 400, 300), 
+      image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=400&q=80', 
       price: '₹15,000' 
     },
     { 
       destination: 'Kerala', 
       type: 'Backwaters', 
-      image: getPlaceholderImage('default', 400, 300), 
+      image: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=400&q=80', 
       price: '₹12,000' 
     },
     { 
       destination: 'Rajasthan', 
       type: 'Heritage Tours', 
-      image: getPlaceholderImage('default', 400, 300), 
+      image: 'https://images.unsplash.com/photo-1599661046827-dacff0acdb4b?auto=format&fit=crop&w=400&q=80', 
       price: '₹18,000' 
     },
     { 
       destination: 'Himachal', 
       type: 'Mountain Escape', 
-      image: getPlaceholderImage('mountain', 400, 300), 
+      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=400&q=80', 
       price: '₹14,000' 
     },
   ];
