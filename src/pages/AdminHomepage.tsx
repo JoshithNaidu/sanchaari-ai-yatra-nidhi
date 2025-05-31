@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { useCentralizedAuth } from '@/contexts/CentralizedAuthContext';
+import Header from '@/components/Header';
 import { 
   Users, UserCheck, MapPin, MessageSquare, CreditCard, 
   Settings, BarChart3, TrendingUp, Calendar, Bell,
@@ -233,7 +233,7 @@ const AdminHomepage = () => {
       title: "API Keys",
       description: "Manage internal and third-party keys",
       icon: Key,
-      href: "/admin/settings/api-keys",
+      href: "/admin/settings/api",
       stats: "5 active keys"
     },
     {
@@ -354,42 +354,17 @@ const AdminHomepage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
-              <p className="text-sm text-gray-600">Welcome back, {user?.fullName || 'Admin'}</p>
-            </div>
-            <div className="flex items-center gap-4">
-              <form onSubmit={handleSearch} className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <Input
-                  placeholder="Search..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 w-64"
-                />
-              </form>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="flex items-center gap-2"
-                onClick={() => setShowCommandPalette(true)}
-              >
-                <Command className="h-4 w-4" />
-                <span>Command</span>
-                <kbd className="bg-gray-100 px-2 py-0.5 text-xs rounded">⌘K</kbd>
-              </Button>
-              <Link to="/admin/logout">
-                <Button variant="ghost" size="sm">Logout</Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
-
+      <Header />
+      
       <div className="container mx-auto px-4 py-6 space-y-8">
+        {/* Welcome Section */}
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Welcome to Admin Portal
+          </h1>
+          <p className="text-gray-600">Manage your travel platform efficiently</p>
+        </div>
+
         {/* Stats Overview */}
         {renderStatsCards()}
 
@@ -503,28 +478,6 @@ const AdminHomepage = () => {
           </CardContent>
         </Card>
       </div>
-
-      {/* Command Palette */}
-      {showCommandPalette && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowCommandPalette(false)}>
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-4" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center border-b pb-2 mb-2">
-              <Command className="h-4 w-4 mr-2 text-gray-400" />
-              <Input 
-                placeholder="Search commands..." 
-                className="border-none shadow-none focus-visible:ring-0"
-                autoFocus
-              />
-            </div>
-            <div className="space-y-1 py-2">
-              {/* Command options would go here */}
-              <div className="px-2 py-1 hover:bg-gray-100 rounded cursor-pointer">Go to User Management</div>
-              <div className="px-2 py-1 hover:bg-gray-100 rounded cursor-pointer">View System Status</div>
-              <div className="px-2 py-1 hover:bg-gray-100 rounded cursor-pointer">Generate Reports</div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

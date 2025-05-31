@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Plus, Calendar, DollarSign, Star, Users, TrendingUp, Bell } from 'lucide-react';
 import { useCentralizedAuth } from '@/contexts/CentralizedAuthContext';
+import Header from '@/components/Header';
 
 const PartnerHomepage = () => {
   const { user } = useCentralizedAuth();
@@ -45,19 +46,19 @@ const PartnerHomepage = () => {
     {
       title: "Manage Listings",
       description: "Add, edit, or remove your service listings",
-      href: "/partner/listings",
+      href: "/partner/inventory/listings",
       icon: Plus
     },
     {
       title: "Calendar Availability",
       description: "Update your availability calendar",
-      href: "/partner/calendar",
+      href: "/partner/inventory/availability",
       icon: Calendar
     },
     {
       title: "Payout History",
       description: "View your earnings and payment history",
-      href: "/partner/payments",
+      href: "/partner/payouts",
       icon: DollarSign
     },
     {
@@ -77,35 +78,31 @@ const PartnerHomepage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">
-                Welcome back, {user?.companyName || user?.fullName || 'Partner'}
-              </h1>
-              <p className="text-gray-600">Manage your travel services and bookings</p>
-            </div>
-            <div className="flex gap-3">
-              <Link to="/partner/listings/add">
-                <Button className="bg-blue-600 hover:bg-blue-700">
-                  <Plus className="h-4 w-4 mr-2" />
-                  Create New Listing
-                </Button>
-              </Link>
-              <Link to="/partner/calendar">
-                <Button variant="outline">
-                  <Calendar className="h-4 w-4 mr-2" />
-                  Update Availability
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       <div className="container mx-auto px-4 py-6">
+        {/* Welcome Section */}
+        <div className="mb-6 text-center">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Welcome back, {user?.companyName || user?.fullName || 'Partner'}! 🏨
+          </h1>
+          <p className="text-gray-600">Manage your travel services and bookings with Sanchaari</p>
+          <div className="flex justify-center gap-3 mt-4">
+            <Link to="/partner/inventory/listings">
+              <Button className="bg-blue-600 hover:bg-blue-700">
+                <Plus className="h-4 w-4 mr-2" />
+                Create New Listing
+              </Button>
+            </Link>
+            <Link to="/partner/inventory/availability">
+              <Button variant="outline">
+                <Calendar className="h-4 w-4 mr-2" />
+                Update Availability
+              </Button>
+            </Link>
+          </div>
+        </div>
+
         {/* KPI Tiles */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {kpiData.map((kpi) => {
