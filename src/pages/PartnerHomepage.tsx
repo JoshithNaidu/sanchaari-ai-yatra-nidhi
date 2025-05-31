@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Calendar, DollarSign, Star, Users, TrendingUp, Bell } from 'lucide-react';
+import { Plus, Calendar, DollarSign, Star, Users, TrendingUp, Bell, Building2, MapPin, Settings, FileText, BarChart3, MessageSquare, CreditCard, Key, Shield, Mail, Languages, Target, UserCog, HelpCircle, Phone, BookOpen, Database, Zap, Eye, Edit, Clock, AlertTriangle, CheckCircle } from 'lucide-react';
 import { useCentralizedAuth } from '@/contexts/CentralizedAuthContext';
 import Header from '@/components/Header';
 
@@ -42,30 +42,158 @@ const PartnerHomepage = () => {
     }
   ];
 
-  const quickActions = [
+  // Inventory Management Actions
+  const inventoryActions = [
     {
       title: "Manage Listings",
       description: "Add, edit, or remove your service listings",
       href: "/partner/inventory/listings",
-      icon: Plus
+      icon: Building2,
+      stats: "12 active listings"
     },
     {
       title: "Calendar Availability",
       description: "Update your availability calendar",
       href: "/partner/inventory/availability",
-      icon: Calendar
+      icon: Calendar,
+      stats: "3 properties available"
     },
     {
-      title: "Payout History",
+      title: "Property Details",
+      description: "Update property information and amenities",
+      href: "/partner/inventory/details",
+      icon: MapPin,
+      stats: "All updated"
+    },
+    {
+      title: "Pricing Management",
+      description: "Manage rates and seasonal pricing",
+      href: "/partner/inventory/pricing",
+      icon: DollarSign,
+      stats: "Dynamic pricing active"
+    }
+  ];
+
+  // Booking Management Actions
+  const bookingActions = [
+    {
+      title: "All Bookings",
+      description: "View and manage all reservations",
+      href: "/partner/bookings/list",
+      icon: FileText,
+      stats: "47 this month"
+    },
+    {
+      title: "Check-ins Today",
+      description: "Manage today's guest arrivals",
+      href: "/partner/bookings/checkins",
+      icon: Clock,
+      stats: "3 check-ins"
+    },
+    {
+      title: "Check-outs Today",
+      description: "Manage today's guest departures",
+      href: "/partner/bookings/checkouts",
+      icon: CheckCircle,
+      stats: "2 check-outs"
+    },
+    {
+      title: "Booking Requests",
+      description: "Review pending booking requests",
+      href: "/partner/bookings/requests",
+      icon: AlertTriangle,
+      stats: "5 pending",
+      badge: "5"
+    }
+  ];
+
+  // Financial Management Actions
+  const financialActions = [
+    {
+      title: "Payouts",
       description: "View your earnings and payment history",
       href: "/partner/payouts",
-      icon: DollarSign
+      icon: DollarSign,
+      stats: "₹85,000 pending"
     },
     {
-      title: "Support Requests",
+      title: "Revenue Reports",
+      description: "Detailed financial analytics",
+      href: "/partner/reports/revenue",
+      icon: BarChart3,
+      stats: "18.5% growth"
+    },
+    {
+      title: "Booking Volume",
+      description: "Track booking trends and patterns",
+      href: "/partner/reports/booking-volume",
+      icon: TrendingUp,
+      stats: "47 bookings"
+    },
+    {
+      title: "Customer Feedback",
+      description: "Monitor guest reviews and ratings",
+      href: "/partner/reports/customer-feedback",
+      icon: Star,
+      stats: "4.8 avg rating"
+    },
+    {
+      title: "Tax Compliance",
+      description: "Manage tax documents and compliance",
+      href: "/partner/tax-compliance",
+      icon: FileText,
+      stats: "Up to date"
+    }
+  ];
+
+  // Communication & Support Actions
+  const communicationActions = [
+    {
+      title: "Guest Messages",
+      description: "Communicate with your guests",
+      href: "/partner/messages",
+      icon: MessageSquare,
+      stats: "3 unread",
+      badge: "3"
+    },
+    {
+      title: "Support Center",
       description: "Get help and manage support tickets",
-      href: "/partner/support",
-      icon: Bell
+      href: "/partner/help",
+      icon: HelpCircle,
+      stats: "24/7 available"
+    },
+    {
+      title: "Contact Support",
+      description: "Direct contact with support team",
+      href: "/partner/contact-support",
+      icon: Phone,
+      stats: "Response in 2hrs"
+    }
+  ];
+
+  // Profile & Settings Actions
+  const profileSettingsActions = [
+    {
+      title: "Company Profile",
+      description: "Update your business information",
+      href: "/partner/profile/company",
+      icon: Building2,
+      stats: "Profile 90% complete"
+    },
+    {
+      title: "API Credentials",
+      description: "Manage API keys and integrations",
+      href: "/partner/api-credentials",
+      icon: Key,
+      stats: "2 active keys"
+    },
+    {
+      title: "Account Settings",
+      description: "Manage account preferences",
+      href: "/partner/settings",
+      icon: Settings,
+      stats: "All configured"
     }
   ];
 
@@ -75,6 +203,41 @@ const PartnerHomepage = () => {
     { message: "Payout of ₹25,000 processed", time: "2 days ago", type: "payment" },
     { message: "Calendar updated for next month", time: "3 days ago", type: "calendar" }
   ];
+
+  const renderSectionCards = (cards: any[], sectionTitle: string) => (
+    <div className="space-y-4">
+      <h3 className="text-lg font-semibold text-gray-900">{sectionTitle}</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {cards.map((card) => {
+          const IconComponent = card.icon;
+          return (
+            <Card key={card.href} className="hover:shadow-md transition-shadow">
+              <CardContent className="p-4">
+                <div className="flex items-start justify-between mb-3">
+                  <div className="p-2 rounded-lg bg-blue-50">
+                    <IconComponent className="h-5 w-5 text-blue-600" />
+                  </div>
+                  {card.badge && (
+                    <Badge variant="destructive" className="text-xs">{card.badge}</Badge>
+                  )}
+                </div>
+                <h4 className="font-medium text-gray-900 mb-1">{card.title}</h4>
+                <p className="text-sm text-gray-600 mb-2">{card.description}</p>
+                <p className="text-xs text-gray-500">{card.stats}</p>
+                <div className="mt-3">
+                  <Link to={card.href}>
+                    <Button size="sm" variant="outline" className="w-full">
+                      Manage
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -130,65 +293,45 @@ const PartnerHomepage = () => {
           })}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Quick Actions Panel */}
-          <div className="lg:col-span-2">
-            <Card>
-              <CardHeader>
-                <CardTitle>Quick Actions</CardTitle>
-                <CardDescription>Manage your business operations</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {quickActions.map((action) => {
-                    const IconComponent = action.icon;
-                    return (
-                      <Link key={action.title} to={action.href}>
-                        <Card className="hover:shadow-md transition-shadow cursor-pointer">
-                          <CardHeader className="pb-3">
-                            <div className="flex items-center gap-3">
-                              <div className="p-2 rounded-lg bg-blue-50">
-                                <IconComponent className="h-5 w-5 text-blue-600" />
-                              </div>
-                              <div>
-                                <CardTitle className="text-sm">{action.title}</CardTitle>
-                                <CardDescription className="text-xs">
-                                  {action.description}
-                                </CardDescription>
-                              </div>
-                            </div>
-                          </CardHeader>
-                        </Card>
-                      </Link>
-                    );
-                  })}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+        {/* Comprehensive Quick Actions Sections */}
+        <div className="space-y-8">
+          {/* Inventory Management */}
+          {renderSectionCards(inventoryActions, "Inventory Management")}
 
-          {/* Recent Activity */}
-          <div>
-            <Card>
-              <CardHeader>
-                <CardTitle>Recent Activity</CardTitle>
-                <CardDescription>Latest updates and notifications</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {recentActivity.map((activity, index) => (
-                    <div key={index} className="flex items-start gap-3">
-                      <div className="w-2 h-2 rounded-full bg-blue-600 mt-2"></div>
-                      <div>
-                        <p className="text-sm font-medium">{activity.message}</p>
-                        <p className="text-xs text-gray-500">{activity.time}</p>
-                      </div>
+          {/* Booking Management */}
+          {renderSectionCards(bookingActions, "Booking Management")}
+
+          {/* Financial Management */}
+          {renderSectionCards(financialActions, "Financial Management")}
+
+          {/* Communication & Support */}
+          {renderSectionCards(communicationActions, "Communication & Support")}
+
+          {/* Profile & Settings */}
+          {renderSectionCards(profileSettingsActions, "Profile & Settings")}
+        </div>
+
+        {/* Recent Activity */}
+        <div className="mt-8">
+          <Card>
+            <CardHeader>
+              <CardTitle>Recent Activity</CardTitle>
+              <CardDescription>Latest updates and notifications</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {recentActivity.map((activity, index) => (
+                  <div key={index} className="flex items-start gap-3">
+                    <div className="w-2 h-2 rounded-full bg-blue-600 mt-2"></div>
+                    <div>
+                      <p className="text-sm font-medium">{activity.message}</p>
+                      <p className="text-xs text-gray-500">{activity.time}</p>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
