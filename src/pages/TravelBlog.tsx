@@ -6,147 +6,274 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Clock, Search, Share2, Heart, MessageCircle, Calendar, User } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Calendar, Clock, User, ArrowRight } from 'lucide-react';
 
 const TravelBlog = () => {
   const { slug } = useParams();
-  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
 
   const blogPosts = [
     {
       id: 1,
-      slug: 'monsoon-magic-western-ghats',
-      title: 'Monsoon Magic: Trekking Through the Western Ghats',
-      excerpt: 'Discover the ethereal beauty of the Western Ghats during monsoon season. From misty mountains to cascading waterfalls...',
-      thumbnail: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=600&q=80',
-      author: 'Priya Sharma',
+      slug: 'kerala-backwaters-guide',
+      title: 'Ultimate Guide to Kerala Backwaters: A Journey Through Paradise',
+      excerpt: 'Discover the serene beauty of Kerala\'s backwaters with our comprehensive guide covering the best routes, houseboats, and hidden gems.',
+      content: `Kerala's backwaters are a network of interconnected canals, rivers, lakes, and inlets that create one of the most enchanting landscapes in India. This comprehensive guide will take you through everything you need to know about exploring this paradise.
+
+**Getting There**
+The main hubs for backwater tourism are Alleppey (Alappuzha), Kumarakom, and Kollam. Alleppey is the most popular starting point, easily accessible from Kochi airport (about 85 km away).
+
+**Best Time to Visit**
+October to March is the ideal time when the weather is pleasant and humidity is low. Monsoons (June-September) can be beautiful but expect heavy rains.
+
+**Houseboat Experience**
+Staying overnight on a traditional houseboat is a must-do experience. These converted rice barges offer modern amenities while maintaining their rustic charm. Expect to pay ₹8,000-₹15,000 per night for a good quality houseboat.
+
+**What to Expect**
+- Traditional Kerala cuisine cooked fresh onboard
+- Peaceful cruising through narrow canals
+- Bird watching opportunities
+- Village visits and local interactions
+- Sunset views over the water
+
+**Hidden Gems**
+Beyond the popular routes, explore:
+- Kumrakom Bird Sanctuary
+- Pathiramanal Island
+- Traditional coir-making villages
+- Spice plantations in Thekkady
+
+The backwaters offer a perfect blend of nature, culture, and relaxation that will leave you with memories to last a lifetime.`,
+      author: {
+        name: 'Arjun Mehta',
+        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80'
+      },
+      category: 'destinations',
       publishDate: '2024-06-15',
-      readingTime: '8 min read',
-      tags: ['Adventure', 'Monsoon', 'Trekking'],
+      readTime: '8 min read',
+      image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=800&q=80',
       featured: true
     },
     {
       id: 2,
-      slug: 'rajasthan-heritage-walk',
-      title: 'A Heritage Walk Through Rajasthan\'s Royal Cities',
-      excerpt: 'Step into the pages of history as we explore the magnificent palaces and forts of Rajasthan...',
-      thumbnail: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=600&q=80',
-      author: 'Raj Patel',
+      slug: 'rajasthan-budget-travel',
+      title: 'Exploring Rajasthan on a Budget: Royal Experiences for Less',
+      excerpt: 'Experience the grandeur of Rajasthan without breaking the bank. Here\'s how to explore palaces, forts, and culture on a shoestring budget.',
+      content: `Rajasthan, the land of maharajas and magnificent palaces, can be explored on a budget without compromising on the experience. Here's your complete guide to budget travel in Rajasthan.
+
+**Transportation**
+- Use state buses (RSRTC) for intercity travel - extremely affordable
+- Book sleeper class trains well in advance
+- Share taxis between cities can be cost-effective for groups
+- Local buses and shared auto-rickshaws for city travel
+
+**Accommodation**
+- Government tourist hostels offer clean, safe stays for ₹500-800/night
+- Heritage homestays provide authentic experiences
+- Youth hostels in major cities
+- Budget hotels near railway stations
+
+**Food**
+- Street food is delicious and cheap (₹50-100 per meal)
+- Local dhabas serve authentic Rajasthani thalis
+- Stay hydrated with fresh lassi and chaas
+- Try local specialties like dal-baati-churma
+
+**Must-Visit Places on Budget**
+- Jaipur: Amber Fort, City Palace, Hawa Mahal
+- Udaipur: City Palace, Saheliyon Ki Bari, Jagdish Temple
+- Jodhpur: Mehrangarh Fort, Jaswant Thada
+- Pushkar: Brahma Temple, Pushkar Lake
+- Jaisalmer: Fort, Sam Sand Dunes
+
+**Money-Saving Tips**
+- Visit during off-season (April-June) for lower prices
+- Buy composite tickets for multiple monuments
+- Negotiate taxi fares beforehand
+- Carry a water bottle to avoid buying expensive bottled water
+
+With proper planning, you can experience Rajasthan's royal heritage for under ₹2,000 per day including accommodation, food, and sightseeing.`,
+      author: {
+        name: 'Priya Singh',
+        avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b5e5?auto=format&fit=crop&w=100&q=80'
+      },
+      category: 'budget',
       publishDate: '2024-06-12',
-      readingTime: '12 min read',
-      tags: ['Heritage', 'Culture', 'Rajasthan'],
+      readTime: '6 min read',
+      image: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=800&q=80',
       featured: false
     },
     {
       id: 3,
-      slug: 'goa-beyond-beaches',
-      title: 'Goa Beyond Beaches: Hidden Cultural Gems',
-      excerpt: 'While beaches are Goa\'s main attraction, the state harbors rich Portuguese heritage and local traditions...',
-      thumbnail: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?auto=format&fit=crop&w=600&q=80',
-      author: 'Maria D\'Souza',
+      slug: 'himalayan-trekking-tips',
+      title: 'Essential Tips for First-Time Himalayan Trekkers',
+      excerpt: 'Planning your first Himalayan trek? Here are the essential tips, gear recommendations, and safety guidelines you need to know.',
+      content: `Embarking on your first Himalayan trek is an exciting adventure that requires proper preparation. This comprehensive guide will help you prepare for the journey of a lifetime.
+
+**Physical Preparation**
+Start training at least 2-3 months before your trek:
+- Build cardiovascular endurance with regular running or cycling
+- Practice hiking with a loaded backpack
+- Include strength training for legs and core
+- Practice breathing exercises
+
+**Essential Gear**
+- Sturdy trekking boots (broken in before the trek)
+- Layered clothing system (base layer, insulation, outer shell)
+- Quality sleeping bag rated for expected temperatures
+- Trekking poles for stability
+- Headlamp with extra batteries
+- First aid kit and personal medications
+
+**Acclimatization**
+- Ascend gradually (no more than 500m per day above 3000m)
+- Stay hydrated and avoid alcohol
+- Listen to your body and recognize altitude sickness symptoms
+- Take rest days as planned in your itinerary
+
+**Safety Guidelines**
+- Trek with experienced guides
+- Inform someone about your itinerary
+- Carry emergency communication devices
+- Have evacuation insurance
+- Know when to turn back
+
+**Popular Beginner Treks**
+- Valley of Flowers (Uttarakhand) - 4 days
+- Triund Trek (Himachal Pradesh) - 2 days
+- Brahmatal Trek (Uttarakhand) - 6 days
+- Kedarkantha (Uttarakhand) - 4 days
+
+**Cultural Sensitivity**
+- Respect local customs and traditions
+- Ask permission before photographing people
+- Support local economy by buying local products
+- Leave no trace - pack out all trash
+
+Remember, the mountains will always be there. Your safety is more important than reaching any summit. Take your time, enjoy the journey, and create memories that will last a lifetime.`,
+      author: {
+        name: 'Karan Gupta',
+        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&q=80'
+      },
+      category: 'adventure',
       publishDate: '2024-06-10',
-      readingTime: '6 min read',
-      tags: ['Culture', 'Hidden Gems', 'Goa'],
+      readTime: '10 min read',
+      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80',
       featured: false
     }
   ];
 
-  const categories = ['All', 'Adventure', 'Culture', 'Food', 'Budget Travel', 'Solo Travel', 'Group Travel'];
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const categories = [
+    { id: 'all', name: 'All Posts' },
+    { id: 'destinations', name: 'Destinations' },
+    { id: 'budget', name: 'Budget Travel' },
+    { id: 'adventure', name: 'Adventure' },
+    { id: 'culture', name: 'Culture' },
+    { id: 'food', name: 'Food & Cuisine' }
+  ];
 
-  // If viewing individual post
+  // If viewing individual blog post
   if (slug) {
     const post = blogPosts.find(p => p.slug === slug);
-    if (!post) return <div>Post not found</div>;
+    if (!post) {
+      return (
+        <div className="min-h-screen bg-white">
+          <Header />
+          <div className="container mx-auto px-4 py-12 text-center">
+            <h1 className="text-2xl font-bold mb-4">Blog post not found</h1>
+            <Link to="/blog">
+              <Button>← Back to Blog</Button>
+            </Link>
+          </div>
+          <Footer />
+        </div>
+      );
+    }
 
     return (
       <div className="min-h-screen bg-white">
         <Header />
         
         <article className="max-w-4xl mx-auto px-4 py-12">
-          {/* Header Image */}
+          {/* Back to blog */}
+          <Link to="/blog" className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-6">
+            ← Back to Blog
+          </Link>
+
+          {/* Hero Image */}
           <div className="h-96 rounded-lg overflow-hidden mb-8">
-            <div 
-              className="w-full h-full bg-cover bg-center"
-              style={{ backgroundImage: `url(${post.thumbnail})` }}
+            <img 
+              src={post.image} 
+              alt={post.title}
+              className="w-full h-full object-cover"
             />
           </div>
 
-          {/* Article Meta */}
+          {/* Post Header */}
           <div className="mb-8">
-            <div className="flex flex-wrap gap-2 mb-4">
-              {post.tags.map(tag => (
-                <Badge key={tag} variant="secondary">{tag}</Badge>
-              ))}
-            </div>
+            <Badge variant="outline" className="mb-4 capitalize">
+              {post.category}
+            </Badge>
+            
             <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
+            
             <div className="flex items-center gap-6 text-gray-600">
               <div className="flex items-center gap-2">
-                <User className="h-4 w-4" />
-                <span>{post.author}</span>
+                <Avatar className="h-8 w-8">
+                  <AvatarImage src={post.author.avatar} />
+                  <AvatarFallback>{post.author.name.charAt(0)}</AvatarFallback>
+                </Avatar>
+                <span>{post.author.name}</span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1">
                 <Calendar className="h-4 w-4" />
                 <span>{new Date(post.publishDate).toLocaleDateString()}</span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1">
                 <Clock className="h-4 w-4" />
-                <span>{post.readingTime}</span>
+                <span>{post.readTime}</span>
               </div>
             </div>
           </div>
 
-          {/* Article Content */}
-          <div className="prose prose-lg max-w-none mb-8">
-            <p className="lead text-xl text-gray-700 mb-6">{post.excerpt}</p>
-            
-            <h2>The Journey Begins</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-            
-            <h2>Hidden Treasures</h2>
-            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            
-            <blockquote className="border-l-4 border-blue-600 pl-6 italic text-gray-700 my-6">
-              "Travel is the only thing you buy that makes you richer." - Anonymous
-            </blockquote>
-            
-            <h2>Travel Tips</h2>
-            <ul>
-              <li>Pack light and carry essentials only</li>
-              <li>Research local customs and traditions</li>
-              <li>Book accommodations in advance during peak season</li>
-              <li>Keep emergency contacts handy</li>
-            </ul>
+          {/* Post Content */}
+          <div className="prose prose-lg max-w-none">
+            {post.content.split('\n\n').map((paragraph, index) => {
+              if (paragraph.startsWith('**') && paragraph.endsWith('**')) {
+                return <h3 key={index} className="text-xl font-bold mt-8 mb-4">{paragraph.slice(2, -2)}</h3>;
+              }
+              if (paragraph.startsWith('- ')) {
+                const items = paragraph.split('\n').filter(item => item.startsWith('- '));
+                return (
+                  <ul key={index} className="list-disc pl-6 mb-4">
+                    {items.map((item, i) => (
+                      <li key={i}>{item.slice(2)}</li>
+                    ))}
+                  </ul>
+                );
+              }
+              return <p key={index} className="mb-4">{paragraph}</p>;
+            })}
           </div>
 
-          {/* Social Share */}
-          <div className="flex items-center justify-between py-6 border-t border-b border-gray-200 mb-8">
-            <div className="flex items-center gap-4">
-              <Button variant="outline" size="sm">
-                <Heart className="h-4 w-4 mr-2" />
-                Like
-              </Button>
-              <Button variant="outline" size="sm">
-                <MessageCircle className="h-4 w-4 mr-2" />
-                Comment
-              </Button>
+          {/* Related Posts */}
+          <div className="mt-12 border-t pt-8">
+            <h3 className="text-2xl font-bold mb-6">Related Posts</h3>
+            <div className="grid md:grid-cols-2 gap-6">
+              {blogPosts.filter(p => p.id !== post.id).slice(0, 2).map(relatedPost => (
+                <Card key={relatedPost.id} className="overflow-hidden">
+                  <div className="h-48 bg-cover bg-center" style={{ backgroundImage: `url(${relatedPost.image})` }} />
+                  <CardContent className="p-4">
+                    <h4 className="font-bold mb-2">{relatedPost.title}</h4>
+                    <p className="text-gray-600 text-sm mb-3">{relatedPost.excerpt}</p>
+                    <Link to={`/blog/${relatedPost.slug}`}>
+                      <Button variant="outline" size="sm">Read More</Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-600">Share:</span>
-              <Button variant="outline" size="sm">
-                <Share2 className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-
-          {/* CTA */}
-          <div className="bg-blue-50 p-8 rounded-lg text-center">
-            <h3 className="text-2xl font-bold mb-4">Inspired to Visit?</h3>
-            <p className="text-gray-600 mb-6">Chat with Sanchaari to plan a similar trip tailored to your preferences</p>
-            <Button size="lg">
-              <Link to="/chat">Plan My Trip</Link>
-            </Button>
           </div>
         </article>
 
@@ -156,151 +283,119 @@ const TravelBlog = () => {
   }
 
   // Blog homepage
-  const featuredPost = blogPosts.find(post => post.featured);
-  const regularPosts = blogPosts.filter(post => !post.featured);
+  const filteredPosts = selectedCategory === 'all' 
+    ? blogPosts 
+    : blogPosts.filter(post => post.category === selectedCategory);
 
   return (
     <div className="min-h-screen bg-white">
       <Header />
       
-      <div className="max-w-7xl mx-auto px-4 py-12">
+      <div className="max-w-6xl mx-auto px-4 py-12">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-4">Travel Blog</h1>
-          <p className="text-xl text-gray-600">Stories, tips, and inspiration for your next adventure</p>
+          <p className="text-xl text-gray-600">Discover amazing destinations, travel tips, and insider guides</p>
         </div>
 
-        {/* Featured Article */}
-        {featuredPost && (
-          <section className="mb-16">
-            <h2 className="text-2xl font-bold mb-6">Featured Story</h2>
-            <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-              <div className="md:flex">
-                <div className="md:w-1/2 h-64 md:h-auto">
-                  <div 
-                    className="w-full h-full bg-cover bg-center"
-                    style={{ backgroundImage: `url(${featuredPost.thumbnail})` }}
-                  />
+        {/* Categories */}
+        <div className="flex flex-wrap justify-center gap-2 mb-12">
+          {categories.map(category => (
+            <Button
+              key={category.id}
+              variant={selectedCategory === category.id ? 'default' : 'outline'}
+              onClick={() => setSelectedCategory(category.id)}
+              className="mb-2"
+            >
+              {category.name}
+            </Button>
+          ))}
+        </div>
+
+        {/* Featured Post */}
+        {selectedCategory === 'all' && (
+          <div className="mb-12">
+            {blogPosts.filter(post => post.featured).map(post => (
+              <Card key={post.id} className="overflow-hidden lg:flex">
+                <div className="lg:w-1/2">
+                  <div className="h-64 lg:h-full bg-cover bg-center" style={{ backgroundImage: `url(${post.image})` }} />
                 </div>
-                <CardContent className="md:w-1/2 p-8">
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {featuredPost.tags.map(tag => (
-                      <Badge key={tag} variant="secondary">{tag}</Badge>
-                    ))}
-                  </div>
-                  <h3 className="text-2xl font-bold mb-4">{featuredPost.title}</h3>
-                  <p className="text-gray-600 mb-4">{featuredPost.excerpt}</p>
-                  <div className="flex items-center gap-4 text-sm text-gray-500 mb-6">
-                    <span>{featuredPost.author}</span>
-                    <span>{featuredPost.readingTime}</span>
-                    <span>{new Date(featuredPost.publishDate).toLocaleDateString()}</span>
-                  </div>
-                  <Button>
-                    <Link to={`/blog/${featuredPost.slug}`}>Read More</Link>
-                  </Button>
-                </CardContent>
-              </div>
-            </Card>
-          </section>
+                <div className="lg:w-1/2">
+                  <CardContent className="p-8">
+                    <Badge variant="outline" className="mb-4">Featured</Badge>
+                    <h2 className="text-2xl font-bold mb-4">{post.title}</h2>
+                    <p className="text-gray-600 mb-6">{post.excerpt}</p>
+                    
+                    <div className="flex items-center gap-4 mb-6 text-sm text-gray-500">
+                      <div className="flex items-center gap-2">
+                        <Avatar className="h-6 w-6">
+                          <AvatarImage src={post.author.avatar} />
+                          <AvatarFallback>{post.author.name.charAt(0)}</AvatarFallback>
+                        </Avatar>
+                        <span>{post.author.name}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Calendar className="h-4 w-4" />
+                        <span>{new Date(post.publishDate).toLocaleDateString()}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Clock className="h-4 w-4" />
+                        <span>{post.readTime}</span>
+                      </div>
+                    </div>
+
+                    <Link to={`/blog/${post.slug}`}>
+                      <Button className="inline-flex items-center gap-2">
+                        Read Full Article
+                        <ArrowRight className="h-4 w-4" />
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </div>
+              </Card>
+            ))}
+          </div>
         )}
 
-        <div className="grid lg:grid-cols-4 gap-8">
-          {/* Main Content */}
-          <div className="lg:col-span-3">
-            {/* Search and Filter */}
-            <div className="mb-8">
-              <div className="flex flex-col sm:flex-row gap-4 mb-6">
-                <div className="relative flex-1">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                  <Input
-                    placeholder="Search articles..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10"
-                  />
+        {/* Blog Posts Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredPosts.filter(post => !post.featured || selectedCategory !== 'all').map(post => (
+            <Card key={post.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+              <div className="h-48 bg-cover bg-center" style={{ backgroundImage: `url(${post.image})` }} />
+              <CardContent className="p-6">
+                <Badge variant="outline" className="mb-3 capitalize">
+                  {post.category}
+                </Badge>
+                
+                <h3 className="font-bold text-lg mb-3 line-clamp-2">{post.title}</h3>
+                <p className="text-gray-600 mb-4 line-clamp-3">{post.excerpt}</p>
+                
+                <div className="flex items-center gap-3 mb-4 text-sm text-gray-500">
+                  <div className="flex items-center gap-2">
+                    <Avatar className="h-6 w-6">
+                      <AvatarImage src={post.author.avatar} />
+                      <AvatarFallback>{post.author.name.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <span>{post.author.name}</span>
+                  </div>
+                  <span>•</span>
+                  <span>{post.readTime}</span>
                 </div>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {categories.map(category => (
-                  <Button
-                    key={category}
-                    variant={selectedCategory === category ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setSelectedCategory(category)}
-                  >
-                    {category}
+
+                <Link to={`/blog/${post.slug}`}>
+                  <Button variant="outline" size="sm" className="w-full">
+                    Read More
                   </Button>
-                ))}
-              </div>
-            </div>
-
-            {/* Article Grid */}
-            <div className="grid md:grid-cols-2 gap-6">
-              {regularPosts.map(post => (
-                <Card key={post.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-                  <div className="h-48 bg-cover bg-center" style={{ backgroundImage: `url(${post.thumbnail})` }} />
-                  <CardContent className="p-6">
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {post.tags.map(tag => (
-                        <Badge key={tag} variant="secondary" className="text-xs">{tag}</Badge>
-                      ))}
-                    </div>
-                    <h3 className="font-bold text-lg mb-3">{post.title}</h3>
-                    <p className="text-gray-600 mb-4">{post.excerpt}</p>
-                    <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
-                      <span>{post.author}</span>
-                      <div className="flex items-center gap-2">
-                        <Clock className="h-4 w-4" />
-                        <span>{post.readingTime}</span>
-                      </div>
-                    </div>
-                    <Button size="sm">
-                      <Link to={`/blog/${post.slug}`}>Read More</Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-
-          {/* Sidebar */}
-          <div className="lg:col-span-1">
-            <div className="space-y-6">
-              {/* Popular Tags */}
-              <Card>
-                <CardContent className="p-6">
-                  <h3 className="font-bold mb-4">Popular Tags</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {['Adventure', 'Culture', 'Food', 'Budget Travel', 'Solo Travel', 'Monsoon', 'Heritage'].map(tag => (
-                      <Badge key={tag} variant="outline" className="cursor-pointer hover:bg-blue-50">
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Recent Posts */}
-              <Card>
-                <CardContent className="p-6">
-                  <h3 className="font-bold mb-4">Recent Posts</h3>
-                  <div className="space-y-4">
-                    {blogPosts.slice(0, 3).map(post => (
-                      <div key={post.id} className="flex gap-3">
-                        <div className="w-16 h-16 bg-cover bg-center rounded" style={{ backgroundImage: `url(${post.thumbnail})` }} />
-                        <div className="flex-1">
-                          <Link to={`/blog/${post.slug}`} className="font-medium hover:text-blue-600 line-clamp-2 text-sm">
-                            {post.title}
-                          </Link>
-                          <p className="text-xs text-gray-500 mt-1">{post.readingTime}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
+                </Link>
+              </CardContent>
+            </Card>
+          ))}
         </div>
+
+        {filteredPosts.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-gray-600">No posts found in this category.</p>
+          </div>
+        )}
       </div>
 
       <Footer />

@@ -17,13 +17,13 @@ const Header = () => {
   return (
     <header className="bg-white shadow-sm border-b">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-20">
           {/* Logo - Enlarged */}
           <Link to="/" className="flex items-center space-x-2">
             <img 
               src="/lovable-uploads/3cf89503-eca7-4713-bdd0-55ba1176c477.png" 
               alt="Sanchaari" 
-              className="h-16 w-auto"
+              className="h-20 w-auto"
             />
           </Link>
 
@@ -41,7 +41,7 @@ const Header = () => {
               <Calendar className="h-4 w-4" />
               <span>Activities</span>
             </Link>
-            <Link to="/search/community" className="flex items-center space-x-1 text-gray-600 hover:text-blue-600">
+            <Link to="/community" className="flex items-center space-x-1 text-gray-600 hover:text-blue-600">
               <Users className="h-4 w-4" />
               <span>Community</span>
             </Link>
