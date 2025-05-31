@@ -47,16 +47,18 @@ const Header = () => {
     <header className="bg-white shadow-sm border-b sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 lg:h-20">
-          {/* Admin Logo */}
-          <Link to={getLogoRedirect()} className="flex items-center space-x-2 lg:space-x-3">
-            <img 
-              src="/lovable-uploads/3cf89503-eca7-4713-bdd0-55ba1176c477.png" 
-              alt="Sanchaari Admin" 
-              className="h-12 lg:h-16 w-auto"
-            />
-            <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200 font-semibold text-xs lg:text-sm">
-              ADMIN
-            </Badge>
+          {/* Admin Logo - Enhanced for visibility */}
+          <Link to={getLogoRedirect()} className="flex items-center space-x-2 lg:space-x-3 flex-shrink-0 min-w-0">
+            <div className="flex items-center space-x-2 lg:space-x-3">
+              <img 
+                src="/lovable-uploads/3cf89503-eca7-4713-bdd0-55ba1176c477.png" 
+                alt="Sanchaari Admin" 
+                className="h-10 w-auto sm:h-12 lg:h-16 object-contain"
+              />
+              <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200 font-semibold text-xs lg:text-sm hidden sm:inline-flex">
+                ADMIN
+              </Badge>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
@@ -84,7 +86,7 @@ const Header = () => {
           </nav>
 
           {/* Mobile Menu & User Actions */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 flex-shrink-0">
             <Button variant="ghost" size="sm" className="hidden sm:flex">
               <Bell className="h-4 w-4" />
             </Button>
@@ -92,7 +94,7 @@ const Header = () => {
             {/* Mobile Menu */}
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="sm" className="lg:hidden">
+                <Button variant="ghost" size="sm" className="lg:hidden p-2">
                   <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
@@ -126,7 +128,7 @@ const Header = () => {
             {isAuthenticated ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="flex items-center space-x-1 text-sm">
+                  <Button variant="ghost" className="flex items-center space-x-1 text-sm p-2">
                     <User className="h-4 w-4" />
                     <span className="hidden sm:inline">{user?.fullName || user?.email || 'Admin'}</span>
                   </Button>
@@ -168,16 +170,18 @@ const Header = () => {
     <header className="bg-white shadow-sm border-b sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 lg:h-20">
-          {/* Partner Logo */}
-          <Link to={getLogoRedirect()} className="flex items-center space-x-2 lg:space-x-3">
-            <img 
-              src="/lovable-uploads/3cf89503-eca7-4713-bdd0-55ba1176c477.png" 
-              alt="Sanchaari Partner" 
-              className="h-12 lg:h-16 w-auto"
-            />
-            <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 font-semibold text-xs lg:text-sm">
-              PARTNER
-            </Badge>
+          {/* Partner Logo - Enhanced for visibility */}
+          <Link to={getLogoRedirect()} className="flex items-center space-x-2 lg:space-x-3 flex-shrink-0 min-w-0">
+            <div className="flex items-center space-x-2 lg:space-x-3">
+              <img 
+                src="/lovable-uploads/3cf89503-eca7-4713-bdd0-55ba1176c477.png" 
+                alt="Sanchaari Partner" 
+                className="h-10 w-auto sm:h-12 lg:h-16 object-contain"
+              />
+              <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 font-semibold text-xs lg:text-sm hidden sm:inline-flex">
+                PARTNER
+              </Badge>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
@@ -205,7 +209,7 @@ const Header = () => {
           </nav>
 
           {/* Mobile Menu & User Actions */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 flex-shrink-0">
             <Button variant="ghost" size="sm" className="hidden sm:flex">
               <Bell className="h-4 w-4" />
             </Button>
@@ -213,7 +217,7 @@ const Header = () => {
             {/* Mobile Menu */}
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="sm" className="lg:hidden">
+                <Button variant="ghost" size="sm" className="lg:hidden p-2">
                   <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
@@ -247,7 +251,7 @@ const Header = () => {
             {isAuthenticated ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="flex items-center space-x-1 text-sm">
+                  <Button variant="ghost" className="flex items-center space-x-1 text-sm p-2">
                     <User className="h-4 w-4" />
                     <span className="hidden sm:inline">{user?.companyName || user?.fullName || user?.email || 'Partner'}</span>
                   </Button>
@@ -294,12 +298,12 @@ const Header = () => {
     <header className="bg-white shadow-sm border-b sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 lg:h-20">
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
+          {/* Logo - Enhanced for visibility */}
+          <Link to="/" className="flex items-center space-x-2 flex-shrink-0 min-w-0">
             <img 
               src="/lovable-uploads/3cf89503-eca7-4713-bdd0-55ba1176c477.png" 
               alt="Sanchaari" 
-              className="h-12 lg:h-20 w-auto"
+              className="h-10 w-auto sm:h-12 lg:h-20 object-contain"
             />
           </Link>
 
@@ -354,11 +358,11 @@ const Header = () => {
           </nav>
 
           {/* Mobile Menu & User Actions */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 flex-shrink-0">
             {/* Mobile Search */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="lg:hidden">
+                <Button variant="ghost" size="sm" className="lg:hidden p-2">
                   <Search className="h-5 w-5" />
                 </Button>
               </DropdownMenuTrigger>
@@ -387,7 +391,7 @@ const Header = () => {
             {/* Mobile Menu */}
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="sm" className="lg:hidden">
+                <Button variant="ghost" size="sm" className="lg:hidden p-2">
                   <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
@@ -417,7 +421,7 @@ const Header = () => {
             {isAuthenticated ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="flex items-center space-x-1 text-sm">
+                  <Button variant="ghost" className="flex items-center space-x-1 text-sm p-2">
                     <User className="h-4 w-4" />
                     <span className="hidden sm:inline">{user?.fullName || user?.email || 'User'}</span>
                   </Button>
