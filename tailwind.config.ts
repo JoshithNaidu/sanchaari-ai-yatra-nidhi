@@ -26,23 +26,23 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
-					DEFAULT: 'hsl(var(--primary))', // Dark Blue #0A2540
+					DEFAULT: 'hsl(var(--primary))', // Deep Blue #1D3B8B
 					foreground: 'hsl(var(--primary-foreground))'
 				},
 				secondary: {
-					DEFAULT: 'hsl(var(--secondary))', // Light Gray #F7F7F7
+					DEFAULT: 'hsl(var(--secondary))', // Sky Blue #4F9DF7
 					foreground: 'hsl(var(--secondary-foreground))'
 				},
 				destructive: {
-					DEFAULT: 'hsl(var(--destructive))', // Accent Red #DB4437
+					DEFAULT: 'hsl(var(--destructive))',
 					foreground: 'hsl(var(--destructive-foreground))'
 				},
 				muted: {
-					DEFAULT: 'hsl(var(--muted))', // Light Gray #F7F7F7
+					DEFAULT: 'hsl(var(--muted))', // Soft Gray #E0E0E0
 					foreground: 'hsl(var(--muted-foreground))'
 				},
 				accent: {
-					DEFAULT: 'hsl(var(--accent))', // Teal Blue #007C91
+					DEFAULT: 'hsl(var(--accent))', // Accent Aqua #00C2CB
 					foreground: 'hsl(var(--accent-foreground))'
 				},
 				popover: {
@@ -64,13 +64,12 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				// Brand colors for direct usage
-				'brand-dark-blue': '#0A2540',
-				'brand-teal': '#007C91',
-				'brand-cyan': '#D4F5F5',
-				'brand-light-gray': '#F7F7F7',
-				'brand-medium-gray': '#5C5C5C',
-				'brand-dark-gray': '#2C2C2C',
-				'brand-red': '#DB4437'
+				'brand-deep-blue': '#1D3B8B',
+				'brand-sky-blue': '#4F9DF7',
+				'brand-charcoal': '#2E2E2E',
+				'brand-cool-white': '#F8F9FA',
+				'brand-soft-gray': '#E0E0E0',
+				'brand-accent-aqua': '#00C2CB'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
