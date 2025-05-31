@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCentralizedAuth } from '@/contexts/CentralizedAuthContext';
@@ -31,7 +30,8 @@ import {
   MonitorSpeaker,
   FileText,
   BarChart3,
-  Zap
+  Zap,
+  MessageSquare
 } from 'lucide-react';
 
 const AdminDashboard = () => {
@@ -141,7 +141,7 @@ const AdminDashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Admin Header */}
-      <header className="bg-white border-b border-gray-200 shadow-sm">
+      <header className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center gap-4">
             <Link to="/" className="hover:opacity-80 transition-opacity">
@@ -422,34 +422,46 @@ const AdminDashboard = () => {
                     <span className="text-xs">User Management</span>
                   </Button>
                 </Link>
-                <Link to="/admin/bookings/all">
+                <Link to="/admin/trip-management">
                   <Button variant="outline" className="w-full h-16 flex-col gap-1">
                     <FileText className="h-5 w-5" />
-                    <span className="text-xs">Booking Management</span>
+                    <span className="text-xs">Trip Management</span>
                   </Button>
                 </Link>
-                <Link to="/admin/content/destinations">
+                <Link to="/admin/ai/knowledge-base">
                   <Button variant="outline" className="w-full h-16 flex-col gap-1">
                     <Database className="h-5 w-5" />
-                    <span className="text-xs">Content Management</span>
+                    <span className="text-xs">Knowledge Base</span>
                   </Button>
                 </Link>
-                <Link to="/admin/ai/analytics">
+                <Link to="/admin/ai/training-data">
                   <Button variant="outline" className="w-full h-16 flex-col gap-1">
                     <Zap className="h-5 w-5" />
-                    <span className="text-xs">AI Management</span>
+                    <span className="text-xs">Training Data</span>
+                  </Button>
+                </Link>
+                <Link to="/admin/reports/overview">
+                  <Button variant="outline" className="w-full h-16 flex-col gap-1">
+                    <BarChart3 className="h-5 w-5" />
+                    <span className="text-xs">Overview Dashboard</span>
+                  </Button>
+                </Link>
+                <Link to="/admin/group-collaboration">
+                  <Button variant="outline" className="w-full h-16 flex-col gap-1">
+                    <Users className="h-5 w-5" />
+                    <span className="text-xs">Group Collaboration</span>
+                  </Button>
+                </Link>
+                <Link to="/admin/chatbot-analytics">
+                  <Button variant="outline" className="w-full h-16 flex-col gap-1">
+                    <MessageSquare className="h-5 w-5" />
+                    <span className="text-xs">Chatbot Analytics</span>
                   </Button>
                 </Link>
                 <Link to="/admin/integrations">
                   <Button variant="outline" className="w-full h-16 flex-col gap-1">
                     <Settings className="h-5 w-5" />
                     <span className="text-xs">System Config</span>
-                  </Button>
-                </Link>
-                <Link to="/admin/reports/overview">
-                  <Button variant="outline" className="w-full h-16 flex-col gap-1">
-                    <BarChart3 className="h-5 w-5" />
-                    <span className="text-xs">Analytics</span>
                   </Button>
                 </Link>
               </div>
