@@ -119,6 +119,7 @@ import AdminSettingsSystem from './pages/AdminSettingsSystem';
 import AdminSettingsNotifications from './pages/AdminSettingsNotifications';
 import AdminSettingsLocalization from './pages/AdminSettingsLocalization';
 import AdminReviews from './pages/AdminReviews';
+import AdminChatbotAnalytics from './pages/AdminChatbotAnalytics';
 
 // Common Pages
 import EmailVerification from './pages/EmailVerification';
@@ -437,6 +438,11 @@ function App() {
                 <AdminUsersList />
               </ProtectedRoute>
             } />
+            <Route path="/admin/users/list" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminUsersList />
+              </ProtectedRoute>
+            } />
             <Route path="/admin/users/:user_id" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminUserProfile />
@@ -472,6 +478,11 @@ function App() {
                 <AdminBookingsAll />
               </ProtectedRoute>
             } />
+            <Route path="/admin/bookings/all" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminBookingsAll />
+              </ProtectedRoute>
+            } />
             <Route path="/admin/integrations" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminIntegrations />
@@ -482,6 +493,8 @@ function App() {
                 <AdminPricing />
               </ProtectedRoute>
             } />
+            
+            {/* AI Management Routes */}
             <Route path="/admin/ai/analytics" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminAIAnalytics />
@@ -502,16 +515,25 @@ function App() {
                 <AdminAIHandoffs />
               </ProtectedRoute>
             } />
-            <Route path="/admin/ai/knowledge" element={
+            <Route path="/admin/ai/knowledge-base" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminAIKnowledgeBase />
               </ProtectedRoute>
             } />
-            <Route path="/admin/ai/training" element={
+            <Route path="/admin/ai/training-data" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminAITrainingData />
               </ProtectedRoute>
             } />
+            
+            {/* Chatbot Analytics Route */}
+            <Route path="/admin/analytics/chatbot" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminChatbotAnalytics />
+              </ProtectedRoute>
+            } />
+            
+            {/* Content Management Routes */}
             <Route path="/admin/content/destinations" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminContentDestinations />
@@ -537,7 +559,14 @@ function App() {
                 <AdminContentFlagged />
               </ProtectedRoute>
             } />
+            
+            {/* Reports Routes */}
             <Route path="/admin/reports" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminReportsOverview />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/reports/overview" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminReportsOverview />
               </ProtectedRoute>
@@ -567,7 +596,7 @@ function App() {
                 <AdminReportsFunnel />
               </ProtectedRoute>
             } />
-            <Route path="/admin/reports/collaboration" element={
+            <Route path="/admin/reports/group-collaboration" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminReportsGroupCollaboration />
               </ProtectedRoute>
@@ -577,6 +606,8 @@ function App() {
                 <AdminReportsCustom />
               </ProtectedRoute>
             } />
+            
+            {/* Settings Routes */}
             <Route path="/admin/settings/api" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminSettingsApiKeys />
