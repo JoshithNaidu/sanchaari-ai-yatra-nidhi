@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -10,11 +9,17 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { Heart, MessageCircle, Share2, Plus, Flag, Send } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 const Community = () => {
   const { slug } = useParams();
   const [activeTab, setActiveTab] = useState('featured');
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [storyTitle, setStoryTitle] = useState('');
+  const [storyContent, setStoryContent] = useState('');
+  const [storyTags, setStoryTags] = useState('');
+  const [coverImage, setCoverImage] = useState<File | null>(null);
+  const { toast } = useToast();
 
   const stories = [
     {
@@ -92,6 +97,48 @@ If you're considering a solo adventure, don't let fear hold you back. The mounta
       featured: false
     }
   ];
+
+  const handleCoverImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setCoverImage(file);
+      toast({
+        title: "Image uploaded",
+        description: "Cover image has been selected successfully."
+      });
+    }
+  };
+
+  const handlePreviewAndPost = () => {
+    if (!storyTitle.trim() || !storyContent.trim()) {
+      toast({
+        title: "Missing information",
+        description: "Please fill in the title and story content.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    toast({
+      title: "Story published!",
+      description: "Your travel story has been shared with the community."
+    });
+    
+    // Reset form
+    setStoryTitle('');
+    setStoryContent('');
+    setStoryTags('');
+    setCoverImage(null);
+    setShowCreateModal(false);
+  };
+
+  const handleSaveDraft = () => {
+    toast({
+      title: "Draft saved",
+      description: "Your story has been saved as a draft."
+    });
+    setShowCreateModal(false);
+  };
 
   // If viewing individual story
   if (slug) {
@@ -318,7 +365,7 @@ If you're considering a solo adventure, don't let fear hold you back. The mounta
           ))}
         </div>
 
-        {/* Create Story Modal */}
+        {/* Create Story Modal - Fixed functionality */}
         {showCreateModal && (
           <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
             <div className="bg-white rounded-lg p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
@@ -330,13 +377,30 @@ If you're considering a solo adventure, don't let fear hold you back. The mounta
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium mb-2">Story Title</label>
-                  <Input placeholder="Give your story a compelling title..." />
+                  <Input 
+                    placeholder="Give your story a compelling title..." 
+                    value={storyTitle}
+                    onChange={(e) => setStoryTitle(e.target.value)}
+                  />
                 </div>
                 
                 <div>
                   <label className="block text-sm font-medium mb-2">Cover Image</label>
                   <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
-                    <p className="text-gray-600">Click to upload or drag and drop</p>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleCoverImageUpload}
+                      className="hidden"
+                      id="cover-image-upload"
+                    />
+                    <label htmlFor="cover-image-upload" className="cursor-pointer">
+                      {coverImage ? (
+                        <p className="text-green-600">Image selected: {coverImage.name}</p>
+                      ) : (
+                        <p className="text-gray-600">Click to upload or drag and drop</p>
+                      )}
+                    </label>
                   </div>
                 </div>
                 
@@ -345,17 +409,27 @@ If you're considering a solo adventure, don't let fear hold you back. The mounta
                   <Textarea 
                     placeholder="Tell us about your adventure..." 
                     className="min-h-[200px]"
+                    value={storyContent}
+                    onChange={(e) => setStoryContent(e.target.value)}
                   />
                 </div>
                 
                 <div>
                   <label className="block text-sm font-medium mb-2">Tags</label>
-                  <Input placeholder="#adventure #solo #mountains" />
+                  <Input 
+                    placeholder="#adventure #solo #mountains" 
+                    value={storyTags}
+                    onChange={(e) => setStoryTags(e.target.value)}
+                  />
                 </div>
                 
                 <div className="flex gap-4 pt-4">
-                  <Button className="flex-1">Preview & Post</Button>
-                  <Button variant="outline">Save Draft</Button>
+                  <Button className="flex-1" onClick={handlePreviewAndPost}>
+                    Preview & Post
+                  </Button>
+                  <Button variant="outline" onClick={handleSaveDraft}>
+                    Save Draft
+                  </Button>
                 </div>
               </div>
             </div>

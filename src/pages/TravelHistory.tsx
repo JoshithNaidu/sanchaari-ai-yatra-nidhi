@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -52,6 +51,8 @@ const TravelHistory = () => {
     }
   ];
 
+  const [travelHistoryData, setTravelHistoryData] = useState(travelHistory);
+
   const handleViewTrip = (tripId: number) => {
     navigate(`/trips/${tripId}`);
     toast({
@@ -68,7 +69,7 @@ const TravelHistory = () => {
     });
   };
 
-  const filteredTrips = travelHistory.filter(trip => {
+  const filteredTrips = travelHistoryData.filter(trip => {
     const matchesSearch = trip.destination.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          trip.title.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesFilter = filterType === 'all' || trip.type === filterType;
@@ -85,7 +86,6 @@ const TravelHistory = () => {
           <p className="text-gray-600">Explore your past adventures and travel memories</p>
         </div>
 
-        {/* Filters */}
         <div className="mb-6 flex flex-col md:flex-row gap-4">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -111,7 +111,6 @@ const TravelHistory = () => {
           </Select>
         </div>
 
-        {/* Travel History Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredTrips.map((trip) => (
             <Card key={trip.id} className="group hover:shadow-lg transition-shadow duration-300">
@@ -182,7 +181,6 @@ const TravelHistory = () => {
           ))}
         </div>
 
-        {/* Empty State */}
         {filteredTrips.length === 0 && (
           <div className="text-center py-12">
             <div className="w-24 h-24 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
