@@ -20,9 +20,13 @@ const NotFound = () => {
         {/* Illustration */}
         <div className="mb-8">
           <div className="relative">
-            <MapPin className="h-24 w-24 text-blue-600 mx-auto mb-4 opacity-20" />
+            <img 
+              src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=300&fit=crop" 
+              alt="Mountain landscape representing a lost journey" 
+              className="w-64 h-48 object-cover rounded-lg mx-auto mb-4 opacity-60"
+            />
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-8xl font-bold text-blue-600">404</span>
+              <span className="text-6xl font-bold text-blue-600 bg-white bg-opacity-90 px-4 py-2 rounded-lg">404</span>
             </div>
           </div>
         </div>

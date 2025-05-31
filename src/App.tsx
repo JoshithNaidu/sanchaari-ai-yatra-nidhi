@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from '@/components/ui/toaster';
@@ -481,6 +480,11 @@ function App() {
             <Route path="/admin/bookings/all" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminBookingsAll />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/trips/management" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminTripManagement />
               </ProtectedRoute>
             } />
             <Route path="/admin/integrations" element={
