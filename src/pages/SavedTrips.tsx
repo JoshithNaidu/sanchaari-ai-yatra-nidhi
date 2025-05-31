@@ -4,20 +4,24 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Heart, MapPin, Calendar, IndianRupee, Trash2, LayoutGrid, List } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 
 const SavedTrips = () => {
   const [viewMode, setViewMode] = useState('grid');
+  const { toast } = useToast();
+  const navigate = useNavigate();
 
-  // Mock data for saved trips
-  const savedTrips = [
+  // Mock data for saved trips with relevant images
+  const [savedTrips, setSavedTrips] = useState([
     {
       id: 1,
       title: "Himalayan Adventure",
       destination: "Manali, Himachal Pradesh",
       budget: "₹35,000 - ₹45,000",
       duration: "7 days",
-      coverImage: "/placeholder.svg",
+      coverImage: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=400&q=80",
       savedDate: "2 days ago",
       tags: ["Adventure", "Mountain", "Trekking"]
     },
@@ -27,7 +31,7 @@ const SavedTrips = () => {
       destination: "Varanasi, Uttar Pradesh",
       budget: "₹20,000 - ₹30,000",
       duration: "4 days",
-      coverImage: "/placeholder.svg",
+      coverImage: "https://images.unsplash.com/photo-1473177104440-ffee2f376098?auto=format&fit=crop&w=400&q=80",
       savedDate: "1 week ago",
       tags: ["Spiritual", "Heritage", "Culture"]
     },
@@ -37,14 +41,26 @@ const SavedTrips = () => {
       destination: "Port Blair, Andaman",
       budget: "₹55,000 - ₹70,000",
       duration: "6 days",
-      coverImage: "/placeholder.svg",
+      coverImage: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
       savedDate: "2 weeks ago",
       tags: ["Beach", "Water Sports", "Nature"]
     }
-  ];
+  ]);
 
   const handleRemoveTrip = (id: number) => {
-    console.log(`Removing trip ${id}`);
+    setSavedTrips(prev => prev.filter(trip => trip.id !== id));
+    toast({
+      title: "Trip Removed",
+      description: "Trip has been removed from your saved list.",
+    });
+  };
+
+  const handleOpenInPlanner = (id: number) => {
+    navigate(`/trips/${id}`);
+    toast({
+      title: "Opening Trip Planner",
+      description: "Redirecting to trip planning interface...",
+    });
   };
 
   return (
@@ -132,10 +148,17 @@ const SavedTrips = () => {
                       </div>
 
                       <div className="flex gap-2">
-                        <Button className="flex-1">
+                        <Button 
+                          className="flex-1"
+                          onClick={() => handleOpenInPlanner(trip.id)}
+                        >
                           Open in Planner
                         </Button>
-                        <Button variant="outline" size="sm" onClick={() => handleRemoveTrip(trip.id)}>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={() => handleRemoveTrip(trip.id)}
+                        >
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
@@ -180,8 +203,14 @@ const SavedTrips = () => {
                       </div>
 
                       <div className="flex gap-2">
-                        <Button>Open in Planner</Button>
-                        <Button variant="outline" size="sm" onClick={() => handleRemoveTrip(trip.id)}>
+                        <Button onClick={() => handleOpenInPlanner(trip.id)}>
+                          Open in Planner
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={() => handleRemoveTrip(trip.id)}
+                        >
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
@@ -198,7 +227,7 @@ const SavedTrips = () => {
             </div>
             <h3 className="text-xl font-semibold text-gray-900 mb-2">No saved trips yet</h3>
             <p className="text-gray-600 mb-6">Start exploring destinations and save your favorites!</p>
-            <Button>Explore Destinations</Button>
+            <Button onClick={() => navigate('/search')}>Explore Destinations</Button>
           </div>
         )}
       </div>

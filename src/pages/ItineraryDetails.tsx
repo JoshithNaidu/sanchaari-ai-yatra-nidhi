@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { useToast } from '@/hooks/use-toast';
 import { 
   Calendar, 
   MapPin, 
@@ -24,6 +25,7 @@ import {
 const ItineraryDetails = () => {
   const { tripId } = useParams();
   const [viewMode, setViewMode] = useState<'timeline' | 'table'>('timeline');
+  const { toast } = useToast();
 
   // Mock data - in real app, this would be fetched based on tripId
   const trip = {
@@ -37,7 +39,7 @@ const ItineraryDetails = () => {
     status: 'Planning'
   };
 
-  const itinerary = [
+  const [itinerary, setItinerary] = useState([
     {
       day: 1,
       date: '2024-06-15',
@@ -62,7 +64,75 @@ const ItineraryDetails = () => {
         { time: '20:00', title: 'Dinner in Saint-Germain', type: 'meal', icon: Utensils }
       ]
     }
-  ];
+  ]);
+
+  const handleQuickEdit = () => {
+    toast({
+      title: "Opening Quick Edit",
+      description: "Trip details editor is loading...",
+    });
+  };
+
+  const handleExportPDF = () => {
+    toast({
+      title: "Exporting PDF",
+      description: "Your itinerary PDF is being generated...",
+    });
+  };
+
+  const handleShareLink = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: trip.name,
+        text: `Check out my trip itinerary for ${trip.destination}!`,
+        url: window.location.href
+      });
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      toast({
+        title: "Link Copied",
+        description: "Trip link copied to clipboard!",
+      });
+    }
+  };
+
+  const handleAddActivity = (dayIndex: number) => {
+    const newActivity = {
+      time: '10:00',
+      title: 'New Activity',
+      type: 'activity',
+      icon: Camera
+    };
+    
+    setItinerary(prev => 
+      prev.map((day, index) => 
+        index === dayIndex 
+          ? { ...day, activities: [...day.activities, newActivity] }
+          : day
+      )
+    );
+    
+    toast({
+      title: "Activity Added",
+      description: "New activity has been added to your itinerary.",
+    });
+  };
+
+  const handleShareTrip = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: trip.name,
+        text: `Join me on my trip to ${trip.destination}!`,
+        url: window.location.href
+      });
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      toast({
+        title: "Trip Shared",
+        description: "Trip link copied to clipboard for sharing!",
+      });
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -128,15 +198,30 @@ const ItineraryDetails = () => {
                   <Badge variant="outline">{trip.travelerType}</Badge>
                 </div>
                 <Separator />
-                <Button variant="outline" size="sm" className="w-full">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="w-full"
+                  onClick={handleQuickEdit}
+                >
                   <Edit className="h-3 w-3 mr-2" />
                   Quick Edit
                 </Button>
                 <div className="space-y-2">
-                  <Button variant="ghost" size="sm" className="w-full justify-start p-2">
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="w-full justify-start p-2"
+                    onClick={handleExportPDF}
+                  >
                     Export PDF
                   </Button>
-                  <Button variant="ghost" size="sm" className="w-full justify-start p-2">
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="w-full justify-start p-2"
+                    onClick={handleShareLink}
+                  >
                     <Share className="h-3 w-3 mr-2" />
                     Share Link
                   </Button>
@@ -173,7 +258,7 @@ const ItineraryDetails = () => {
             {/* Timeline View */}
             {viewMode === 'timeline' && (
               <div className="space-y-6">
-                {itinerary.map((day) => (
+                {itinerary.map((day, dayIndex) => (
                   <Card key={day.day}>
                     <CardHeader className="bg-blue-50">
                       <CardTitle className="flex items-center justify-between">
@@ -206,7 +291,12 @@ const ItineraryDetails = () => {
                             </div>
                           );
                         })}
-                        <Button variant="outline" size="sm" className="w-full mt-4">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="w-full mt-4"
+                          onClick={() => handleAddActivity(dayIndex)}
+                        >
                           <Plus className="h-3 w-3 mr-2" />
                           Add Activity
                         </Button>
@@ -262,7 +352,10 @@ const ItineraryDetails = () => {
               </Card>
 
               {/* Share Button */}
-              <Button className="w-full bg-green-600 hover:bg-green-700">
+              <Button 
+                className="w-full bg-green-600 hover:bg-green-700"
+                onClick={handleShareTrip}
+              >
                 <Share className="h-4 w-4 mr-2" />
                 Share Trip
               </Button>

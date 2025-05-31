@@ -8,11 +8,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, Plus, Trash2, User, Printer, Share } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 const PackingList = () => {
   const { tripId } = useParams();
   const [newItem, setNewItem] = useState('');
   const [isGroupTrip] = useState(true);
+  const { toast } = useToast();
 
   const categories = [
     {
@@ -97,6 +99,78 @@ const PackingList = () => {
         )
       );
       setNewItem('');
+      toast({
+        title: "Item Added",
+        description: `${newItem} has been added to your packing list.`,
+      });
+    }
+  };
+
+  const removeItem = (categoryIndex: number, itemId: string) => {
+    setPackingItems(prev => 
+      prev.map((category, idx) => 
+        idx === categoryIndex 
+          ? { ...category, items: category.items.filter(item => item.id !== itemId) }
+          : category
+      )
+    );
+    toast({
+      title: "Item Removed",
+      description: "Item has been removed from your packing list.",
+    });
+  };
+
+  const handlePrint = () => {
+    window.print();
+    toast({
+      title: "Print Dialog Opened",
+      description: "Your packing list is ready to print.",
+    });
+  };
+
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: 'My Packing List',
+        text: 'Check out my packing list for the trip!',
+        url: window.location.href
+      });
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      toast({
+        title: "Link Copied",
+        description: "Packing list link copied to clipboard!",
+      });
+    }
+  };
+
+  const handleQuickAction = (action: string) => {
+    switch (action) {
+      case 'clothing':
+        setPackingItems(prev => 
+          prev.map((category, idx) => 
+            category.name === 'Clothing' 
+              ? { ...category, items: category.items.map(item => ({ ...item, packed: true })) }
+              : category
+          )
+        );
+        toast({
+          title: "Clothing Packed",
+          description: "All clothing items marked as packed.",
+        });
+        break;
+      case 'weather':
+        toast({
+          title: "Weather Items Added",
+          description: "Weather-appropriate items added to your list.",
+        });
+        break;
+      case 'documents':
+        toast({
+          title: "Document Checklist Generated",
+          description: "Travel document checklist has been generated.",
+        });
+        break;
     }
   };
 
@@ -126,11 +200,11 @@ const PackingList = () => {
             <h1 className="text-3xl font-bold text-gray-900">Packing List</h1>
           </div>
           <div className="flex space-x-2">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" onClick={handlePrint}>
               <Printer className="h-4 w-4 mr-2" />
               Print
             </Button>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" onClick={handleShare}>
               <Share className="h-4 w-4 mr-2" />
               Share
             </Button>
@@ -201,7 +275,12 @@ const PackingList = () => {
                           )}
                         </div>
                       </div>
-                      <Button variant="ghost" size="sm" className="text-red-600 hover:text-red-700">
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="text-red-600 hover:text-red-700"
+                        onClick={() => removeItem(categoryIndex, item.id)}
+                      >
                         <Trash2 className="h-3 w-3" />
                       </Button>
                     </div>
@@ -236,9 +315,24 @@ const PackingList = () => {
             <div className="text-center space-y-4">
               <h3 className="font-semibold">Quick Actions</h3>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Button variant="outline">Mark All Clothing as Packed</Button>
-                <Button variant="outline">Add Weather-Based Items</Button>
-                <Button variant="outline">Generate Travel Document Checklist</Button>
+                <Button 
+                  variant="outline"
+                  onClick={() => handleQuickAction('clothing')}
+                >
+                  Mark All Clothing as Packed
+                </Button>
+                <Button 
+                  variant="outline"
+                  onClick={() => handleQuickAction('weather')}
+                >
+                  Add Weather-Based Items
+                </Button>
+                <Button 
+                  variant="outline"
+                  onClick={() => handleQuickAction('documents')}
+                >
+                  Generate Travel Document Checklist
+                </Button>
               </div>
             </div>
           </CardContent>

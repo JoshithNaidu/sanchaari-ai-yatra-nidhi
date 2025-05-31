@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -11,6 +11,8 @@ import { useNavigate } from 'react-router-dom';
 const SearchFlights = () => {
   const navigate = useNavigate();
   const [sortBy, setSortBy] = useState('price');
+  const [selectedAirlines, setSelectedAirlines] = useState<string[]>([]);
+  const [priceRange, setPriceRange] = useState([2000, 10000]);
 
   const flights = [
     {
@@ -50,6 +52,35 @@ const SearchFlights = () => {
       logo: 'https://images.unsplash.com/photo-1583776221291-b15591b26726?auto=format&fit=crop&w=100&q=80'
     }
   ];
+
+  const filteredAndSortedFlights = useMemo(() => {
+    let filtered = flights.filter(flight => {
+      const airlineMatch = selectedAirlines.length === 0 || selectedAirlines.includes(flight.airline);
+      const priceMatch = flight.price >= priceRange[0] && flight.price <= priceRange[1];
+      return airlineMatch && priceMatch;
+    });
+
+    return filtered.sort((a, b) => {
+      switch (sortBy) {
+        case 'price':
+          return a.price - b.price;
+        case 'duration':
+          return parseInt(a.duration) - parseInt(b.duration);
+        case 'departure':
+          return a.departure.time.localeCompare(b.departure.time);
+        default:
+          return 0;
+      }
+    });
+  }, [selectedAirlines, priceRange, sortBy]);
+
+  const handleAirlineFilter = (airline: string) => {
+    setSelectedAirlines(prev => 
+      prev.includes(airline) 
+        ? prev.filter(a => a !== airline)
+        : [...prev, airline]
+    );
+  };
 
   const handleBookFlight = (flightId: string) => {
     navigate(`/checkout/${flightId}`);
@@ -91,7 +122,12 @@ const SearchFlights = () => {
                     <div className="space-y-2">
                       {['IndiGo', 'Air India', 'SpiceJet', 'Vistara'].map(airline => (
                         <label key={airline} className="flex items-center gap-2">
-                          <input type="checkbox" className="rounded" />
+                          <input 
+                            type="checkbox" 
+                            className="rounded"
+                            checked={selectedAirlines.includes(airline)}
+                            onChange={() => handleAirlineFilter(airline)}
+                          />
                           <span className="text-sm">{airline}</span>
                         </label>
                       ))}
@@ -100,10 +136,17 @@ const SearchFlights = () => {
 
                   <div>
                     <h4 className="text-sm font-medium mb-2">Price Range</h4>
-                    <input type="range" min="2000" max="10000" className="w-full" />
+                    <input 
+                      type="range" 
+                      min="2000" 
+                      max="10000" 
+                      value={priceRange[1]}
+                      onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
+                      className="w-full" 
+                    />
                     <div className="flex justify-between text-xs text-gray-600 mt-1">
-                      <span>₹2,000</span>
-                      <span>₹10,000</span>
+                      <span>₹{priceRange[0].toLocaleString()}</span>
+                      <span>₹{priceRange[1].toLocaleString()}</span>
                     </div>
                   </div>
                 </div>
@@ -132,13 +175,13 @@ const SearchFlights = () => {
 
             {/* Flight Results */}
             <div className="space-y-4">
-              {flights.map((flight) => (
+              {filteredAndSortedFlights.map((flight) => (
                 <Card key={flight.id} className="hover:shadow-md transition-shadow">
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-6 flex-1">
                         <div className="text-center">
-                          <img src={flight.logo} alt={flight.airline} className="w-8 h-8 mx-auto mb-1 rounded" />
+                          <img src={flight.logo} alt={flight.airline} className="w-8 h-8 mx-auto mb-1 rounded object-cover" />
                           <div className="text-xs text-gray-600">{flight.flightNumber}</div>
                         </div>
 
