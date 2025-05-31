@@ -40,50 +40,50 @@ const PartnerPropertyDetails = () => {
     <div className="min-h-screen bg-gray-50">
       <Header />
       
-      <div className="container mx-auto px-4 py-6">
-        <div className="flex items-center gap-4 mb-6">
+      <div className="container mx-auto px-4 py-4 lg:py-6">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 lg:gap-4 mb-4 lg:mb-6">
           <Link to="/partner">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" className="w-full sm:w-auto">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Dashboard
             </Button>
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900">Property Details</h1>
+          <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">Property Details</h1>
         </div>
 
-        <div className="mb-6">
-          <Button className="bg-blue-600 hover:bg-blue-700">
+        <div className="mb-4 lg:mb-6">
+          <Button className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700">
             <Plus className="h-4 w-4 mr-2" />
             Add New Property
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
           {properties.map((property) => (
             <Card key={property.id} className="hover:shadow-md transition-shadow">
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div>
-                    <CardTitle className="flex items-center gap-2">
-                      <Building2 className="h-5 w-5 text-blue-600" />
-                      {property.name}
+              <CardHeader className="pb-4">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
+                  <div className="flex-1">
+                    <CardTitle className="flex items-center gap-2 text-lg lg:text-xl">
+                      <Building2 className="h-5 w-5 text-blue-600 flex-shrink-0" />
+                      <span className="break-words">{property.name}</span>
                     </CardTitle>
                     <CardDescription className="flex items-center gap-1 mt-1">
-                      <MapPin className="h-4 w-4" />
-                      {property.location}
+                      <MapPin className="h-4 w-4 flex-shrink-0" />
+                      <span className="break-words">{property.location}</span>
                     </CardDescription>
                   </div>
-                  <Badge variant={property.status === 'Active' ? 'default' : 'secondary'}>
+                  <Badge variant={property.status === 'Active' ? 'default' : 'secondary'} className="self-start">
                     {property.status}
                   </Badge>
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div className="grid grid-cols-2 gap-3 lg:gap-4 text-sm">
                     <div>
                       <span className="text-gray-500">Type:</span>
-                      <p className="font-medium">{property.type}</p>
+                      <p className="font-medium break-words">{property.type}</p>
                     </div>
                     <div>
                       <span className="text-gray-500">Rooms:</span>
@@ -110,7 +110,7 @@ const PartnerPropertyDetails = () => {
                     </div>
                   </div>
 
-                  <div className="flex gap-2 pt-2">
+                  <div className="flex flex-col sm:flex-row gap-2 pt-2">
                     <Button size="sm" variant="outline" className="flex-1">
                       <Eye className="h-4 w-4 mr-1" />
                       View
