@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,9 +5,11 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { CreditCard, Smartphone, Plus, Trash2, Star, Shield, Lock } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 import Header from '@/components/Header';
 
 const PaymentMethods = () => {
+  const { toast } = useToast();
   const [savedCards, setSavedCards] = useState([
     {
       id: 1,
@@ -36,12 +37,51 @@ const PaymentMethods = () => {
 
   const handleRemoveCard = (id: number) => {
     setSavedCards(prev => prev.filter(card => card.id !== id));
+    toast({
+      title: "Card Removed",
+      description: "Payment method has been successfully removed.",
+    });
   };
 
   const handleSetDefault = (id: number) => {
     setSavedCards(prev => 
       prev.map(card => ({ ...card, isDefault: card.id === id }))
     );
+    toast({
+      title: "Default Card Updated",
+      description: "Your default payment method has been changed.",
+    });
+  };
+
+  const handleConnectUPI = (id: number) => {
+    const upiId = prompt('Enter your UPI ID:');
+    if (upiId) {
+      setUpiMethods(prev => 
+        prev.map(method => 
+          method.id === id 
+            ? { ...method, upiId, isConnected: true }
+            : method
+        )
+      );
+      toast({
+        title: "UPI Connected",
+        description: "Your UPI payment method has been connected successfully.",
+      });
+    }
+  };
+
+  const handleRemoveUPI = (id: number) => {
+    setUpiMethods(prev => 
+      prev.map(method => 
+        method.id === id 
+          ? { ...method, upiId: '', isConnected: false }
+          : method
+      )
+    );
+    toast({
+      title: "UPI Removed",
+      description: "UPI payment method has been disconnected.",
+    });
   };
 
   const getCardIcon = (type: string) => {
@@ -209,12 +249,22 @@ const PaymentMethods = () => {
                       {method.isConnected ? (
                         <>
                           <Badge variant="secondary" className="text-green-600">Connected</Badge>
-                          <Button variant="outline" size="sm" className="text-red-600">
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="text-red-600"
+                            onClick={() => handleRemoveUPI(method.id)}
+                          >
                             Remove
                           </Button>
                         </>
                       ) : (
-                        <Button size="sm">Connect</Button>
+                        <Button 
+                          size="sm"
+                          onClick={() => handleConnectUPI(method.id)}
+                        >
+                          Connect
+                        </Button>
                       )}
                     </div>
                   </div>

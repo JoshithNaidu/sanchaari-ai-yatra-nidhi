@@ -1,14 +1,15 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Star, Gift, Users, Share2, Trophy, Crown, Award } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 import Header from '@/components/Header';
 
 const LoyaltyRewards = () => {
-  const currentPoints = 2450;
+  const { toast } = useToast();
+  const [currentPoints, setCurrentPoints] = useState(2450);
   const nextTierPoints = 5000;
   const progressPercentage = (currentPoints / nextTierPoints) * 100;
 
@@ -25,6 +26,49 @@ const LoyaltyRewards = () => {
     { title: 'Free Activity Booking', points: 1500, description: 'Up to ₹2,000 value' },
     { title: 'Upgrade to Premium Trip', points: 2000, description: 'One-time upgrade on your next booking' },
   ];
+
+  const handleShareWithFriends = () => {
+    const referralCode = 'TRAVEL2024';
+    const shareText = `Join me on this amazing travel platform! Use my referral code ${referralCode} and get 250 bonus points. Start planning your dream trip today!`;
+    
+    if (navigator.share) {
+      navigator.share({
+        title: 'Join Our Travel Platform',
+        text: shareText,
+        url: window.location.origin
+      });
+    } else {
+      navigator.clipboard.writeText(shareText);
+      toast({
+        title: "Referral Link Copied",
+        description: "Your referral message has been copied to clipboard!",
+      });
+    }
+  };
+
+  const handleRedeemReward = (reward: any) => {
+    if (currentPoints >= reward.points) {
+      setCurrentPoints(prev => prev - reward.points);
+      toast({
+        title: "Reward Redeemed!",
+        description: `${reward.title} has been added to your account.`,
+      });
+    } else {
+      toast({
+        title: "Insufficient Points",
+        description: `You need ${reward.points - currentPoints} more points to redeem this reward.`,
+        variant: "destructive"
+      });
+    }
+  };
+
+  const copyReferralCode = () => {
+    navigator.clipboard.writeText('TRAVEL2024');
+    toast({
+      title: "Code Copied",
+      description: "Referral code copied to clipboard!",
+    });
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -144,13 +188,13 @@ const LoyaltyRewards = () => {
                     <div className="flex-1 bg-gray-100 px-3 py-2 rounded border font-mono text-sm">
                       TRAVEL2024
                     </div>
-                    <Button size="sm" variant="outline">
+                    <Button size="sm" variant="outline" onClick={copyReferralCode}>
                       <Share2 className="h-4 w-4" />
                     </Button>
                   </div>
                 </div>
 
-                <Button className="w-full gap-2">
+                <Button className="w-full gap-2" onClick={handleShareWithFriends}>
                   <Share2 className="h-4 w-4" />
                   Share with Friends
                 </Button>
@@ -166,7 +210,12 @@ const LoyaltyRewards = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {availableRewards.map((reward, index) => (
+                {[
+                  { title: '10% Hotel Discount', points: 500, description: 'Valid on bookings above ₹5,000' },
+                  { title: 'Airport Lounge Access', points: 1000, description: 'Single-use pass for domestic flights' },
+                  { title: 'Free Activity Booking', points: 1500, description: 'Up to ₹2,000 value' },
+                  { title: 'Upgrade to Premium Trip', points: 2000, description: 'One-time upgrade on your next booking' },
+                ].map((reward, index) => (
                   <div key={index} className="border rounded-lg p-3">
                     <div className="flex justify-between items-start mb-2">
                       <h4 className="font-medium text-gray-900">{reward.title}</h4>
@@ -178,6 +227,7 @@ const LoyaltyRewards = () => {
                       className="w-full" 
                       disabled={currentPoints < reward.points}
                       variant={currentPoints >= reward.points ? "default" : "outline"}
+                      onClick={() => handleRedeemReward(reward)}
                     >
                       {currentPoints >= reward.points ? "Redeem" : "Not enough points"}
                     </Button>
