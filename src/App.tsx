@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from '@/components/ui/toaster';
@@ -117,6 +118,7 @@ import AdminSettingsRoles from './pages/AdminSettingsRoles';
 import AdminSettingsSystem from './pages/AdminSettingsSystem';
 import AdminSettingsNotifications from './pages/AdminSettingsNotifications';
 import AdminSettingsLocalization from './pages/AdminSettingsLocalization';
+import AdminReviews from './pages/AdminReviews';
 
 // Common Pages
 import EmailVerification from './pages/EmailVerification';

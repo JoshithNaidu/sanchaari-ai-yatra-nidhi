@@ -48,28 +48,32 @@ const PartnerHomepage = () => {
       description: "Add, edit, or remove your service listings",
       href: "/partner/inventory/listings",
       icon: Building2,
-      stats: "12 active listings"
+      stats: "12 active listings",
+      color: "bg-blue-500"
     },
     {
       title: "Calendar Availability",
       description: "Update your availability calendar",
       href: "/partner/inventory/availability",
       icon: Calendar,
-      stats: "3 properties available"
+      stats: "3 properties available",
+      color: "bg-green-500"
     },
     {
       title: "Property Details",
       description: "View and manage property information",
       icon: Building2,
       href: "/partner/inventory/details",
-      color: "bg-blue-500"
+      color: "bg-blue-500",
+      stats: "Details updated"
     },
     {
       title: "Pricing Management", 
       description: "Update rates and pricing rules",
       icon: DollarSign,
       href: "/partner/inventory/pricing",
-      color: "bg-green-500"
+      color: "bg-green-500",
+      stats: "Current rates"
     }
   ];
 
@@ -80,28 +84,32 @@ const PartnerHomepage = () => {
       description: "View and manage all reservations",
       href: "/partner/bookings/list",
       icon: FileText,
-      stats: "47 this month"
+      stats: "47 this month",
+      color: "bg-gray-500"
     },
     {
       title: "Check-ins Today",
       description: "Manage today's guest arrivals",
       icon: UserCheck,
       href: "/partner/bookings/checkins",
-      color: "bg-green-500"
+      color: "bg-green-500",
+      stats: "3 arrivals"
     },
     {
       title: "Check-outs Today", 
       description: "Process today's departures",
       icon: UserX,
       href: "/partner/bookings/checkouts",
-      color: "bg-orange-500"
+      color: "bg-orange-500",
+      stats: "2 departures"
     },
     {
       title: "Booking Requests",
       description: "Review pending booking requests",
       icon: Clock,
       href: "/partner/bookings/requests", 
-      color: "bg-yellow-500"
+      color: "bg-yellow-500",
+      stats: "5 pending"
     }
   ];
 
@@ -112,35 +120,40 @@ const PartnerHomepage = () => {
       description: "View your earnings and payment history",
       href: "/partner/payouts",
       icon: DollarSign,
-      stats: "₹85,000 pending"
+      stats: "₹85,000 pending",
+      color: "bg-green-500"
     },
     {
       title: "Revenue Reports",
       description: "Detailed financial analytics",
       href: "/partner/reports/revenue",
       icon: BarChart3,
-      stats: "18.5% growth"
+      stats: "18.5% growth",
+      color: "bg-blue-500"
     },
     {
       title: "Booking Volume",
       description: "Track booking trends and patterns",
       href: "/partner/reports/booking-volume",
       icon: TrendingUp,
-      stats: "47 bookings"
+      stats: "47 bookings",
+      color: "bg-purple-500"
     },
     {
       title: "Customer Feedback",
       description: "Monitor guest reviews and ratings",
       href: "/partner/reports/customer-feedback",
       icon: Star,
-      stats: "4.8 avg rating"
+      stats: "4.8 avg rating",
+      color: "bg-yellow-500"
     },
     {
       title: "Tax Compliance",
       description: "Manage tax documents and compliance",
       href: "/partner/tax-compliance",
       icon: FileText,
-      stats: "Up to date"
+      stats: "Up to date",
+      color: "bg-gray-500"
     }
   ];
 
@@ -151,21 +164,24 @@ const PartnerHomepage = () => {
       description: "View and respond to guest feedback",
       icon: Star,
       href: "/partner/reviews",
-      color: "bg-yellow-500"
+      color: "bg-yellow-500",
+      stats: "New reviews"
     },
     {
       title: "Messages",
       description: "Guest communication center",
       icon: MessageSquare,
       href: "/partner/messages",
-      color: "bg-blue-500"
+      color: "bg-blue-500",
+      stats: "3 unread"
     },
     {
       title: "Contact Support",
       description: "Get help from our team",
       icon: HelpCircle,
       href: "/partner/contact-support",
-      color: "bg-purple-500"
+      color: "bg-purple-500",
+      stats: "24/7 support"
     }
   ];
 
@@ -176,21 +192,24 @@ const PartnerHomepage = () => {
       description: "Update your business information",
       href: "/partner/profile/company",
       icon: Building2,
-      stats: "Profile 90% complete"
+      stats: "Profile 90% complete",
+      color: "bg-blue-500"
     },
     {
       title: "API Credentials",
       description: "Manage API keys and integrations",
       href: "/partner/api-credentials",
       icon: Key,
-      stats: "2 active keys"
+      stats: "2 active keys",
+      color: "bg-gray-500"
     },
     {
       title: "Account Settings",
       description: "Manage account preferences", 
       icon: Settings,
       href: "/partner/settings",
-      color: "bg-gray-500"
+      color: "bg-gray-500",
+      stats: "Settings updated"
     }
   ];
 
