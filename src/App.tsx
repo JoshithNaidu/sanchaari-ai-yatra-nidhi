@@ -57,7 +57,12 @@ import PartnerHomepage from './pages/PartnerHomepage';
 import PartnerDashboard from './pages/PartnerDashboard';
 import PartnerListings from './pages/PartnerListings';
 import PartnerAvailability from './pages/PartnerAvailability';
+import PartnerPropertyDetails from './pages/PartnerPropertyDetails';
+import PartnerPricingManagement from './pages/PartnerPricingManagement';
 import PartnerBookings from './pages/PartnerBookings';
+import PartnerCheckInsToday from './pages/PartnerCheckInsToday';
+import PartnerCheckOutsToday from './pages/PartnerCheckOutsToday';
+import PartnerBookingRequests from './pages/PartnerBookingRequests';
 import PartnerPayouts from './pages/PartnerPayouts';
 import PartnerBookingVolumeReports from './pages/PartnerBookingVolumeReports';
 import PartnerCustomerFeedbackReports from './pages/PartnerCustomerFeedbackReports';
@@ -65,6 +70,7 @@ import PartnerRevenueReports from './pages/PartnerRevenueReports';
 import PartnerCompanyProfile from './pages/PartnerCompanyProfile';
 import PartnerApiCredentials from './pages/PartnerApiCredentials';
 import PartnerTaxCompliance from './pages/PartnerTaxCompliance';
+import PartnerAccountSettings from './pages/PartnerAccountSettings';
 import PartnerHelpCenter from './pages/PartnerHelpCenter';
 import PartnerContactSupport from './pages/PartnerContactSupport';
 import PartnerMessages from './pages/PartnerMessages';
@@ -307,6 +313,16 @@ function App() {
                 <PartnerAvailability />
               </ProtectedRoute>
             } />
+            <Route path="/partner/inventory/details" element={
+              <ProtectedRoute allowedRoles={['partner']}>
+                <PartnerPropertyDetails />
+              </ProtectedRoute>
+            } />
+            <Route path="/partner/inventory/pricing" element={
+              <ProtectedRoute allowedRoles={['partner']}>
+                <PartnerPricingManagement />
+              </ProtectedRoute>
+            } />
             <Route path="/partner/bookings/list" element={
               <ProtectedRoute allowedRoles={['partner']}>
                 <PartnerBookings />
@@ -317,17 +333,32 @@ function App() {
                 <PartnerBookings />
               </ProtectedRoute>
             } />
+            <Route path="/partner/bookings/checkins" element={
+              <ProtectedRoute allowedRoles={['partner']}>
+                <PartnerCheckInsToday />
+              </ProtectedRoute>
+            } />
+            <Route path="/partner/bookings/checkouts" element={
+              <ProtectedRoute allowedRoles={['partner']}>
+                <PartnerCheckOutsToday />
+              </ProtectedRoute>
+            } />
+            <Route path="/partner/bookings/requests" element={
+              <ProtectedRoute allowedRoles={['partner']}>
+                <PartnerBookingRequests />
+              </ProtectedRoute>
+            } />
             <Route path="/partner/payouts" element={
               <ProtectedRoute allowedRoles={['partner']}>
                 <PartnerPayouts />
               </ProtectedRoute>
             } />
-            <Route path="/partner/reports/volume" element={
+            <Route path="/partner/reports/booking-volume" element={
               <ProtectedRoute allowedRoles={['partner']}>
                 <PartnerBookingVolumeReports />
               </ProtectedRoute>
             } />
-            <Route path="/partner/reports/feedback" element={
+            <Route path="/partner/reports/customer-feedback" element={
               <ProtectedRoute allowedRoles={['partner']}>
                 <PartnerCustomerFeedbackReports />
               </ProtectedRoute>
@@ -342,14 +373,19 @@ function App() {
                 <PartnerCompanyProfile />
               </ProtectedRoute>
             } />
-            <Route path="/partner/profile/api" element={
+            <Route path="/partner/api-credentials" element={
               <ProtectedRoute allowedRoles={['partner']}>
                 <PartnerApiCredentials />
               </ProtectedRoute>
             } />
-            <Route path="/partner/profile/tax" element={
+            <Route path="/partner/tax-compliance" element={
               <ProtectedRoute allowedRoles={['partner']}>
                 <PartnerTaxCompliance />
+              </ProtectedRoute>
+            } />
+            <Route path="/partner/settings" element={
+              <ProtectedRoute allowedRoles={['partner']}>
+                <PartnerAccountSettings />
               </ProtectedRoute>
             } />
             <Route path="/partner/help" element={
@@ -357,7 +393,7 @@ function App() {
                 <PartnerHelpCenter />
               </ProtectedRoute>
             } />
-            <Route path="/partner/support" element={
+            <Route path="/partner/contact-support" element={
               <ProtectedRoute allowedRoles={['partner']}>
                 <PartnerContactSupport />
               </ProtectedRoute>
