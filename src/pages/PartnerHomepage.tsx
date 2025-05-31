@@ -1,15 +1,14 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Calendar, DollarSign, Star, Users, TrendingUp, Bell, Building2, MapPin, Settings, FileText, BarChart3, MessageSquare, CreditCard, Key, Shield, Mail, Languages, Target, UserCog, HelpCircle, Phone, BookOpen, Database, Zap, Eye, Edit, Clock, AlertTriangle, CheckCircle } from 'lucide-react';
+import { Plus, Calendar, DollarSign, Star, Users, TrendingUp, Bell, Building2, MapPin, Settings, FileText, BarChart3, MessageSquare, CreditCard, Key, Shield, Mail, Languages, Target, UserCog, HelpCircle, Phone, BookOpen, Database, Zap, Eye, Edit, Clock, AlertTriangle, CheckCircle, UserCheck, UserX } from 'lucide-react';
 import { useCentralizedAuth } from '@/contexts/CentralizedAuthContext';
 import Header from '@/components/Header';
 
 const PartnerHomepage = () => {
-  const { user } = useCentralizedAuth();
+  const { user, logout } = useCentralizedAuth();
 
   const kpiData = [
     {
@@ -43,7 +42,7 @@ const PartnerHomepage = () => {
   ];
 
   // Inventory Management Actions
-  const inventoryActions = [
+  const quickActions = [
     {
       title: "Manage Listings",
       description: "Add, edit, or remove your service listings",
@@ -60,17 +59,17 @@ const PartnerHomepage = () => {
     },
     {
       title: "Property Details",
-      description: "Update property information and amenities",
+      description: "View and manage property information",
+      icon: Building2,
       href: "/partner/inventory/details",
-      icon: MapPin,
-      stats: "All updated"
+      color: "bg-blue-500"
     },
     {
-      title: "Pricing Management",
-      description: "Manage rates and seasonal pricing",
-      href: "/partner/inventory/pricing",
+      title: "Pricing Management", 
+      description: "Update rates and pricing rules",
       icon: DollarSign,
-      stats: "Dynamic pricing active"
+      href: "/partner/inventory/pricing",
+      color: "bg-green-500"
     }
   ];
 
@@ -86,24 +85,23 @@ const PartnerHomepage = () => {
     {
       title: "Check-ins Today",
       description: "Manage today's guest arrivals",
+      icon: UserCheck,
       href: "/partner/bookings/checkins",
-      icon: Clock,
-      stats: "3 check-ins"
+      color: "bg-green-500"
     },
     {
-      title: "Check-outs Today",
-      description: "Manage today's guest departures",
+      title: "Check-outs Today", 
+      description: "Process today's departures",
+      icon: UserX,
       href: "/partner/bookings/checkouts",
-      icon: CheckCircle,
-      stats: "2 check-outs"
+      color: "bg-orange-500"
     },
     {
       title: "Booking Requests",
       description: "Review pending booking requests",
-      href: "/partner/bookings/requests",
-      icon: AlertTriangle,
-      stats: "5 pending",
-      badge: "5"
+      icon: Clock,
+      href: "/partner/bookings/requests", 
+      color: "bg-yellow-500"
     }
   ];
 
@@ -149,31 +147,30 @@ const PartnerHomepage = () => {
   // Communication & Support Actions
   const communicationActions = [
     {
-      title: "Guest Messages",
-      description: "Communicate with your guests",
-      href: "/partner/messages",
-      icon: MessageSquare,
-      stats: "3 unread",
-      badge: "3"
+      title: "Guest Reviews",
+      description: "View and respond to guest feedback",
+      icon: Star,
+      href: "/partner/reviews",
+      color: "bg-yellow-500"
     },
     {
-      title: "Support Center",
-      description: "Get help and manage support tickets",
-      href: "/partner/help",
-      icon: HelpCircle,
-      stats: "24/7 available"
+      title: "Messages",
+      description: "Guest communication center",
+      icon: MessageSquare,
+      href: "/partner/messages",
+      color: "bg-blue-500"
     },
     {
       title: "Contact Support",
-      description: "Direct contact with support team",
+      description: "Get help from our team",
+      icon: HelpCircle,
       href: "/partner/contact-support",
-      icon: Phone,
-      stats: "Response in 2hrs"
+      color: "bg-purple-500"
     }
   ];
 
   // Profile & Settings Actions
-  const profileSettingsActions = [
+  const profileActions = [
     {
       title: "Company Profile",
       description: "Update your business information",
@@ -190,10 +187,10 @@ const PartnerHomepage = () => {
     },
     {
       title: "Account Settings",
-      description: "Manage account preferences",
-      href: "/partner/settings",
+      description: "Manage account preferences", 
       icon: Settings,
-      stats: "All configured"
+      href: "/partner/settings",
+      color: "bg-gray-500"
     }
   ];
 
@@ -243,7 +240,7 @@ const PartnerHomepage = () => {
     <div className="min-h-screen bg-gray-50">
       <Header />
 
-      <div className="container mx-auto px-4 py-6">
+      <div className="container mx-auto px-4 py-8">
         {/* Welcome Section */}
         <div className="mb-6 text-center">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -296,19 +293,164 @@ const PartnerHomepage = () => {
         {/* Comprehensive Quick Actions Sections */}
         <div className="space-y-8">
           {/* Inventory Management */}
-          {renderSectionCards(inventoryActions, "Inventory Management")}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Building2 className="h-6 w-6 text-blue-600" />
+                Inventory Management
+              </CardTitle>
+              <CardDescription>Manage your properties and pricing</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {quickActions.map((action, index) => (
+                  <Link key={index} to={action.href}>
+                    <Card className="hover:shadow-md transition-shadow cursor-pointer h-full">
+                      <CardContent className="p-4">
+                        <div className="flex items-start gap-3">
+                          <div className={`p-2 rounded-lg ${action.color}`}>
+                            <action.icon className="h-5 w-5 text-white" />
+                          </div>
+                          <div className="flex-1">
+                            <h3 className="font-medium text-gray-900">{action.title}</h3>
+                            <p className="text-sm text-gray-600 mt-1">{action.description}</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Booking Management */}
-          {renderSectionCards(bookingActions, "Booking Management")}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Calendar className="h-6 w-6 text-green-600" />
+                Booking Management
+              </CardTitle>
+              <CardDescription>Handle reservations and guest services</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {bookingActions.map((action, index) => (
+                  <Link key={index} to={action.href}>
+                    <Card className="hover:shadow-md transition-shadow cursor-pointer h-full">
+                      <CardContent className="p-4">
+                        <div className="flex items-start gap-3">
+                          <div className={`p-2 rounded-lg ${action.color}`}>
+                            <action.icon className="h-5 w-5 text-white" />
+                          </div>
+                          <div className="flex-1">
+                            <h3 className="font-medium text-gray-900">{action.title}</h3>
+                            <p className="text-sm text-gray-600 mt-1">{action.description}</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Financial Management */}
-          {renderSectionCards(financialActions, "Financial Management")}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <DollarSign className="h-6 w-6 text-red-600" />
+                Financial Management
+              </CardTitle>
+              <CardDescription>Track your financial performance</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {financialActions.map((action, index) => (
+                  <Link key={index} to={action.href}>
+                    <Card className="hover:shadow-md transition-shadow cursor-pointer h-full">
+                      <CardContent className="p-4">
+                        <div className="flex items-start gap-3">
+                          <div className={`p-2 rounded-lg ${action.color}`}>
+                            <action.icon className="h-5 w-5 text-white" />
+                          </div>
+                          <div className="flex-1">
+                            <h3 className="font-medium text-gray-900">{action.title}</h3>
+                            <p className="text-sm text-gray-600 mt-1">{action.description}</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Communication & Support */}
-          {renderSectionCards(communicationActions, "Communication & Support")}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <MessageSquare className="h-6 w-6 text-purple-600" />
+                Communication & Support
+              </CardTitle>
+              <CardDescription>Connect with guests and get help</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {communicationActions.map((action, index) => (
+                  <Link key={index} to={action.href}>
+                    <Card className="hover:shadow-md transition-shadow cursor-pointer h-full">
+                      <CardContent className="p-4">
+                        <div className="flex items-start gap-3">
+                          <div className={`p-2 rounded-lg ${action.color}`}>
+                            <action.icon className="h-5 w-5 text-white" />
+                          </div>
+                          <div className="flex-1">
+                            <h3 className="font-medium text-gray-900">{action.title}</h3>
+                            <p className="text-sm text-gray-600 mt-1">{action.description}</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Profile & Settings */}
-          {renderSectionCards(profileSettingsActions, "Profile & Settings")}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Settings className="h-6 w-6 text-gray-600" />
+                Profile & Settings
+              </CardTitle>
+              <CardDescription>Manage your account preferences</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {profileActions.map((action, index) => (
+                  <Link key={index} to={action.href}>
+                    <Card className="hover:shadow-md transition-shadow cursor-pointer h-full">
+                      <CardContent className="p-4">
+                        <div className="flex items-start gap-3">
+                          <div className={`p-2 rounded-lg ${action.color}`}>
+                            <action.icon className="h-5 w-5 text-white" />
+                          </div>
+                          <div className="flex-1">
+                            <h3 className="font-medium text-gray-900">{action.title}</h3>
+                            <p className="text-sm text-gray-600 mt-1">{action.description}</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Recent Activity */}

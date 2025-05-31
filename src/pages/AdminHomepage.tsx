@@ -12,11 +12,11 @@ import {
   Search, Command, AlertTriangle, CheckCircle, Clock,
   Database, Globe, Shield, Key, FileText, Flag,
   DollarSign, Target, UserCog, Mail, Languages,
-  Brain, Zap, Book, RefreshCw
+  Brain, Zap, Book, RefreshCw, Star, Megaphone
 } from 'lucide-react';
 
 const AdminHomepage = () => {
-  const { user } = useCentralizedAuth();
+  const { user, logout } = useCentralizedAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [showCommandPalette, setShowCommandPalette] = useState(false);
 
@@ -54,11 +54,56 @@ const AdminHomepage = () => {
     }
   ];
 
-  const quickTools = [
+  const quickActions = [
     { name: "User Lookup", icon: Users, action: () => {} },
     { name: "System Status", icon: Shield, action: () => {} },
     { name: "Clear Cache", icon: RefreshCw, action: () => {} },
     { name: "Send Notification", icon: Bell, action: () => {} },
+  ];
+
+  const contentActions = [
+    {
+      title: "Destination Management",
+      description: "Manage travel destinations and guides",
+      icon: MapPin,
+      href: "/admin/content/destinations",
+      color: "bg-green-500"
+    },
+    {
+      title: "Blog Management",
+      description: "Create and manage travel blog posts",
+      icon: FileText,
+      href: "/admin/content/blog",
+      color: "bg-blue-500"
+    },
+    {
+      title: "Reviews Management",
+      description: "Moderate and manage customer reviews",
+      icon: Star,
+      href: "/admin/reviews",
+      color: "bg-yellow-500"
+    },
+    {
+      title: "Promotions",
+      description: "Manage promotional campaigns",
+      icon: Megaphone,
+      href: "/admin/content/promotions",
+      color: "bg-purple-500"
+    },
+    {
+      title: "User-Generated Content",
+      description: "Review user submissions",
+      icon: Users,
+      href: "/admin/content/ugc",
+      color: "bg-indigo-500"
+    },
+    {
+      title: "Flagged Content",
+      description: "Review reported content",
+      icon: Flag,
+      href: "/admin/content/flagged",
+      color: "bg-red-500"
+    }
   ];
 
   const managementCards = [
@@ -356,7 +401,7 @@ const AdminHomepage = () => {
     <div className="min-h-screen bg-gray-50">
       <Header />
       
-      <div className="container mx-auto px-4 py-6 space-y-8">
+      <div className="container mx-auto px-4 py-8 space-y-8">
         {/* Welcome Section */}
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -460,7 +505,7 @@ const AdminHomepage = () => {
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap gap-2">
-              {quickTools.map((tool, index) => {
+              {quickActions.map((tool, index) => {
                 const IconComponent = tool.icon;
                 return (
                   <Button 

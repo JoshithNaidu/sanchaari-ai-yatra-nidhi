@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from '@/components/ui/toaster';
@@ -47,6 +46,7 @@ import About from './pages/About';
 import Careers from './pages/Careers';
 import ServerError from './pages/ServerError';
 import Maintenance from './pages/Maintenance';
+import Reviews from './pages/Reviews';
 
 // Partner Pages
 import PartnerLogin from './pages/PartnerLogin';
@@ -74,6 +74,7 @@ import PartnerAccountSettings from './pages/PartnerAccountSettings';
 import PartnerHelpCenter from './pages/PartnerHelpCenter';
 import PartnerContactSupport from './pages/PartnerContactSupport';
 import PartnerMessages from './pages/PartnerMessages';
+import PartnerReviews from './pages/PartnerReviews';
 
 // Admin Pages
 import AdminLogin from './pages/AdminLogin';
@@ -185,6 +186,7 @@ function App() {
             <Route path="/blog/:slug" element={<TravelBlog />} />
             <Route path="/community" element={<Community />} />
             <Route path="/community/:slug" element={<Community />} />
+            <Route path="/reviews" element={<Reviews />} />
             <Route path="/help/center" element={<HelpCenter />} />
             <Route path="/help/contact" element={<ContactUs />} />
             <Route path="/help/grievance" element={<GrievanceRedressal />} />
@@ -348,6 +350,11 @@ function App() {
                 <PartnerBookingRequests />
               </ProtectedRoute>
             } />
+            <Route path="/partner/reviews" element={
+              <ProtectedRoute allowedRoles={['partner']}>
+                <PartnerReviews />
+              </ProtectedRoute>
+            } />
             <Route path="/partner/payouts" element={
               <ProtectedRoute allowedRoles={['partner']}>
                 <PartnerPayouts />
@@ -451,6 +458,11 @@ function App() {
             <Route path="/admin/users/kyc" element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdminUserKyc />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/reviews" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminReviews />
               </ProtectedRoute>
             } />
             <Route path="/admin/bookings" element={
