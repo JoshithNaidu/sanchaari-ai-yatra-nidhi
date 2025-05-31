@@ -30,8 +30,8 @@ const Header = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo - Increased size */}
           <Link to="/" className="flex items-center space-x-2">
-            <Plane className="h-10 w-10 text-blue-600" />
-            <span className="text-2xl font-bold text-gray-900">TravelPlatform</span>
+            <Plane className="h-12 w-12 text-blue-600" />
+            <span className="text-3xl font-bold text-gray-900">TravelPlatform</span>
           </Link>
 
           {/* Search Bar */}
@@ -78,7 +78,7 @@ const Header = () => {
                 <div className="relative group">
                   <Button variant="ghost" className="flex items-center space-x-1">
                     <User className="h-4 w-4" />
-                    <span>{user?.name || user?.email || 'User'}</span>
+                    <span>{user?.fullName || user?.email || 'User'}</span>
                   </Button>
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden group-hover:block">
                     <Link to="/profile/me" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
