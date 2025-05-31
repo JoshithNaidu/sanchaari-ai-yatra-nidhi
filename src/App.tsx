@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from '@/components/ui/toaster';
@@ -89,6 +90,7 @@ import AdminUserPreferences from './pages/AdminUserPreferences';
 import AdminUserBlacklist from './pages/AdminUserBlacklist';
 import AdminUserKyc from './pages/AdminUserKyc';
 import AdminBookingsAll from './pages/AdminBookingsAll';
+import AdminTripManagement from './pages/AdminTripManagement';
 import AdminIntegrations from './pages/AdminIntegrations';
 import AdminPricing from './pages/AdminPricing';
 import AdminAIAnalytics from './pages/AdminAIAnalytics';
