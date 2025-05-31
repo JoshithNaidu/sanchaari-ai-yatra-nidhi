@@ -5,7 +5,7 @@ import { useToast } from '@/hooks/use-toast';
 import LoadingSpinner from '@/components/LoadingSpinner';
 
 const Logout = () => {
-  const { logout, user } = useCentralizedAuth();
+  const { logout } = useCentralizedAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -20,18 +20,11 @@ const Logout = () => {
         description: "Thank you for using Sanchaari. See you next time!" 
       });
       
-      // Redirect based on user type
-      if (user?.userType === 'admin') {
-        navigate('/admin/login');
-      } else if (user?.userType === 'partner') {
-        navigate('/partner/login');
-      } else {
-        navigate('/');
-      }
+      navigate('/');
     };
 
     performLogout();
-  }, [logout, toast, navigate, user]);
+  }, [logout, toast, navigate]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center">

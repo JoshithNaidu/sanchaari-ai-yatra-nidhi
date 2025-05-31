@@ -21,7 +21,7 @@ const PartnerLogout = () => {
         description: "Thank you for using Sanchaari Partner Portal." 
       });
       
-      navigate('/partner/login');
+      navigate('/');
     };
 
     performLogout();

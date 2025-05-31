@@ -134,7 +134,7 @@ export const CentralizedAuthProvider: React.FC<{ children: React.ReactNode }> = 
           status: 'active',
           lastLogin: new Date().toISOString()
         };
-        redirectTo = '/admin/dashboard';
+        redirectTo = '/admin';
       } else if (email.includes('partner') || userType === 'partner') {
         mockUser = {
           id: 'partner_' + Date.now(),
@@ -146,7 +146,7 @@ export const CentralizedAuthProvider: React.FC<{ children: React.ReactNode }> = 
           status: 'active',
           lastLogin: new Date().toISOString()
         };
-        redirectTo = '/partner/dashboard';
+        redirectTo = '/partner';
       } else {
         mockUser = {
           id: 'traveler_' + Date.now(),
@@ -157,7 +157,7 @@ export const CentralizedAuthProvider: React.FC<{ children: React.ReactNode }> = 
           status: 'active',
           lastLogin: new Date().toISOString()
         };
-        redirectTo = '/trips/dashboard';
+        redirectTo = '/';
       }
       
       const sessionExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours

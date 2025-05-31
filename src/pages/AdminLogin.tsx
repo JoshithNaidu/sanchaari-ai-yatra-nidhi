@@ -41,7 +41,7 @@ const AdminLogin = () => {
           title: "Admin Access Granted",
           description: "Welcome to the admin panel.",
         });
-        navigate('/admin/dashboard');
+        navigate('/admin');
       } else {
         setError(result.message);
         setAttempts(prev => prev + 1);

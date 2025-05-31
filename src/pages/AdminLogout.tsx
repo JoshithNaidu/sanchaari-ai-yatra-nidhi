@@ -21,7 +21,7 @@ const AdminLogout = () => {
         description: "You have been securely logged out from the admin panel." 
       });
       
-      navigate('/admin/login');
+      navigate('/');
     };
 
     performLogout();

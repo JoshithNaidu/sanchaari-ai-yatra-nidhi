@@ -36,7 +36,7 @@ const PartnerLogin = () => {
           title: "Welcome back!",
           description: "Successfully logged in to your partner account.",
         });
-        navigate('/partner/dashboard');
+        navigate('/partner');
       } else {
         setError(result.message);
       }
