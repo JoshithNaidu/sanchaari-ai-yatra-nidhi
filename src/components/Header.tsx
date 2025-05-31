@@ -1,8 +1,8 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { User, Bell, LogOut } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { User, Bell, LogOut, Search } from 'lucide-react';
 import { useCentralizedAuth } from '@/contexts/CentralizedAuthContext';
 import {
   DropdownMenu,
@@ -28,6 +28,8 @@ const Header = () => {
   const navigate = useNavigate();
   const { isAuthenticated, user, logout } = useCentralizedAuth();
   const isMobile = useIsMobile();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchCategory, setSearchCategory] = useState('flights');
 
   const handleLogout = () => {
     logout();
@@ -37,6 +39,23 @@ const Header = () => {
   const handleNotificationClick = () => {
     const notificationPath = getNotificationPath(user?.userType || 'traveler');
     navigate(notificationPath);
+  };
+
+  const handleSearch = () => {
+    if (!searchQuery.trim()) return;
+    
+    const searchParams = new URLSearchParams({
+      q: searchQuery,
+      category: searchCategory
+    });
+    
+    navigate(`/search/${searchCategory}?${searchParams}`);
+  };
+
+  const handleSearchKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
   };
 
   const getLogoRedirect = () => {
@@ -202,6 +221,38 @@ const Header = () => {
             />
           </Link>
 
+          {/* Search Bar - Desktop */}
+          {!isMobile && (
+            <div className="flex-1 max-w-md mx-8">
+              <div className="flex items-center space-x-2">
+                <select 
+                  value={searchCategory}
+                  onChange={(e) => setSearchCategory(e.target.value)}
+                  className="border rounded-l-md px-3 py-2 text-sm bg-white min-w-[100px]"
+                >
+                  <option value="flights">Flights</option>
+                  <option value="hotels">Hotels</option>
+                  <option value="activities">Activities</option>
+                  <option value="packages">Packages</option>
+                </select>
+                <Input
+                  placeholder={`Search ${searchCategory}...`}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyPress={handleSearchKeyPress}
+                  className="flex-1 rounded-none border-l-0"
+                />
+                <Button 
+                  onClick={handleSearch}
+                  className="rounded-l-none"
+                  size="sm"
+                >
+                  <Search className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          )}
+
           {/* Navigation - Desktop */}
           {!isMobile && (
             <NavigationMenu items={travelerNavigation} className="hidden lg:flex" />
@@ -209,6 +260,43 @@ const Header = () => {
 
           {/* User Menu */}
           <div className="flex items-center space-x-2">
+            {/* Mobile Search Button */}
+            {isMobile && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm">
+                    <Search className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-80 p-4 bg-white border shadow-lg z-50">
+                  <div className="space-y-3">
+                    <select 
+                      value={searchCategory}
+                      onChange={(e) => setSearchCategory(e.target.value)}
+                      className="w-full border rounded-md px-3 py-2 text-sm"
+                    >
+                      <option value="flights">Flights</option>
+                      <option value="hotels">Hotels</option>
+                      <option value="activities">Activities</option>
+                      <option value="packages">Packages</option>
+                    </select>
+                    <div className="flex space-x-2">
+                      <Input
+                        placeholder={`Search ${searchCategory}...`}
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onKeyPress={handleSearchKeyPress}
+                        className="flex-1"
+                      />
+                      <Button onClick={handleSearch} size="sm">
+                        <Search className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+
             {isAuthenticated && (
               <Button variant="ghost" size="sm" onClick={handleNotificationClick}>
                 <Bell className="h-4 w-4" />

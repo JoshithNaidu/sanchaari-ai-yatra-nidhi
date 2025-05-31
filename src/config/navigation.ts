@@ -137,7 +137,7 @@ export const adminNavigation: NavigationItem[] = [
   },
   {
     label: 'Trip Management',
-    path: '/admin/trips/management',
+    path: '/admin/trips',
     icon: 'MapPin'
   },
   {
