@@ -26,24 +26,24 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
-					DEFAULT: 'hsl(207 90% 35%)', // Ocean Blue
-					foreground: 'hsl(0 0% 98%)'
+					DEFAULT: 'hsl(var(--primary))', // Dark Blue #0A2540
+					foreground: 'hsl(var(--primary-foreground))'
 				},
 				secondary: {
-					DEFAULT: 'hsl(var(--secondary))',
+					DEFAULT: 'hsl(var(--secondary))', // Light Gray #F7F7F7
 					foreground: 'hsl(var(--secondary-foreground))'
 				},
 				destructive: {
-					DEFAULT: 'hsl(var(--destructive))',
+					DEFAULT: 'hsl(var(--destructive))', // Accent Red #DB4437
 					foreground: 'hsl(var(--destructive-foreground))'
 				},
 				muted: {
-					DEFAULT: 'hsl(var(--muted))',
+					DEFAULT: 'hsl(var(--muted))', // Light Gray #F7F7F7
 					foreground: 'hsl(var(--muted-foreground))'
 				},
 				accent: {
-					DEFAULT: 'hsl(199 89% 48%)', // Sky Blue
-					foreground: 'hsl(0 0% 98%)'
+					DEFAULT: 'hsl(var(--accent))', // Teal Blue #007C91
+					foreground: 'hsl(var(--accent-foreground))'
 				},
 				popover: {
 					DEFAULT: 'hsl(var(--popover))',
@@ -56,13 +56,21 @@ export default {
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
-					primary: 'hsl(207 90% 35%)', // Ocean Blue
-					'primary-foreground': 'hsl(0 0% 98%)',
+					primary: 'hsl(var(--sidebar-primary))',
+					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
 					accent: 'hsl(var(--sidebar-accent))',
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
-					ring: 'hsl(199 89% 48%)' // Sky Blue
-				}
+					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Brand colors for direct usage
+				'brand-dark-blue': '#0A2540',
+				'brand-teal': '#007C91',
+				'brand-cyan': '#D4F5F5',
+				'brand-light-gray': '#F7F7F7',
+				'brand-medium-gray': '#5C5C5C',
+				'brand-dark-gray': '#2C2C2C',
+				'brand-red': '#DB4437'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
