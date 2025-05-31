@@ -49,7 +49,7 @@ const PartnerHomepage = () => {
       href: "/partner/inventory/listings",
       icon: Building2,
       stats: "12 active listings",
-      color: "bg-brand-sky-blue"
+      color: "bg-blue-500"
     },
     {
       title: "Calendar Availability",
@@ -57,14 +57,14 @@ const PartnerHomepage = () => {
       href: "/partner/inventory/availability",
       icon: Calendar,
       stats: "3 properties available",
-      color: "bg-brand-accent-aqua"
+      color: "bg-green-500"
     },
     {
       title: "Property Details",
       description: "View and manage property information",
       icon: Building2,
       href: "/partner/inventory/details",
-      color: "bg-brand-sky-blue",
+      color: "bg-blue-500",
       stats: "Details updated"
     },
     {
@@ -72,11 +72,12 @@ const PartnerHomepage = () => {
       description: "Update rates and pricing rules",
       icon: DollarSign,
       href: "/partner/inventory/pricing",
-      color: "bg-brand-accent-aqua",
+      color: "bg-green-500",
       stats: "Current rates"
     }
   ];
 
+  // Booking Management Actions
   const bookingActions = [
     {
       title: "All Bookings",
@@ -84,14 +85,14 @@ const PartnerHomepage = () => {
       href: "/partner/bookings/list",
       icon: FileText,
       stats: "47 this month",
-      color: "bg-brand-charcoal"
+      color: "bg-gray-500"
     },
     {
       title: "Check-ins Today",
       description: "Manage today's guest arrivals",
       icon: UserCheck,
       href: "/partner/bookings/checkins",
-      color: "bg-brand-accent-aqua",
+      color: "bg-green-500",
       stats: "3 arrivals"
     },
     {
@@ -112,6 +113,7 @@ const PartnerHomepage = () => {
     }
   ];
 
+  // Financial Management Actions
   const financialActions = [
     {
       title: "Payouts",
@@ -119,7 +121,7 @@ const PartnerHomepage = () => {
       href: "/partner/payouts",
       icon: DollarSign,
       stats: "₹85,000 pending",
-      color: "bg-brand-accent-aqua"
+      color: "bg-green-500"
     },
     {
       title: "Revenue Reports",
@@ -127,7 +129,7 @@ const PartnerHomepage = () => {
       href: "/partner/reports/revenue",
       icon: BarChart3,
       stats: "18.5% growth",
-      color: "bg-brand-sky-blue"
+      color: "bg-blue-500"
     },
     {
       title: "Booking Volume",
@@ -135,7 +137,7 @@ const PartnerHomepage = () => {
       href: "/partner/reports/booking-volume",
       icon: TrendingUp,
       stats: "47 bookings",
-      color: "bg-brand-deep-blue"
+      color: "bg-purple-500"
     },
     {
       title: "Customer Feedback",
@@ -151,10 +153,11 @@ const PartnerHomepage = () => {
       href: "/partner/tax-compliance",
       icon: FileText,
       stats: "Up to date",
-      color: "bg-brand-charcoal"
+      color: "bg-gray-500"
     }
   ];
 
+  // Communication & Support Actions
   const communicationActions = [
     {
       title: "Guest Reviews",
@@ -169,7 +172,7 @@ const PartnerHomepage = () => {
       description: "Guest communication center",
       icon: MessageSquare,
       href: "/partner/messages",
-      color: "bg-brand-sky-blue",
+      color: "bg-blue-500",
       stats: "3 unread"
     },
     {
@@ -177,11 +180,12 @@ const PartnerHomepage = () => {
       description: "Get help from our team",
       icon: HelpCircle,
       href: "/partner/contact-support",
-      color: "bg-brand-deep-blue",
+      color: "bg-purple-500",
       stats: "24/7 support"
     }
   ];
 
+  // Profile & Settings Actions
   const profileActions = [
     {
       title: "Company Profile",
@@ -189,7 +193,7 @@ const PartnerHomepage = () => {
       href: "/partner/profile/company",
       icon: Building2,
       stats: "Profile 90% complete",
-      color: "bg-brand-sky-blue"
+      color: "bg-blue-500"
     },
     {
       title: "API Credentials",
@@ -197,14 +201,14 @@ const PartnerHomepage = () => {
       href: "/partner/api-credentials",
       icon: Key,
       stats: "2 active keys",
-      color: "bg-brand-charcoal"
+      color: "bg-gray-500"
     },
     {
       title: "Account Settings",
       description: "Manage account preferences", 
       icon: Settings,
       href: "/partner/settings",
-      color: "bg-brand-charcoal",
+      color: "bg-gray-500",
       stats: "Settings updated"
     }
   ];
@@ -218,27 +222,27 @@ const PartnerHomepage = () => {
 
   const renderSectionCards = (cards: any[], sectionTitle: string) => (
     <div className="space-y-4">
-      <h3 className="text-lg font-semibold text-brand-charcoal">{sectionTitle}</h3>
+      <h3 className="text-lg font-semibold text-gray-900">{sectionTitle}</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {cards.map((card) => {
           const IconComponent = card.icon;
           return (
-            <Card key={card.href} className="hover:shadow-md transition-shadow border-brand-soft-gray">
+            <Card key={card.href} className="hover:shadow-md transition-shadow">
               <CardContent className="p-4">
                 <div className="flex items-start justify-between mb-3">
-                  <div className="p-2 rounded-lg bg-brand-sky-blue/10">
-                    <IconComponent className="h-5 w-5 text-brand-sky-blue" />
+                  <div className="p-2 rounded-lg bg-blue-50">
+                    <IconComponent className="h-5 w-5 text-blue-600" />
                   </div>
                   {card.badge && (
                     <Badge variant="destructive" className="text-xs">{card.badge}</Badge>
                   )}
                 </div>
-                <h4 className="font-medium text-brand-charcoal mb-1">{card.title}</h4>
-                <p className="text-sm text-brand-charcoal/70 mb-2">{card.description}</p>
-                <p className="text-xs text-brand-charcoal/60">{card.stats}</p>
+                <h4 className="font-medium text-gray-900 mb-1">{card.title}</h4>
+                <p className="text-sm text-gray-600 mb-2">{card.description}</p>
+                <p className="text-xs text-gray-500">{card.stats}</p>
                 <div className="mt-3">
                   <Link to={card.href}>
-                    <Button size="sm" variant="outline" className="w-full border-brand-soft-gray text-brand-charcoal hover:bg-brand-soft-gray">
+                    <Button size="sm" variant="outline" className="w-full">
                       Manage
                     </Button>
                   </Link>
@@ -252,25 +256,25 @@ const PartnerHomepage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-brand-cool-white">
+    <div className="min-h-screen bg-gray-50">
       <Header />
 
       <div className="container mx-auto px-4 py-8">
         {/* Welcome Section */}
         <div className="mb-6 text-center">
-          <h1 className="text-3xl font-bold text-brand-charcoal mb-2">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
             Welcome back, {user?.companyName || user?.fullName || 'Partner'}! 🏨
           </h1>
-          <p className="text-brand-charcoal/70">Manage your travel services and bookings with Sanchaari</p>
+          <p className="text-gray-600">Manage your travel services and bookings with Sanchaari</p>
           <div className="flex justify-center gap-3 mt-4">
             <Link to="/partner/inventory/listings">
-              <Button className="bg-brand-sky-blue hover:bg-brand-accent-aqua">
+              <Button className="bg-blue-600 hover:bg-blue-700">
                 <Plus className="h-4 w-4 mr-2" />
                 Create New Listing
               </Button>
             </Link>
             <Link to="/partner/inventory/availability">
-              <Button variant="outline" className="border-brand-soft-gray text-brand-charcoal hover:bg-brand-soft-gray">
+              <Button variant="outline">
                 <Calendar className="h-4 w-4 mr-2" />
                 Update Availability
               </Button>
@@ -283,17 +287,17 @@ const PartnerHomepage = () => {
           {kpiData.map((kpi) => {
             const IconComponent = kpi.icon;
             return (
-              <Card key={kpi.title} className="border-brand-soft-gray">
+              <Card key={kpi.title}>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium text-brand-charcoal">{kpi.title}</CardTitle>
-                  <IconComponent className="h-4 w-4 text-brand-charcoal/60" />
+                  <CardTitle className="text-sm font-medium">{kpi.title}</CardTitle>
+                  <IconComponent className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold text-brand-charcoal">{kpi.value}</div>
+                  <div className="text-2xl font-bold">{kpi.value}</div>
                   <div className="flex items-center justify-between">
-                    <p className="text-xs text-brand-charcoal/60">{kpi.subtitle}</p>
+                    <p className="text-xs text-muted-foreground">{kpi.subtitle}</p>
                     {kpi.trend && (
-                      <Badge variant="secondary" className="text-brand-accent-aqua bg-brand-accent-aqua/10">
+                      <Badge variant="secondary" className="text-green-600">
                         <TrendingUp className="h-3 w-3 mr-1" />
                         {kpi.trend}
                       </Badge>
@@ -308,27 +312,27 @@ const PartnerHomepage = () => {
         {/* Comprehensive Quick Actions Sections */}
         <div className="space-y-8">
           {/* Inventory Management */}
-          <Card className="border-brand-soft-gray">
+          <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-brand-charcoal">
-                <Building2 className="h-6 w-6 text-brand-sky-blue" />
+              <CardTitle className="flex items-center gap-2">
+                <Building2 className="h-6 w-6 text-blue-600" />
                 Inventory Management
               </CardTitle>
-              <CardDescription className="text-brand-charcoal/70">Manage your properties and pricing</CardDescription>
+              <CardDescription>Manage your properties and pricing</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {quickActions.map((action, index) => (
                   <Link key={index} to={action.href}>
-                    <Card className="hover:shadow-md transition-shadow cursor-pointer h-full border-brand-soft-gray">
+                    <Card className="hover:shadow-md transition-shadow cursor-pointer h-full">
                       <CardContent className="p-4">
                         <div className="flex items-start gap-3">
                           <div className={`p-2 rounded-lg ${action.color}`}>
                             <action.icon className="h-5 w-5 text-white" />
                           </div>
                           <div className="flex-1">
-                            <h3 className="font-medium text-brand-charcoal">{action.title}</h3>
-                            <p className="text-sm text-brand-charcoal/70 mt-1">{action.description}</p>
+                            <h3 className="font-medium text-gray-900">{action.title}</h3>
+                            <p className="text-sm text-gray-600 mt-1">{action.description}</p>
                           </div>
                         </div>
                       </CardContent>
@@ -340,27 +344,27 @@ const PartnerHomepage = () => {
           </Card>
 
           {/* Booking Management */}
-          <Card className="border-brand-soft-gray">
+          <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-brand-charcoal">
-                <Calendar className="h-6 w-6 text-brand-accent-aqua" />
+              <CardTitle className="flex items-center gap-2">
+                <Calendar className="h-6 w-6 text-green-600" />
                 Booking Management
               </CardTitle>
-              <CardDescription className="text-brand-charcoal/70">Handle reservations and guest services</CardDescription>
+              <CardDescription>Handle reservations and guest services</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {bookingActions.map((action, index) => (
                   <Link key={index} to={action.href}>
-                    <Card className="hover:shadow-md transition-shadow cursor-pointer h-full border-brand-soft-gray">
+                    <Card className="hover:shadow-md transition-shadow cursor-pointer h-full">
                       <CardContent className="p-4">
                         <div className="flex items-start gap-3">
                           <div className={`p-2 rounded-lg ${action.color}`}>
                             <action.icon className="h-5 w-5 text-white" />
                           </div>
                           <div className="flex-1">
-                            <h3 className="font-medium text-brand-charcoal">{action.title}</h3>
-                            <p className="text-sm text-brand-charcoal/70 mt-1">{action.description}</p>
+                            <h3 className="font-medium text-gray-900">{action.title}</h3>
+                            <p className="text-sm text-gray-600 mt-1">{action.description}</p>
                           </div>
                         </div>
                       </CardContent>
@@ -372,27 +376,27 @@ const PartnerHomepage = () => {
           </Card>
 
           {/* Financial Management */}
-          <Card className="border-brand-soft-gray">
+          <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-brand-charcoal">
+              <CardTitle className="flex items-center gap-2">
                 <DollarSign className="h-6 w-6 text-red-600" />
                 Financial Management
               </CardTitle>
-              <CardDescription className="text-brand-charcoal/70">Track your financial performance</CardDescription>
+              <CardDescription>Track your financial performance</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {financialActions.map((action, index) => (
                   <Link key={index} to={action.href}>
-                    <Card className="hover:shadow-md transition-shadow cursor-pointer h-full border-brand-soft-gray">
+                    <Card className="hover:shadow-md transition-shadow cursor-pointer h-full">
                       <CardContent className="p-4">
                         <div className="flex items-start gap-3">
                           <div className={`p-2 rounded-lg ${action.color}`}>
                             <action.icon className="h-5 w-5 text-white" />
                           </div>
                           <div className="flex-1">
-                            <h3 className="font-medium text-brand-charcoal">{action.title}</h3>
-                            <p className="text-sm text-brand-charcoal/70 mt-1">{action.description}</p>
+                            <h3 className="font-medium text-gray-900">{action.title}</h3>
+                            <p className="text-sm text-gray-600 mt-1">{action.description}</p>
                           </div>
                         </div>
                       </CardContent>
@@ -404,27 +408,27 @@ const PartnerHomepage = () => {
           </Card>
 
           {/* Communication & Support */}
-          <Card className="border-brand-soft-gray">
+          <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-brand-charcoal">
+              <CardTitle className="flex items-center gap-2">
                 <MessageSquare className="h-6 w-6 text-purple-600" />
                 Communication & Support
               </CardTitle>
-              <CardDescription className="text-brand-charcoal/70">Connect with guests and get help</CardDescription>
+              <CardDescription>Connect with guests and get help</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {communicationActions.map((action, index) => (
                   <Link key={index} to={action.href}>
-                    <Card className="hover:shadow-md transition-shadow cursor-pointer h-full border-brand-soft-gray">
+                    <Card className="hover:shadow-md transition-shadow cursor-pointer h-full">
                       <CardContent className="p-4">
                         <div className="flex items-start gap-3">
                           <div className={`p-2 rounded-lg ${action.color}`}>
                             <action.icon className="h-5 w-5 text-white" />
                           </div>
                           <div className="flex-1">
-                            <h3 className="font-medium text-brand-charcoal">{action.title}</h3>
-                            <p className="text-sm text-brand-charcoal/70 mt-1">{action.description}</p>
+                            <h3 className="font-medium text-gray-900">{action.title}</h3>
+                            <p className="text-sm text-gray-600 mt-1">{action.description}</p>
                           </div>
                         </div>
                       </CardContent>
@@ -436,27 +440,27 @@ const PartnerHomepage = () => {
           </Card>
 
           {/* Profile & Settings */}
-          <Card className="border-brand-soft-gray">
+          <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-brand-charcoal">
+              <CardTitle className="flex items-center gap-2">
                 <Settings className="h-6 w-6 text-gray-600" />
                 Profile & Settings
               </CardTitle>
-              <CardDescription className="text-brand-charcoal/70">Manage your account preferences</CardDescription>
+              <CardDescription>Manage your account preferences</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {profileActions.map((action, index) => (
                   <Link key={index} to={action.href}>
-                    <Card className="hover:shadow-md transition-shadow cursor-pointer h-full border-brand-soft-gray">
+                    <Card className="hover:shadow-md transition-shadow cursor-pointer h-full">
                       <CardContent className="p-4">
                         <div className="flex items-start gap-3">
                           <div className={`p-2 rounded-lg ${action.color}`}>
                             <action.icon className="h-5 w-5 text-white" />
                           </div>
                           <div className="flex-1">
-                            <h3 className="font-medium text-brand-charcoal">{action.title}</h3>
-                            <p className="text-sm text-brand-charcoal/70 mt-1">{action.description}</p>
+                            <h3 className="font-medium text-gray-900">{action.title}</h3>
+                            <p className="text-sm text-gray-600 mt-1">{action.description}</p>
                           </div>
                         </div>
                       </CardContent>
@@ -470,19 +474,19 @@ const PartnerHomepage = () => {
 
         {/* Recent Activity */}
         <div className="mt-8">
-          <Card className="border-brand-soft-gray">
+          <Card>
             <CardHeader>
-              <CardTitle className="text-brand-charcoal">Recent Activity</CardTitle>
-              <CardDescription className="text-brand-charcoal/70">Latest updates and notifications</CardDescription>
+              <CardTitle>Recent Activity</CardTitle>
+              <CardDescription>Latest updates and notifications</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {recentActivity.map((activity, index) => (
                   <div key={index} className="flex items-start gap-3">
-                    <div className="w-2 h-2 rounded-full bg-brand-sky-blue mt-2"></div>
+                    <div className="w-2 h-2 rounded-full bg-blue-600 mt-2"></div>
                     <div>
-                      <p className="text-sm font-medium text-brand-charcoal">{activity.message}</p>
-                      <p className="text-xs text-brand-charcoal/60">{activity.time}</p>
+                      <p className="text-sm font-medium">{activity.message}</p>
+                      <p className="text-xs text-gray-500">{activity.time}</p>
                     </div>
                   </div>
                 ))}
