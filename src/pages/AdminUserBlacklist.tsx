@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Textarea } from '@/components/ui/textarea'; 
 import { 
@@ -22,6 +22,7 @@ import {
   Shield,
   User
 } from 'lucide-react';
+import Header from '@/components/Header';
 
 const AdminUserBlacklist = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -76,41 +77,41 @@ const AdminUserBlacklist = () => {
   });
 
   const handleUnban = () => {
-    // In a real implementation, this would update the database
-    // For now just close the dialog
     setShowDialog(false);
     setUnbanUserId(null);
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+      <Header />
+      
+      {/* Page Header */}
+      <div className="bg-white border-b border-gray-200 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <Link to="/admin/users/list" className="flex items-center text-gray-600 hover:text-blue-600">
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Users
+                <span className="hidden sm:inline">Back to Users</span>
               </Link>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Blacklisted Users</h1>
+                <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Blacklisted Users</h1>
                 <p className="text-sm text-gray-600">Manage banned or blacklisted user accounts</p>
               </div>
             </div>
             <Button variant="outline" size="sm">
               <Download className="h-4 w-4 mr-2" />
-              Export List
+              <span className="hidden sm:inline">Export List</span>
             </Button>
           </div>
         </div>
-      </header>
+      </div>
 
-      <div className="container mx-auto px-4 py-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Security notice */}
         <Alert className="mb-6 border-red-200 bg-red-50">
           <AlertTriangle className="h-4 w-4 text-red-600" />
-          <AlertDescription className="text-red-800">
+          <AlertDescription className="text-red-800 text-sm">
             <span className="font-medium">Security Notice:</span> Unbanning a user will restore their account access. This action is logged for audit purposes.
           </AlertDescription>
         </Alert>
@@ -118,7 +119,7 @@ const AdminUserBlacklist = () => {
         {/* Search */}
         <Card className="mb-6">
           <CardContent className="pt-6">
-            <div className="relative max-w-md">
+            <div className="relative w-full">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
               <Input
                 placeholder="Search by name, email, ID, or ban reason..."
@@ -138,16 +139,16 @@ const AdminUserBlacklist = () => {
               Users who have been banned from accessing the platform
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="rounded-md border">
+          <CardContent className="p-0 sm:p-6">
+            <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>User</TableHead>
-                    <TableHead>Contact</TableHead>
+                    <TableHead className="min-w-[150px]">User</TableHead>
+                    <TableHead className="min-w-[200px]">Contact</TableHead>
                     <TableHead>Ban Date</TableHead>
                     <TableHead>Banned By</TableHead>
-                    <TableHead>Reason</TableHead>
+                    <TableHead className="min-w-[200px]">Reason</TableHead>
                     <TableHead>Login Attempts</TableHead>
                     <TableHead>Actions</TableHead>
                   </TableRow>
@@ -157,26 +158,26 @@ const AdminUserBlacklist = () => {
                     <TableRow key={user.id}>
                       <TableCell>
                         <div>
-                          <div className="font-medium">{user.name}</div>
+                          <div className="font-medium text-sm sm:text-base">{user.name}</div>
                           <div className="text-xs text-gray-500">{user.id}</div>
                         </div>
                       </TableCell>
                       <TableCell>
                         <div className="space-y-1">
-                          <div className="text-sm">{user.email}</div>
+                          <div className="text-sm break-all">{user.email}</div>
                           <div className="text-sm text-gray-500">{user.phone}</div>
                         </div>
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-1 text-sm">
                           <Calendar className="h-3 w-3 text-gray-500" />
-                          {user.banDate}
+                          <span className="text-xs sm:text-sm">{user.banDate}</span>
                         </div>
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-1 text-sm">
                           <User className="h-3 w-3 text-gray-500" />
-                          {user.bannedBy}
+                          <span className="text-xs sm:text-sm">{user.bannedBy}</span>
                         </div>
                       </TableCell>
                       <TableCell>
@@ -186,13 +187,13 @@ const AdminUserBlacklist = () => {
                       </TableCell>
                       <TableCell>
                         {user.attemptedLogins > 0 ? (
-                          <div className="flex items-center space-x-1">
-                            <Badge className="bg-yellow-100 text-yellow-800">{user.attemptedLogins}</Badge>
+                          <div className="flex flex-col space-y-1">
+                            <Badge className="bg-yellow-100 text-yellow-800 text-xs">{user.attemptedLogins}</Badge>
                             <div className="text-xs text-gray-500">
                               {user.lastAttempt && (
                                 <div className="flex items-center gap-1">
                                   <Clock className="h-3 w-3" />
-                                  {user.lastAttempt}
+                                  <span className="text-xs">{user.lastAttempt}</span>
                                 </div>
                               )}
                             </div>
@@ -202,10 +203,10 @@ const AdminUserBlacklist = () => {
                         )}
                       </TableCell>
                       <TableCell>
-                        <div className="flex gap-2">
+                        <div className="flex flex-col sm:flex-row gap-2">
                           <Button size="sm" variant="outline">
                             <Eye className="h-3 w-3 mr-1" />
-                            View
+                            <span className="hidden sm:inline">View</span>
                           </Button>
                           <Button 
                             size="sm" 
@@ -217,7 +218,7 @@ const AdminUserBlacklist = () => {
                             }}
                           >
                             <UserCheck className="h-3 w-3 mr-1" />
-                            Unban
+                            <span className="hidden sm:inline">Unban</span>
                           </Button>
                         </div>
                       </TableCell>
@@ -238,7 +239,7 @@ const AdminUserBlacklist = () => {
 
         {/* Unban Confirmation Dialog */}
         <Dialog open={showDialog} onOpenChange={setShowDialog}>
-          <DialogContent>
+          <DialogContent className="max-w-md mx-4">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
                 <Shield className="h-5 w-5 text-green-600" />
@@ -256,16 +257,16 @@ const AdminUserBlacklist = () => {
 
             <Alert className="border-yellow-200 bg-yellow-50">
               <AlertTriangle className="h-4 w-4 text-yellow-600" />
-              <AlertDescription className="text-yellow-800">
+              <AlertDescription className="text-yellow-800 text-sm">
                 This action will be logged and audited. The user will be notified.
               </AlertDescription>
             </Alert>
 
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setShowDialog(false)}>
+            <DialogFooter className="flex flex-col sm:flex-row gap-2">
+              <Button variant="outline" onClick={() => setShowDialog(false)} className="w-full sm:w-auto">
                 Cancel
               </Button>
-              <Button onClick={handleUnban} className="bg-green-600 hover:bg-green-700">
+              <Button onClick={handleUnban} className="bg-green-600 hover:bg-green-700 w-full sm:w-auto">
                 <UserCheck className="h-4 w-4 mr-2" />
                 Confirm Unban
               </Button>

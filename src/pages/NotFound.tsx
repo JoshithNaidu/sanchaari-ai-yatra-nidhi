@@ -15,26 +15,26 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 sm:px-6 lg:px-8">
       <div className="text-center max-w-md mx-auto w-full">
         {/* Illustration */}
         <div className="mb-6 lg:mb-8">
           <div className="relative">
             <MapPin className="h-16 w-16 lg:h-24 lg:w-24 text-blue-600 mx-auto mb-4 opacity-20" />
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-6xl lg:text-8xl font-bold text-blue-600">404</span>
+              <span className="text-4xl sm:text-6xl lg:text-8xl font-bold text-blue-600">404</span>
             </div>
           </div>
         </div>
         
         {/* Content */}
-        <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3 lg:mb-4">
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-3 lg:mb-4">
           Oops! Page Not Found
         </h1>
-        <p className="text-base lg:text-lg text-gray-600 mb-2 px-2">
+        <p className="text-sm sm:text-base lg:text-lg text-gray-600 mb-2 px-2">
           Looks like this page took a wrong turn during its travels.
         </p>
-        <p className="text-sm lg:text-base text-gray-500 mb-6 lg:mb-8 px-2">
+        <p className="text-xs sm:text-sm lg:text-base text-gray-500 mb-6 lg:mb-8 px-2">
           The page you're looking for doesn't exist or has been moved.
         </p>
 

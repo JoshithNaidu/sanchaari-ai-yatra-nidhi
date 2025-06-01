@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { ArrowLeft, Search, Filter, Eye, MapPin, Calendar, Users } from 'lucide-react';
+import Header from '@/components/Header';
 
 const AdminTrips = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -95,32 +96,34 @@ const AdminTrips = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="container mx-auto px-4 py-4">
+      <Header />
+      
+      {/* Page Header */}
+      <div className="bg-white border-b border-gray-200 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center gap-4">
             <Link to="/admin" className="text-gray-600 hover:text-gray-900">
               <ArrowLeft className="h-5 w-5" />
             </Link>
             <div>
-              <h1 className="text-xl font-semibold text-gray-900">Trip Oversight</h1>
+              <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">Trip Oversight</h1>
               <p className="text-sm text-gray-600">Monitor and manage all travel plans</p>
             </div>
           </div>
         </div>
-      </header>
+      </div>
 
-      <div className="container mx-auto px-4 py-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">Total Trips</p>
-                  <p className="text-2xl font-bold">2,845</p>
+                  <p className="text-xl sm:text-2xl font-bold">2,845</p>
                 </div>
-                <MapPin className="h-8 w-8 text-blue-600" />
+                <MapPin className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
               </div>
             </CardContent>
           </Card>
@@ -129,7 +132,7 @@ const AdminTrips = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">Active Trips</p>
-                  <p className="text-2xl font-bold">156</p>
+                  <p className="text-xl sm:text-2xl font-bold">156</p>
                 </div>
                 <div className="w-3 h-3 bg-green-500 rounded-full"></div>
               </div>
@@ -140,7 +143,7 @@ const AdminTrips = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">In Planning</p>
-                  <p className="text-2xl font-bold">89</p>
+                  <p className="text-xl sm:text-2xl font-bold">89</p>
                 </div>
                 <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
               </div>
@@ -151,7 +154,7 @@ const AdminTrips = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">Avg. Budget</p>
-                  <p className="text-2xl font-bold">₹78K</p>
+                  <p className="text-xl sm:text-2xl font-bold">₹78K</p>
                 </div>
                 <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
               </div>
@@ -168,8 +171,8 @@ const AdminTrips = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex gap-4 items-end">
-              <div className="flex-1">
+            <div className="flex flex-col sm:flex-row gap-4 items-end">
+              <div className="flex-1 w-full">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <Input
@@ -181,7 +184,7 @@ const AdminTrips = () => {
                 </div>
               </div>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-48">
+                <SelectTrigger className="w-full sm:w-48">
                   <SelectValue placeholder="Filter by status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -204,15 +207,15 @@ const AdminTrips = () => {
               Showing {filteredTrips.length} of {trips.length} trips
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="rounded-md border">
+          <CardContent className="p-0 sm:p-6">
+            <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Trip Details</TableHead>
-                    <TableHead>Organizer</TableHead>
+                    <TableHead className="min-w-[200px]">Trip Details</TableHead>
+                    <TableHead className="min-w-[150px]">Organizer</TableHead>
                     <TableHead>Status</TableHead>
-                    <TableHead>Dates</TableHead>
+                    <TableHead className="min-w-[120px]">Dates</TableHead>
                     <TableHead>Participants</TableHead>
                     <TableHead>Budget</TableHead>
                     <TableHead>Actions</TableHead>
@@ -223,8 +226,8 @@ const AdminTrips = () => {
                     <TableRow key={trip.id}>
                       <TableCell>
                         <div>
-                          <div className="font-medium">{trip.title}</div>
-                          <div className="text-sm text-gray-500 flex items-center gap-1">
+                          <div className="font-medium text-sm sm:text-base">{trip.title}</div>
+                          <div className="text-xs sm:text-sm text-gray-500 flex items-center gap-1">
                             <MapPin className="h-3 w-3" />
                             {trip.destination}
                           </div>
@@ -234,7 +237,7 @@ const AdminTrips = () => {
                       <TableCell>
                         <div>
                           <div className="font-medium text-sm">{trip.organizer}</div>
-                          <div className="text-xs text-gray-500">{trip.organizerEmail}</div>
+                          <div className="text-xs text-gray-500 break-all">{trip.organizerEmail}</div>
                         </div>
                       </TableCell>
                       <TableCell>{getStatusBadge(trip.status)}</TableCell>
@@ -242,7 +245,7 @@ const AdminTrips = () => {
                         <div className="text-sm">
                           <div className="flex items-center gap-1">
                             <Calendar className="h-3 w-3" />
-                            {trip.startDate}
+                            <span className="text-xs sm:text-sm">{trip.startDate}</span>
                           </div>
                           <div className="text-xs text-gray-500">to {trip.endDate}</div>
                         </div>
@@ -253,12 +256,12 @@ const AdminTrips = () => {
                           {trip.participants}
                         </div>
                       </TableCell>
-                      <TableCell>₹{trip.budget.toLocaleString()}</TableCell>
+                      <TableCell className="text-sm">₹{trip.budget.toLocaleString()}</TableCell>
                       <TableCell>
                         <div className="flex gap-2">
                           <Button size="sm" variant="outline">
                             <Eye className="h-3 w-3 mr-1" />
-                            View
+                            <span className="hidden sm:inline">View</span>
                           </Button>
                         </div>
                       </TableCell>

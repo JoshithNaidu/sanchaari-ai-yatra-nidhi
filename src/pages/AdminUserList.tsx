@@ -21,21 +21,18 @@ import {
   Download,
   Ban,
   CheckCircle,
-  XCircle,
   Eye,
   Edit,
   Mail,
   Phone,
   AlertTriangle,
-  MoreHorizontal,
-  UserCheck,
-  UserX
+  UserCheck
 } from 'lucide-react';
+import Header from '@/components/Header';
 
 const AdminUserList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
-  const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
 
   const users = [
     {
@@ -138,31 +135,30 @@ const AdminUserList = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+      <Header />
+      
+      {/* Page Header */}
+      <div className="bg-white border-b border-gray-200 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <Link to="/admin/dashboard" className="flex items-center text-gray-600 hover:text-blue-600">
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Dashboard
+                <span className="hidden sm:inline">Back to Dashboard</span>
               </Link>
-              <h1 className="text-2xl font-bold text-gray-900">User Management</h1>
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">User Management</h1>
             </div>
             <div className="flex items-center gap-4">
               <Button variant="outline" className="gap-2">
                 <Download className="h-4 w-4" />
-                Export Users
+                <span className="hidden sm:inline">Export Users</span>
               </Button>
-              <Link to="/admin/logout">
-                <Button variant="destructive" size="sm">Logout</Button>
-              </Link>
             </div>
           </div>
         </div>
-      </header>
+      </div>
 
-      <div className="container mx-auto px-4 py-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Search and Filters */}
         <Card className="mb-6">
           <CardHeader>
@@ -170,7 +166,7 @@ const AdminUserList = () => {
             <CardDescription>Monitor and manage all user accounts, permissions, and activities</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="flex flex-col md:flex-row gap-4 mb-4">
+            <div className="flex flex-col lg:flex-row gap-4 mb-4">
               <div className="flex-1 relative">
                 <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                 <Input
@@ -181,7 +177,7 @@ const AdminUserList = () => {
                 />
               </div>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-48">
+                <SelectTrigger className="w-full lg:w-48">
                   <SelectValue placeholder="Filter by status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -193,26 +189,26 @@ const AdminUserList = () => {
               </Select>
               <Button variant="outline" className="gap-2">
                 <Filter className="h-4 w-4" />
-                More Filters
+                <span className="hidden sm:inline">More Filters</span>
               </Button>
             </div>
 
             {/* Quick Stats */}
-            <div className="grid grid-cols-4 gap-4 mb-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
               <div className="text-center p-3 bg-blue-50 rounded-lg">
-                <div className="text-2xl font-bold text-blue-600">{users.filter(u => u.userType === 'traveler').length}</div>
+                <div className="text-xl sm:text-2xl font-bold text-blue-600">{users.filter(u => u.userType === 'traveler').length}</div>
                 <div className="text-sm text-blue-700">Travelers</div>
               </div>
               <div className="text-center p-3 bg-purple-50 rounded-lg">
-                <div className="text-2xl font-bold text-purple-600">{users.filter(u => u.userType === 'partner').length}</div>
+                <div className="text-xl sm:text-2xl font-bold text-purple-600">{users.filter(u => u.userType === 'partner').length}</div>
                 <div className="text-sm text-purple-700">Partners</div>
               </div>
               <div className="text-center p-3 bg-green-50 rounded-lg">
-                <div className="text-2xl font-bold text-green-600">{users.filter(u => u.status === 'active').length}</div>
+                <div className="text-xl sm:text-2xl font-bold text-green-600">{users.filter(u => u.status === 'active').length}</div>
                 <div className="text-sm text-green-700">Active</div>
               </div>
               <div className="text-center p-3 bg-red-50 rounded-lg">
-                <div className="text-2xl font-bold text-red-600">{users.filter(u => u.riskLevel === 'high').length}</div>
+                <div className="text-xl sm:text-2xl font-bold text-red-600">{users.filter(u => u.riskLevel === 'high').length}</div>
                 <div className="text-sm text-red-700">High Risk</div>
               </div>
             </div>
@@ -221,92 +217,94 @@ const AdminUserList = () => {
 
         {/* Users Table */}
         <Card>
-          <CardContent className="p-0">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>User Details</TableHead>
-                  <TableHead>Contact</TableHead>
-                  <TableHead>Type & Status</TableHead>
-                  <TableHead>Activity</TableHead>
-                  <TableHead>Risk Level</TableHead>
-                  <TableHead>Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredUsers.map((user) => (
-                  <TableRow key={user.id}>
-                    <TableCell>
-                      <div>
-                        <div className="font-medium">{user.name}</div>
-                        <div className="text-sm text-gray-500">{user.id}</div>
-                        <div className="text-xs text-gray-400">{user.location}</div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                          <Mail className="h-3 w-3" />
-                          <span className="text-sm">{user.email}</span>
-                          {user.verified && <CheckCircle className="h-3 w-3 text-green-500" />}
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Phone className="h-3 w-3" />
-                          <span className="text-sm">{user.phone}</span>
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="space-y-2">
-                        <Badge className={getUserTypeColor(user.userType)}>
-                          {user.userType}
-                        </Badge>
-                        <Badge className={getStatusColor(user.status)}>
-                          {user.status}
-                        </Badge>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="text-sm space-y-1">
-                        <div>Joined: {user.joinDate}</div>
-                        <div>Last: {user.lastLogin}</div>
-                        {user.userType === 'traveler' && (
-                          <div>Bookings: {user.bookings} | ₹{user.totalSpent.toLocaleString()}</div>
-                        )}
-                        {user.userType === 'partner' && user.revenue && (
-                          <div>Revenue: ₹{user.revenue.toLocaleString()}</div>
-                        )}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className={`font-medium ${getRiskColor(user.riskLevel)}`}>
-                        {user.riskLevel.toUpperCase()}
-                        {user.riskLevel === 'high' && <AlertTriangle className="inline h-3 w-3 ml-1" />}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex gap-2">
-                        <Button variant="outline" size="sm">
-                          <Eye className="h-3 w-3" />
-                        </Button>
-                        <Button variant="outline" size="sm">
-                          <Edit className="h-3 w-3" />
-                        </Button>
-                        {user.status === 'active' ? (
-                          <Button variant="outline" size="sm" className="text-red-600">
-                            <Ban className="h-3 w-3" />
-                          </Button>
-                        ) : (
-                          <Button variant="outline" size="sm" className="text-green-600">
-                            <UserCheck className="h-3 w-3" />
-                          </Button>
-                        )}
-                      </div>
-                    </TableCell>
+          <CardContent className="p-0 sm:p-6">
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="min-w-[200px]">User Details</TableHead>
+                    <TableHead className="min-w-[200px]">Contact</TableHead>
+                    <TableHead>Type & Status</TableHead>
+                    <TableHead className="min-w-[150px]">Activity</TableHead>
+                    <TableHead>Risk Level</TableHead>
+                    <TableHead>Actions</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {filteredUsers.map((user) => (
+                    <TableRow key={user.id}>
+                      <TableCell>
+                        <div>
+                          <div className="font-medium text-sm sm:text-base">{user.name}</div>
+                          <div className="text-xs sm:text-sm text-gray-500">{user.id}</div>
+                          <div className="text-xs text-gray-400">{user.location}</div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <Mail className="h-3 w-3" />
+                            <span className="text-xs sm:text-sm break-all">{user.email}</span>
+                            {user.verified && <CheckCircle className="h-3 w-3 text-green-500" />}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Phone className="h-3 w-3" />
+                            <span className="text-xs sm:text-sm">{user.phone}</span>
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="space-y-2">
+                          <Badge className={getUserTypeColor(user.userType)}>
+                            {user.userType}
+                          </Badge>
+                          <Badge className={getStatusColor(user.status)}>
+                            {user.status}
+                          </Badge>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="text-xs sm:text-sm space-y-1">
+                          <div>Joined: {user.joinDate}</div>
+                          <div>Last: {user.lastLogin}</div>
+                          {user.userType === 'traveler' && (
+                            <div>Bookings: {user.bookings} | ₹{user.totalSpent.toLocaleString()}</div>
+                          )}
+                          {user.userType === 'partner' && user.revenue && (
+                            <div>Revenue: ₹{user.revenue.toLocaleString()}</div>
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className={`font-medium text-sm ${getRiskColor(user.riskLevel)}`}>
+                          {user.riskLevel.toUpperCase()}
+                          {user.riskLevel === 'high' && <AlertTriangle className="inline h-3 w-3 ml-1" />}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex flex-col sm:flex-row gap-2">
+                          <Button variant="outline" size="sm">
+                            <Eye className="h-3 w-3" />
+                          </Button>
+                          <Button variant="outline" size="sm">
+                            <Edit className="h-3 w-3" />
+                          </Button>
+                          {user.status === 'active' ? (
+                            <Button variant="outline" size="sm" className="text-red-600">
+                              <Ban className="h-3 w-3" />
+                            </Button>
+                          ) : (
+                            <Button variant="outline" size="sm" className="text-green-600">
+                              <UserCheck className="h-3 w-3" />
+                            </Button>
+                          )}
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           </CardContent>
         </Card>
       </div>
