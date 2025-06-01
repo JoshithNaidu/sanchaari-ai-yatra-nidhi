@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { ArrowLeft, Search, Filter, Eye, Ban, RefreshCw, Users } from 'lucide-react';
+import Header from '@/components/Header';
 
 const AdminUsers = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -93,32 +93,34 @@ const AdminUsers = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="container mx-auto px-4 py-4">
+      <Header />
+      
+      {/* Page Header */}
+      <div className="bg-white border-b border-gray-200 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center gap-4">
             <Link to="/admin" className="text-gray-600 hover:text-gray-900">
               <ArrowLeft className="h-5 w-5" />
             </Link>
             <div>
-              <h1 className="text-xl font-semibold text-gray-900">User Management</h1>
+              <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">User Management</h1>
               <p className="text-sm text-gray-600">Manage registered users and their accounts</p>
             </div>
           </div>
         </div>
-      </header>
+      </div>
 
-      <div className="container mx-auto px-4 py-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">Total Users</p>
-                  <p className="text-2xl font-bold">1,247</p>
+                  <p className="text-xl sm:text-2xl font-bold">1,247</p>
                 </div>
-                <Users className="h-8 w-8 text-blue-600" />
+                <Users className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
               </div>
             </CardContent>
           </Card>
@@ -127,7 +129,7 @@ const AdminUsers = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">Active Users</p>
-                  <p className="text-2xl font-bold">1,089</p>
+                  <p className="text-xl sm:text-2xl font-bold">1,089</p>
                 </div>
                 <div className="w-3 h-3 bg-green-500 rounded-full"></div>
               </div>
@@ -138,7 +140,7 @@ const AdminUsers = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">Pending Verification</p>
-                  <p className="text-2xl font-bold">23</p>
+                  <p className="text-xl sm:text-2xl font-bold">23</p>
                 </div>
                 <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
               </div>
@@ -149,7 +151,7 @@ const AdminUsers = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">Suspended</p>
-                  <p className="text-2xl font-bold">15</p>
+                  <p className="text-xl sm:text-2xl font-bold">15</p>
                 </div>
                 <div className="w-3 h-3 bg-red-500 rounded-full"></div>
               </div>
@@ -166,8 +168,8 @@ const AdminUsers = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex gap-4 items-end">
-              <div className="flex-1">
+            <div className="flex flex-col sm:flex-row gap-4 items-end">
+              <div className="flex-1 w-full">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <Input
@@ -179,7 +181,7 @@ const AdminUsers = () => {
                 </div>
               </div>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-48">
+                <SelectTrigger className="w-full sm:w-48">
                   <SelectValue placeholder="Filter by status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -205,12 +207,12 @@ const AdminUsers = () => {
               Showing {filteredUsers.length} of {users.length} users
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="rounded-md border">
+          <CardContent className="p-0 sm:p-6">
+            <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>User</TableHead>
+                    <TableHead className="min-w-[200px]">User</TableHead>
                     <TableHead>Type</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead>Join Date</TableHead>
@@ -224,8 +226,8 @@ const AdminUsers = () => {
                     <TableRow key={user.id}>
                       <TableCell>
                         <div>
-                          <div className="font-medium">{user.fullName}</div>
-                          <div className="text-sm text-gray-500">{user.email}</div>
+                          <div className="font-medium text-sm sm:text-base">{user.fullName}</div>
+                          <div className="text-xs sm:text-sm text-gray-500 break-all">{user.email}</div>
                           <div className="text-xs text-gray-400">ID: {user.id}</div>
                         </div>
                       </TableCell>
@@ -235,14 +237,14 @@ const AdminUsers = () => {
                       <TableCell className="text-sm">{user.lastLogin}</TableCell>
                       <TableCell>{user.tripsPlanned}</TableCell>
                       <TableCell>
-                        <div className="flex gap-2">
+                        <div className="flex flex-col sm:flex-row gap-2">
                           <Button size="sm" variant="outline">
                             <Eye className="h-3 w-3 mr-1" />
-                            View
+                            <span className="hidden sm:inline">View</span>
                           </Button>
                           <Button size="sm" variant="outline" className="text-red-600">
                             <Ban className="h-3 w-3 mr-1" />
-                            Suspend
+                            <span className="hidden sm:inline">Suspend</span>
                           </Button>
                         </div>
                       </TableCell>

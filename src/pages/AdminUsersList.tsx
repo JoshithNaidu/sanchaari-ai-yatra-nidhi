@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -25,6 +24,7 @@ import {
   XCircle,
   AlertTriangle
 } from 'lucide-react';
+import Header from '@/components/Header';
 
 const AdminUsersList = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -139,17 +139,19 @@ const AdminUsersList = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+      <Header />
+      
+      {/* Page Header */}
+      <div className="bg-white border-b border-gray-200 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <Link to="/admin" className="flex items-center text-gray-600 hover:text-blue-600">
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Admin
+                <span className="hidden sm:inline">Back to Admin</span>
               </Link>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">User Management</h1>
+                <h1 className="text-xl sm:text-2xl font-bold text-gray-900">User Management</h1>
                 <p className="text-sm text-gray-600">View, filter, and manage all registered users</p>
               </div>
             </div>
@@ -158,25 +160,22 @@ const AdminUsersList = () => {
                 <Download className="h-4 w-4 mr-2" />
                 Export
               </Button>
-              <Link to="/admin/logout">
-                <Button variant="destructive" size="sm">Logout</Button>
-              </Link>
             </div>
           </div>
         </div>
-      </header>
+      </div>
 
-      <div className="container mx-auto px-4 py-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">Total Users</p>
-                  <p className="text-2xl font-bold">{users.length}</p>
+                  <p className="text-xl sm:text-2xl font-bold">{users.length}</p>
                 </div>
-                <Users className="h-8 w-8 text-blue-600" />
+                <Users className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
               </div>
             </CardContent>
           </Card>
@@ -185,7 +184,7 @@ const AdminUsersList = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">Active Users</p>
-                  <p className="text-2xl font-bold">{users.filter(u => u.status === 'active').length}</p>
+                  <p className="text-xl sm:text-2xl font-bold">{users.filter(u => u.status === 'active').length}</p>
                 </div>
                 <div className="w-3 h-3 bg-green-500 rounded-full"></div>
               </div>
@@ -196,7 +195,7 @@ const AdminUsersList = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">KYC Pending</p>
-                  <p className="text-2xl font-bold">{users.filter(u => u.kycStatus === 'pending').length}</p>
+                  <p className="text-xl sm:text-2xl font-bold">{users.filter(u => u.kycStatus === 'pending').length}</p>
                 </div>
                 <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
               </div>
@@ -207,7 +206,7 @@ const AdminUsersList = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">Blacklisted</p>
-                  <p className="text-2xl font-bold">{users.filter(u => u.status === 'blacklisted').length}</p>
+                  <p className="text-xl sm:text-2xl font-bold">{users.filter(u => u.status === 'blacklisted').length}</p>
                 </div>
                 <div className="w-3 h-3 bg-red-500 rounded-full"></div>
               </div>
@@ -235,7 +234,7 @@ const AdminUsersList = () => {
                 />
               </div>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-48">
+                <SelectTrigger className="w-full md:w-48">
                   <SelectValue placeholder="Filter by status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -246,7 +245,7 @@ const AdminUsersList = () => {
                 </SelectContent>
               </Select>
               <Select value={verificationFilter} onValueChange={setVerificationFilter}>
-                <SelectTrigger className="w-48">
+                <SelectTrigger className="w-full md:w-48">
                   <SelectValue placeholder="Verification status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -296,8 +295,8 @@ const AdminUsersList = () => {
               Showing {filteredUsers.length} of {users.length} users
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="rounded-md border">
+          <CardContent className="p-0 sm:p-6">
+            <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -307,8 +306,8 @@ const AdminUsersList = () => {
                         onCheckedChange={handleSelectAll}
                       />
                     </TableHead>
-                    <TableHead>User Details</TableHead>
-                    <TableHead>Contact</TableHead>
+                    <TableHead className="min-w-[200px]">User Details</TableHead>
+                    <TableHead className="min-w-[200px]">Contact</TableHead>
                     <TableHead>Registration</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead>KYC</TableHead>
@@ -327,15 +326,15 @@ const AdminUsersList = () => {
                       </TableCell>
                       <TableCell>
                         <div>
-                          <div className="font-medium">{user.name}</div>
-                          <div className="text-sm text-gray-500">ID: {user.id}</div>
+                          <div className="font-medium text-sm sm:text-base">{user.name}</div>
+                          <div className="text-xs sm:text-sm text-gray-500">ID: {user.id}</div>
                           <div className="text-xs text-gray-400">{user.location}</div>
                         </div>
                       </TableCell>
                       <TableCell>
                         <div className="space-y-1">
-                          <div className="text-sm">{user.email}</div>
-                          <div className="text-sm text-gray-500">{user.phone}</div>
+                          <div className="text-xs sm:text-sm break-all">{user.email}</div>
+                          <div className="text-xs sm:text-sm text-gray-500">{user.phone}</div>
                           {user.verified && <CheckCircle className="h-3 w-3 text-green-500 inline" />}
                         </div>
                       </TableCell>
@@ -348,22 +347,22 @@ const AdminUsersList = () => {
                         <div className="text-sm font-medium">{user.totalTrips}</div>
                       </TableCell>
                       <TableCell>
-                        <div className="flex gap-2">
+                        <div className="flex flex-col sm:flex-row gap-2">
                           <Link to={`/admin/users/${user.id}`}>
                             <Button size="sm" variant="outline">
                               <Eye className="h-3 w-3 mr-1" />
-                              View
+                              <span className="hidden sm:inline">View</span>
                             </Button>
                           </Link>
                           {user.status === 'active' ? (
                             <Button size="sm" variant="outline" className="text-yellow-600">
                               <Ban className="h-3 w-3 mr-1" />
-                              Suspend
+                              <span className="hidden sm:inline">Suspend</span>
                             </Button>
                           ) : (
                             <Button size="sm" variant="outline" className="text-green-600">
                               <UserCheck className="h-3 w-3 mr-1" />
-                              Activate
+                              <span className="hidden sm:inline">Activate</span>
                             </Button>
                           )}
                         </div>
